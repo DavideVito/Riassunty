@@ -67,6 +67,7 @@ function fetchIndirizzi() {
                     //debugger;
                     let contenitore = document.createElement("div");
                     contenitore.id = "container";
+                    contenitore.className = "col-sm";
 
                     let bottone = document.createElement("button");
                     bottone.className = "learn-more";
