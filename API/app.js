@@ -12,7 +12,7 @@ function fetchIndirizzi() {
                 let a = document.createElement("a");
                 //a.name = "Indirizzo";
                 a.innerText = dati.Indirizzo;
-				a.href = "#section" + i;
+                a.href = "#section" + i;
                 //$(a).on("click", () => {
                 ///    window.location.href = ;
                 //});
@@ -48,6 +48,7 @@ function fetchIndirizzi() {
 
                 let divIndirizzo = document.createElement("div");
                 divIndirizzo.className = "col-md";
+                divIndirizzo.style = "margin-bottom: 80px"
                 divIndirizzo.innerText = dati.Indirizzo;
 
                 heading.appendChild(divIndirizzo);
@@ -98,7 +99,7 @@ function fetchIndirizzi() {
                     contenitore.style = "cursor: pointer; font-size: 20px;";
                     let p = document.createElement("p");
                     p.innerHTML =*/
-					/*
+                    /*
                     $(bottone).on('click', async function () 
                     {
                         let divAnni = document.createElement("div");
@@ -142,21 +143,22 @@ function fetchIndirizzi() {
                 let divisore = document.createElement("div"); //separator
                 divisore.className = nomeClasseSeparatore;
                 sezioni.append(divisore);
-                
-                
+
+
             }
 
             let olHTML = $("#outJS");
             for (let i = 0; i < data.length; i++) {
                 await stampa(data[i], i);
             }
-            
+
             $('a[href*="#"]').on('click', function (e) {
                 $('html,body').animate({
-                  scrollTop: $($(this).attr('href')).offset().top - 100 },
-                500);
+                        scrollTop: $($(this).attr('href')).offset().top - 100
+                    },
+                    500);
                 e.preventDefault();
-              });
+            });
 
 
         }
