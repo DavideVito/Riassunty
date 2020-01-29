@@ -10,7 +10,6 @@ function fetchIndirizzi() {
             async function stampa(dati, i) {
                 let li = document.createElement("li");
 
-
                 let a = document.createElement("a");
                 a.name = "Indirizzo";
                 a.innerText = dati.Indirizzo;
@@ -34,9 +33,8 @@ function fetchIndirizzi() {
 
                 let sezione = document.createElement("section");
                 sezione.id = "section" + i;
-                let nomeClasseSezione = "sezione"+i;
+                let nomeClasseSezione = "sezione" + i;
                 sezione.className = nomeClasseSezione;
-
 
                 let container = document.createElement("div");
                 container.className = "container";
@@ -60,52 +58,81 @@ function fetchIndirizzi() {
                 riga.className = "row";
 
 
-				let nomeClasseSeparatore="separator"+i;
+                let nomeClasseSeparatore = "separator" + i;
                 for (let j = 0; j < risultati.length; j++) {
 
-                    let nomeClasse = "materia"+j;
+                    debugger;
+                    let contenitore = document.createElement("div");
+                    contenitore.className = "container";
+
+                    let bottone = document.createElement("button");
+                    bottone.className = "learn-more";
+
+                    let spanCerchio = document.createElement("span");
+                    spanCerchio.className = "circle";
+                    spanCerchio.setAttribute('aria-hidden', 'true');
+
+                    let spanFreccia = document.createElement("span");
+                    spanFreccia.className = "icon arrow";
+
+                    let spanTesto = document.createElement("span");
+                    spanTesto.className = "button-text";
+
+                    spanTesto.innerText = risultati[j].Materia;
+
+                    spanCerchio.appendChild(spanFreccia);
+
+
+                    bottone.appendChild(spanCerchio);
+                    bottone.appendChild(spanTesto);
+
+                    console.log(bottone);
+
+
+
+                    /* 
+                    let nomeClasse = "materia" + j;
                     console.log(nomeClasse);
                     //nomeClasse = "";
-                    let div2 = document.createElement("div");
-                    div2.className = "col-sm " + nomeClasse;
-                    div2.style = "cursor: pointer; font-size: 20px;";
+                    let contenitore = document.createElement("div");
+                    contenitore.className = "col-sm " + nomeClasse;
+                    contenitore.style = "cursor: pointer; font-size: 20px;";
                     let p = document.createElement("p");
-                    p.innerHTML = risultati[j].Materia;
+                    p.innerHTML =*/
 
-                    $(div2)
-                        .on('click', async function () {
-                            let divAnni = document.createElement("div");
-                            let testoMateria = risultati[j].Materia;
-                            if ($(this).text() != testoMateria) {
-                                $(this).text(testoMateria);
-                                return;
-                            }
-
-                            testoMateria = "Chiudi";
-                            let risultatiAnni = await fetchAnni();
-
-                            divAnni.id = "divAnni";
-
-                            for (let k = 0; k < risultatiAnni.length; k++) {
-                                let anno = risultatiAnni[k];
-                                let testo = document.createElement("p");
-                                testo.innerText = anno;
-
-                                $(testo).on("click", () => {
-                                    sessionStorage.clear();
-                                    sessionStorage.materiaCliccata = risultati[j].IDMateria;
-                                    sessionStorage.annoCliccato = anno;
-                                    window.location.href = "RiassuntiMaterie.html";
-                                });
-                                divAnni.appendChild(testo);
-                            }
+                    $(bottone).on('click', async function () {
+                        let divAnni = document.createElement("div");
+                        let testoMateria = risultati[j].Materia;
+                        if ($(this).text() != testoMateria) {
                             $(this).text(testoMateria);
+                            return;
+                        }
 
-                            div2.appendChild(divAnni);
-                        });
+                        testoMateria = "Chiudi";
+                        let risultatiAnni = await fetchAnni();
 
-                    riga.appendChild(div2);
-                    div2.appendChild(p);
+                        divAnni.id = "divAnni";
+
+                        for (let k = 0; k < risultatiAnni.length; k++) {
+                            let anno = risultatiAnni[k];
+                            let testo = document.createElement("p");
+                            testo.innerText = anno;
+
+                            $(testo).on("click", () => {
+                                sessionStorage.clear();
+                                sessionStorage.materiaCliccata = risultati[j].IDMateria;
+                                sessionStorage.annoCliccato = anno;
+                                window.location.href = "RiassuntiMaterie.html";
+                            });
+                            divAnni.appendChild(testo);
+                        }
+                        $(this).text(testoMateria);
+
+                        contenitore.appendChild(divAnni);
+                    });
+                    contenitore.appendChild(bottone);
+                    riga.appendChild(contenitore);
+                    //contenitore.appendChild(p);
                 }
 
                 container.appendChild(riga);
