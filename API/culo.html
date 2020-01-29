@@ -2,6 +2,7 @@
     <br><br>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script>
+        let baseURL = "https://riassunty.altervista.org/API/";
         $(window).on("load", () => {
             for (let i = 0; i < 5; i++) {
                 let option = document.createElement("option");
@@ -16,7 +17,7 @@
         function fetchIndirizzi() {
             sessionStorage.clear();
             $.ajax({
-                url: "indirizzi.php",
+                url: baseURL + "indirizzi.php",
                 method: "POST",
                 success: async function (data) {
                     let olHTML = $("#outJS");
@@ -52,7 +53,7 @@
         }
 
         async function fetchMaterie(indirizzoHovered) {
-            let resFetch = await fetch("materie.php?indirizzo=" +
+            let resFetch = await fetch(baseURL + "materie.php?indirizzo=" +
                 indirizzoHovered);
             let risposta = await resFetch.json();
             return risposta;
@@ -134,7 +135,7 @@
     <script>
         $(window).on("load", () => {
             $.ajax({
-                url: "getRiassunti.php",
+                url: baseURL + "getRiassunti.php",
                 method: "GET",
                 success: data => {
                     document.getElementById("out").innerHTML = data;
@@ -153,7 +154,7 @@
                     alert("Comandi te");
 
                     $.ajax({
-                        url: "eliminaRiassunto.php",
+                        url: baseURL + "eliminaRiassunto.php",
                         data: {
                             id: id
                         },

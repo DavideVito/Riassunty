@@ -1,9 +1,11 @@
 let cliccato = false;
 
+let baseURL = "https://riassunty.altervista.org/";
+
 function fetchIndirizzi() {
     sessionStorage.clear();
     $.ajax({
-        url: "http://riassunty.altervista.org/API/indirizzi.php",
+        url: baseURL + "API/indirizzi.php",
         method: "POST",
         crossDomain: true,
         success: async function (data) {
@@ -165,14 +167,14 @@ function fetchIndirizzi() {
     })
 }
 async function fetchMaterie(indirizzoHovered) {
-    let resFetch = await fetch("API/materie.php?indirizzo=" +
+    let resFetch = await fetch(baseURL + "API/materie.php?indirizzo=" +
         indirizzoHovered);
     let risposta = await resFetch.json();
     return risposta;
 }
 
 async function fetchAnni() {
-    let resFetch = await fetch("API/ottieniAnni.php");
+    let resFetch = await fetch(baseURL + "API/ottieniAnni.php");
     let risposta = await resFetch.json();
     return risposta;
 }
