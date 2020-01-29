@@ -1,5 +1,5 @@
 <?php 
-
+header("Access-Control-Allow-Origin: *");
     $nomeMaterie = "";
     header("content-type: application/json");
     if(isset($_POST['indirizzo']))

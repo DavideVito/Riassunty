@@ -1,7 +1,7 @@
 <?php 
 
 require "Connessione.php";
-
+header("Access-Control-Allow-Origin: *");
 $preparazioneConversioneImmagine = "https://api.cloudconvert.com/v1/process";
 
 

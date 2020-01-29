@@ -3,9 +3,9 @@ let cliccato = false;
 function fetchIndirizzi() {
     sessionStorage.clear();
     $.ajax({
-        url: "API/indirizzi.php",
+        url: "http://riassunty.altervista.org/API/indirizzi.php",
         method: "POST",
-
+        crossDomain: true,
         success: async function (data) {
             async function stampa(dati, i) {
                 let li = document.createElement("li");
@@ -48,7 +48,7 @@ function fetchIndirizzi() {
 
                 let divIndirizzo = document.createElement("div");
                 divIndirizzo.className = "col-md";
-                divIndirizzo.style = "margin-bottom: 80px"
+                divIndirizzo.style = "margin-bottom: 80px";
                 divIndirizzo.innerText = dati.Indirizzo;
 
                 heading.appendChild(divIndirizzo);

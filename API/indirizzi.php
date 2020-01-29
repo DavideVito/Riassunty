@@ -1,5 +1,5 @@
 <?php 
-
+header("Access-Control-Allow-Origin: *");
 
     /*
         Se si ha questo parametro passato tramite get, allora si hanno tutti gli 

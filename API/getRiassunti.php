@@ -1,5 +1,5 @@
 <?php 
-    
+    header("Access-Control-Allow-Origin: *");
     require_once "Connessione.php";
 
     $connessione = new Connessione();
