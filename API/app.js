@@ -9,19 +9,18 @@ function fetchIndirizzi() {
         success: async function (data) {
             async function stampa(dati, i) {
                 let li = document.createElement("li");
-
                 let a = document.createElement("a");
-                a.name = "Indirizzo";
+                //a.name = "Indirizzo";
                 a.innerText = dati.Indirizzo;
-
-                $(a).on("click", () => {
-                    window.location.href = "#section" + i;;
-                });
+				a.href = "#section" + i;
+                //$(a).on("click", () => {
+                ///    window.location.href = ;
+                //});
 
                 li.appendChild(a);
                 li.style = "cursor: pointer; list-style-type: none; padding-left: 10px"
 
-                li.addEventListener("click", () => scorlla(a));
+                //li.addEventListener("click", () => scorlla(a));
 
 
                 olHTML.append(li);
@@ -42,7 +41,8 @@ function fetchIndirizzi() {
                 let heading = document.createElement("div");
                 heading.id = "heading";
                 heading.className = "row";
-                heading.style = "margin-top: 100px";
+                heading.style = "margin-top: 125px";
+
 
 
 
@@ -61,9 +61,9 @@ function fetchIndirizzi() {
                 let nomeClasseSeparatore = "separator" + i;
                 for (let j = 0; j < risultati.length; j++) {
 
-                    debugger;
+                    //debugger;
                     let contenitore = document.createElement("div");
-                    contenitore.className = "container";
+                    contenitore.id = "container";
 
                     let bottone = document.createElement("button");
                     bottone.className = "learn-more";
@@ -86,7 +86,6 @@ function fetchIndirizzi() {
                     bottone.appendChild(spanCerchio);
                     bottone.appendChild(spanTesto);
 
-                    console.log(bottone);
 
 
 
@@ -99,8 +98,9 @@ function fetchIndirizzi() {
                     contenitore.style = "cursor: pointer; font-size: 20px;";
                     let p = document.createElement("p");
                     p.innerHTML =*/
-
-                    $(bottone).on('click', async function () {
+					/*
+                    $(bottone).on('click', async function () 
+                    {
                         let divAnni = document.createElement("div");
                         let testoMateria = risultati[j].Materia;
                         if ($(this).text() != testoMateria) {
@@ -129,7 +129,7 @@ function fetchIndirizzi() {
                         $(this).text(testoMateria);
 
                         contenitore.appendChild(divAnni);
-                    });
+                    });*/
                     contenitore.appendChild(bottone);
                     riga.appendChild(contenitore);
                     //contenitore.appendChild(p);
@@ -142,12 +142,21 @@ function fetchIndirizzi() {
                 let divisore = document.createElement("div"); //separator
                 divisore.className = nomeClasseSeparatore;
                 sezioni.append(divisore);
+                
+                
             }
 
             let olHTML = $("#outJS");
             for (let i = 0; i < data.length; i++) {
                 await stampa(data[i], i);
             }
+            
+            $('a[href*="#"]').on('click', function (e) {
+                $('html,body').animate({
+                  scrollTop: $($(this).attr('href')).offset().top - 100 },
+                500);
+                e.preventDefault();
+              });
 
 
         }
@@ -170,13 +179,12 @@ async function fetchAnni() {
 
 $(window).on("load", () => {
     fetchIndirizzi();
-    $("#brand").on("click", () => {
+    /*$("#brand").on("click", () => {
         $("html, body").animate({
             scrollTop: 0
         });
 
-    });
-
+    });*/
     document.getElementById("brand").style = "cursor: pointer"
 
 });
