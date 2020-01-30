@@ -4,7 +4,7 @@ require "Connessione.php";
 header("Access-Control-Allow-Origin: *");
 $preparazioneConversioneImmagine = "https://api.cloudconvert.com/v1/process";
 
-
+$filePDF = $_FILES['pdfDaCaricare']['tmp_name'];
 $apiKey = "DBoE1fW6G8G81qMqj3iwDObVfO0iclHKPYx3bNFKiuMfnicW-G-hrjn9GxbMnEEe3fPaVVTi91YEXkhXESt_gw";
 
 move_uploaded_file($filePDF, "../Riassunti/".$_FILES['pdfDaCaricare']['name']);
@@ -47,6 +47,8 @@ $parametriConversione['input'] = "download";
 $parametriConversione['file'] = "https://" . $_SERVER['HTTP_HOST']. "/Riassunti/".$_FILES['pdfDaCaricare']['name'];
 //$parametriConversione['file'] = urlencode($parametriConversione['file']);
 $parametriConversione['outputformat'] = "jpg";
+$parametriConversione['save'] = "true";
+
 $parametriConversione['wait'] = "true";
 
 $parametriConversione = http_build_query($parametriConversione);
@@ -65,11 +67,12 @@ $e2 = curl_errno($ch);
 $rispostaServer = json_decode($rispostaServer, true);
 $url = "https:" . $rispostaServer['output']['url']. "/" . $rispostaServer['output']['files'][0];
 curl_close ($ch);
+echo $url."<br>";
 $ch = null;
 
 $ch = curl_init($url); 
 
-$outputImmagine = "../Immagini/".$_FILES['pdfDaCaricare']['name']; 
+$outputImmagine = "../Immagini/".$_FILES['pdfDaCaricare']['name'] . ".jpg"; 
 
 $fp = fopen($outputImmagine, 'wb'); 
 
@@ -82,11 +85,11 @@ fclose($fp);
 
 $connessione = new Connessione();
 $filePDF = $_FILES['pdfDaCaricare']['tmp_name'];
-$fileImg = $_FILES['fotoDaCaricare']['tmp_name'];
+//$fileImg = $_FILES['fotoDaCaricare']['tmp_name'];
 
-move_uploaded_file($fileImg, "../Immagini/".$_FILES['fotoDaCaricare']['name']);
+//move_uploaded_file($fileImg, "../Immagini/".$_FILES['fotoDaCaricare']['name']);
 
-$connessione->inserisci($_FILES['pdfDaCaricare']['name'], $_FILES['fotoDaCaricare']['name'], $_POST['indirizzi'], $_POST['materie'], $_POST['anno']);
+$connessione->inserisci($_FILES['pdfDaCaricare']['name'], $_FILES['pdfDaCaricare']['name'].".jpg", $_POST['indirizzi'], $_POST['materie'], $_POST['anno']);
 
 
 ?>
