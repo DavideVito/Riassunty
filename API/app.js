@@ -1,5 +1,8 @@
 let cliccato = false;
 
+let riassunti = [];
+let massimo = 3;
+
 let baseURL = "https://riassunty.altervista.org/";
 
 function fetchIndirizzi() {
@@ -123,6 +126,35 @@ async function fetchAnni() {
     return risposta;
 }
 
+function stampaBottoni(dove, risultati, quanto) {
+    for (let j = 0; j < quanto; j++) {
+        let button = document.createElement("div");
+        button.className = "button";
+        button.id = "button-3";
+
+        let cerchio = document.createElement("div");
+        cerchio.id = "circle"
+
+        let a = document.createElement("a");
+        a.addEventListener("click", () => {
+
+        });
+
+        let img = document.createElement("img");
+        img.style = "margin-right: 2%"
+        img.src = risultati[j].URLImmagine;
+        img.width = 30;
+        img.height = 30;
+        a.innerText = risultati[j].Titolo;
+
+        button.appendChild(cerchio);
+        button.appendChild(img);
+        button.appendChild(a);
+
+        dove.appendChild(button);
+    }
+}
+
 async function getRiassunti(anno, materia, i) {
 
 
@@ -189,34 +221,8 @@ async function getRiassunti(anno, materia, i) {
 
 
     let nomeClasseSeparatore = "separator" + i;
-    for (let j = 0; j < risultati.length; j++) {
 
-        let button = document.createElement("div");
-        button.className = "button";
-        button.id = "button-3";
-
-        let cerchio = document.createElement("div");
-        cerchio.id = "circle"
-
-        let a = document.createElement("a");
-        a.addEventListener("click", () => {
-            sessionStorage.materia = risultati[j].Titolo;
-            window.location.href = baseURL;
-        });
-
-        let img = document.createElement("img");
-        img.style = "margin-right: 2%"
-        img.src = risultati[j].URLImmagine;
-        img.width = 30;
-        img.height = 30;
-        a.innerText = risultati[j].Titolo;
-
-        button.appendChild(cerchio);
-        button.appendChild(img);
-        button.appendChild(a);
-
-        riga.appendChild(button);
-    }
+    stampaBottoni(riga, risultati, risultati.length % 3);
 
     let buttonAltro = document.createElement("div");
     buttonAltro.className = "button";
@@ -226,10 +232,10 @@ async function getRiassunti(anno, materia, i) {
     cerchioAltro.id = "circle"
 
     let aAltro = document.createElement("a");
-    /*    a.addEventListener("click", () => {
-            sessionStorage.materia = risultati[j].Titolo;
-            window.location.href = baseURL;
-        });*/
+    aAltro.addEventListener("click", () => {
+        riga.innerHTML = "";
+        stampaBottoni(riga, risultati, risultati.length);
+    });
 
     aAltro.innerText = "Mostra Altro"
 
@@ -284,11 +290,13 @@ jQuery(document).ready(function ($) {
     }
 });
 
+let anni = null;
+
 $(window).on("load", async () => {
 
 
     if (sessionStorage.materia) {
-        let anni = await fetchAnni();
+        anni = await fetchAnni();
         await parsaAnni(anni);
     } else {
         fetchIndirizzi();
