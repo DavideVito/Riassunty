@@ -38,7 +38,8 @@ function fetchIndirizzi() {
                 sezione.className = nomeClasseSezione;
 
                 let container = document.createElement("div");
-                container.className = "container";
+                container.className = "container-fluid";
+                container.style="text-align:center;";
 
                 let heading = document.createElement("div");
                 heading.id = "heading";
@@ -58,85 +59,27 @@ function fetchIndirizzi() {
                 container.appendChild(heading);
 
                 let riga = document.createElement("div");
-                riga.className = "row";
+                riga.className = "row justify-content-center";
 
 
                 let nomeClasseSeparatore = "separator" + i;
                 for (let j = 0; j < risultati.length; j++) {
 
-                    //debugger;
-                    let contenitore = document.createElement("div");
-                    contenitore.id = "container";
-                    contenitore.className = "col-sm";
+                    let button = document.createElement("div");
+                    button.className = "button";
+                    button.id = "button-3";
 
-                    let bottone = document.createElement("button");
-                    bottone.className = "learn-more";
+                    let cerchio = document.createElement("div");
+                    cerchio.id = "circle"
 
-                    let spanCerchio = document.createElement("span");
-                    spanCerchio.className = "circle";
-                    spanCerchio.setAttribute('aria-hidden', 'true');
+                    let a = document.createElement("a");
+                    a.href = "#";
+                    a.innerText = risultati[j].Materia;
 
-                    let spanFreccia = document.createElement("span");
-                    spanFreccia.className = "icon arrow";
-
-                    let spanTesto = document.createElement("span");
-                    spanTesto.className = "button-text";
-
-                    spanTesto.innerText = risultati[j].Materia;
-
-                    spanCerchio.appendChild(spanFreccia);
-
-
-                    bottone.appendChild(spanCerchio);
-                    bottone.appendChild(spanTesto);
-
-
-
-
-                    /* 
-                    let nomeClasse = "materia" + j;
-                    console.log(nomeClasse);
-                    //nomeClasse = "";
-                    let contenitore = document.createElement("div");
-                    contenitore.className = "col-sm " + nomeClasse;
-                    contenitore.style = "cursor: pointer; font-size: 20px;";
-                    let p = document.createElement("p");
-                    p.innerHTML =*/
-                    /*
-                    $(bottone).on('click', async function () 
-                    {
-                        let divAnni = document.createElement("div");
-                        let testoMateria = risultati[j].Materia;
-                        if ($(this).text() != testoMateria) {
-                            $(this).text(testoMateria);
-                            return;
-                        }
-
-                        testoMateria = "Chiudi";
-                        let risultatiAnni = await fetchAnni();
-
-                        divAnni.id = "divAnni";
-
-                        for (let k = 0; k < risultatiAnni.length; k++) {
-                            let anno = risultatiAnni[k];
-                            let testo = document.createElement("p");
-                            testo.innerText = anno;
-
-                            $(testo).on("click", () => {
-                                sessionStorage.clear();
-                                sessionStorage.materiaCliccata = risultati[j].IDMateria;
-                                sessionStorage.annoCliccato = anno;
-                                window.location.href = "RiassuntiMaterie.html";
-                            });
-                            divAnni.appendChild(testo);
-                        }
-                        $(this).text(testoMateria);
-
-                        contenitore.appendChild(divAnni);
-                    });*/
-                    contenitore.appendChild(bottone);
-                    riga.appendChild(contenitore);
-                    //contenitore.appendChild(p);
+                    button.appendChild(cerchio);
+                    button.appendChild(a);
+                    
+                    riga.appendChild(button);
                 }
 
                 container.appendChild(riga);

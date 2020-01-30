@@ -1,5 +1,6 @@
 /*** Mixins & Default Styles ***/
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400');
 
 html {
   scroll-behavior: smooth;
@@ -107,12 +108,13 @@ li a {
   height: 20px;
   display: block;
   border-radius: 90px;
+  margin-right:15px;
 }
 
 #menu-toggle {
   width: 55px;
   height: 55px;
-  background: #2ea8ee;
+  background: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -232,7 +234,7 @@ section {
     display: inline-block;
     width: 100vw;
     height: 0;
-    background: #79edfc;
+    background: #000;
     position: absolute;
     top: 160px;
     -webkit-transform: translate(, );
@@ -447,122 +449,72 @@ section {
 }
 
 /*Pulsante*/
-@import url("https://fonts.googleapis.com/css?family=Mukta:700");
 
-* {
-  box-sizing: border-box;
-}
+/* Button Styles */
 
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-button {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
-  outline: none;
-  border: 0;
-  vertical-align: middle;
-  text-decoration: none;
-  background: transparent;
-  padding: 0;
-  font-size: inherit;
-  font-family: inherit;
-}
-
-button.learn-more {
-  width: 12rem;
-  height: auto;
-}
-
-button.learn-more .circle {
-  -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  position: relative;
-  display: block;
-  margin: 0;
-  width: 3rem;
-  height: 3rem;
-  background: #282936;
-  border-radius: 1.625rem;
-}
-
-button.learn-more .circle .icon {
-  -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  background: #fff;
-}
-
-button.learn-more .circle .icon.arrow {
-  -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  left: 0.625rem;
-  width: 1.125rem;
-  height: 0.125rem;
-  background: none;
-}
-
-button.learn-more .circle .icon.arrow::before {
-  position: absolute;
-  content: '';
-  top: -0.25rem;
-  right: 0.0625rem;
-  width: 0.625rem;
-  height: 0.625rem;
-  border-top: 0.125rem solid #fff;
-  border-right: 0.125rem solid #fff;
-  -webkit-transform: rotate(45deg);
-  transform: rotate(45deg);
-}
-
-button.learn-more .button-text {
-  -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0.75rem 0;
-  margin: 0 0 0 1.85rem;
-  color: #282936;
-  font-weight: 700;
-  line-height: 1.6;
-  text-align: center;
+.button {
+  display: inline-flex;
+  height: 60px;
+  width: 250px;
+  border: 2px solid #FFF;
+  margin: 20px 20px 20px 20px;
+  color: #FFF;
   text-transform: uppercase;
+  text-decoration: none;
+  font-size: .8em;
+  letter-spacing: 1.5px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
-button:hover .circle {
-  width: 100%;
+a {
+  color: #FFF;
+  text-decoration: none;
+  letter-spacing: 1px;
 }
 
-button:hover .circle .icon.arrow {
-  background: #fff;
-  -webkit-transform: translate(1rem, 0);
-  transform: translate(1rem, 0);
+#button-3 {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
 }
 
-button:hover .button-text {
-  color: #fff;
+#button-3 a {
+  position: relative;
+  transition: all .45s ease-Out;
 }
 
-/*@supports (display: grid) {
-  body {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 0.625rem;
-    grid-template-areas: ". main main ." ". main main .";
+#circle {
+  width: 0%;
+  height: 0%;
+  opacity: 0;
+  line-height: 40px;
+  border-radius: 50%;
+  background: #FFF;
+  position: absolute;
+  transition: all .5s ease-Out;
+  top: 20px;
+  left: 70px;
+}
+
+#button-3:hover #circle {
+  width: 200%;
+  height: 500%;
+  opacity: 1;
+  top: -70px;
+  left: -70px;
+}
+
+#button-3:hover a {
+  color: #000;
+}
+
+@media screen and (min-width:1000px) {
+  h1 {
+    font-size: 2.2em;
   }
-
-  /*#container {
-    grid-area: main;
-    align-self: center;
-    justify-self: center;
-  }*/
+  #container {
+    width: 50%;
+  }
 }
