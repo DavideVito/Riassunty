@@ -108,7 +108,7 @@ li a {
   height: 20px;
   display: block;
   border-radius: 90px;
-  margin-right:15px;
+  margin-right: 15px;
 }
 
 #menu-toggle {
@@ -223,7 +223,7 @@ section {
 
 
 /*** Responsive Menu For Smaller Device ***/
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 750px) {
   #menu-toggle {
     display: flex;
   }
@@ -514,6 +514,7 @@ a {
   h1 {
     font-size: 2.2em;
   }
+
   #container {
     width: 50%;
   }

@@ -7,7 +7,12 @@ function fetchIndirizzi() {
     $.ajax({
         url: baseURL + "API/indirizzi.php",
         method: "POST",
+        beforeSend: () => {
+            document.getElementById("loadingImage").className = "visibile";
+
+        },
         success: async function (data) {
+            document.getElementById("loadingImage").className = "nascosta";
             async function stampa(dati, i) {
                 let li = document.createElement("li");
                 let a = document.createElement("a");
@@ -119,6 +124,8 @@ async function fetchAnni() {
 }
 
 async function getRiassunti(anno, materia, i) {
+
+
     let olHTML = $("#outJS");
 
     var data = {
@@ -253,9 +260,11 @@ async function getRiassunti(anno, materia, i) {
 async function parsaAnni(anni) {
 
     let i = 0;
+    document.getElementById("loadingImage").className = "visibile";
     for (i = 0; i < anni.length; i++) {
         await getRiassunti(anni[i], sessionStorage.materia, i)
     }
+    document.getElementById("loadingImage").className = "nascosta";
 }
 
 jQuery(document).ready(function ($) {
