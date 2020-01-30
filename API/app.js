@@ -8,7 +8,7 @@ let baseURL = "https://riassunty.altervista.org/";
 function fetchIndirizzi() {
     sessionStorage.clear();
     $.ajax({
-        url: baseURL + "API/indirizzi.php",
+        url: "API/indirizzi.php",
         method: "POST",
         beforeSend: () => {
             document.getElementById("loadingImage").className = "visibile";
@@ -114,17 +114,25 @@ function fetchIndirizzi() {
     })
 }
 async function fetchMaterie(indirizzoHovered) {
-    let resFetch = await fetch(baseURL + "API/materie.php?indirizzo=" +
+    let resFetch = await fetch("API/materie.php?indirizzo=" +
         indirizzoHovered);
     let risposta = await resFetch.json();
     return risposta;
 }
 
 async function fetchAnni() {
-    let resFetch = await fetch(baseURL + "API/ottieniAnni.php");
+    let resFetch = await fetch("API/ottieniAnni.php");
     let risposta = await resFetch.json();
     return risposta;
 }
+
+async function fetchRiassunto(nome) {
+    let risposta = await fetch("API/riassunto.php?nome=" +
+        nome);
+    let json = await risposta.json();
+    return json;
+}
+
 
 function stampaBottoni(dove, risultati, quanto) {
     for (let j = 0; j < quanto; j++) {
@@ -136,8 +144,14 @@ function stampaBottoni(dove, risultati, quanto) {
         cerchio.id = "circle"
 
         let a = document.createElement("a");
-        a.addEventListener("click", () => {
+        button.addEventListener("click", async () => {
+            if (sessionStorage.riassunto) {
 
+                sessionStorage.removeItem(riassunto);
+            }
+            let riassunto = await fetchRiassunto(risultati[j].Titolo);
+            sessionStorage.riassunto = JSON.stringify(riassunto[0]);
+            window.location.href = "mostraRiassunto.html";
         });
 
         let img = document.createElement("img");
@@ -324,7 +338,7 @@ function isInViewport(elemento) {
 
 async function fetchRiassunti(anno, materia) {
 
-    let risposta = await fetch(baseURL + "API/anteprima.php?idMateria=" + Number(materia) + "&anno=" + Number(anno));
+    let risposta = await fetch("API/anteprima.php?idMateria=" + Number(materia) + "&anno=" + Number(anno));
     let json = await risposta.json();
     return json;
 

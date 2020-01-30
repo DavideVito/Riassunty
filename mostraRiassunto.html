@@ -37,13 +37,13 @@
 
   <script>
     if (!sessionStorage.riassunto) {
-      window.location.href = "RiassuntiMaterie.html";
+      window.location.href = "index.html";
     }
     let riassunto = JSON.parse(sessionStorage.riassunto);
     let titolo = document.createElement("h1");
-    titolo.innerText = riassunto.titolo;
+    titolo.innerText = riassunto.Titolo;
 
-    document.getElementsByTagName("title")[0].innerText = "Riassunto di " + riassunto.titolo;
+    document.getElementsByTagName("title")[0].innerText = "Riassunto di " + riassunto.Titolo;
 
     let pdfViewer = document.createElement("iframe");
     pdfViewer.src = riassunto.base64;

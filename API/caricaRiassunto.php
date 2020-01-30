@@ -27,6 +27,7 @@ $rispostaServer = curl_exec($ch);
 $rispostaServer = json_decode($rispostaServer, true);
 $host = $rispostaServer["host"];
 $url = "https:" . $rispostaServer["url"];
+
 curl_close ($ch);
 $ch = null;
 
@@ -44,7 +45,10 @@ INIZIO CONVERSIONE
 
 $parametriConversione = array();
 $parametriConversione['input'] = "download";
-$parametriConversione['file'] = "https://" . $_SERVER['HTTP_HOST']. "/Riassunti/".$_FILES['pdfDaCaricare']['name'];
+$parametriConversione['file'] = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['DOCUMENT_URI'] . "/../../Riassunti/".  $_FILES['pdfDaCaricare']['name'];
+
+//$parametriConversione['file'] = "https://" . $_SERVER['HTTP_HOST'] . $_SERVER['DOCUMENT_URI']. "/../Riassunti/" . $_FILES['pdfDaCaricare']['name'];
+echo $parametriConversione['file'];
 //$parametriConversione['file'] = urlencode($parametriConversione['file']);
 $parametriConversione['outputformat'] = "jpg";
 $parametriConversione['save'] = "true";
@@ -62,12 +66,13 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 $rispostaServer = curl_exec($ch);
 
-$e1 = curl_error($ch); 
-$e2 = curl_errno($ch);
 $rispostaServer = json_decode($rispostaServer, true);
+
+var_dump($rispostaServer);
+
 $url = "https:" . $rispostaServer['output']['url']. "/" . $rispostaServer['output']['files'][0];
 curl_close ($ch);
-echo $url."<br>";
+echo "<br>".$url."<br>";
 $ch = null;
 
 $ch = curl_init($url); 
