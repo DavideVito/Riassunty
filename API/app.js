@@ -137,9 +137,6 @@ async function getRiassunti(anno, materia, i) {
 
     data = await risposta.json();
 
-
-
-
     let li = document.createElement("li");
     let a = document.createElement("a");
 
@@ -186,7 +183,7 @@ async function getRiassunti(anno, materia, i) {
 
     let nomeClasseSeparatore = "separator" + i;
     for (let j = 0; j < risultati.length; j++) {
-        //
+
         let button = document.createElement("div");
         button.className = "button";
         button.id = "button-3";
@@ -214,11 +211,32 @@ async function getRiassunti(anno, materia, i) {
         riga.appendChild(button);
     }
 
+    let buttonAltro = document.createElement("div");
+    buttonAltro.className = "button";
+    buttonAltro.id = "button-3";
+
+    let cerchioAltro = document.createElement("div");
+    cerchioAltro.id = "circle"
+
+    let aAltro = document.createElement("a");
+    /*    a.addEventListener("click", () => {
+            sessionStorage.materia = risultati[j].Titolo;
+            window.location.href = baseURL;
+        });*/
+
+    aAltro.innerText = "Mostra Altro"
+
+    buttonAltro.appendChild(cerchioAltro);
+    buttonAltro.appendChild(aAltro);
+
+    riga.appendChild(buttonAltro);
+
+
     container.appendChild(riga);
     sezione.append(container);
 
     sezioni.append(sezione);
-    let divisore = document.createElement("div"); //separator
+    let divisore = document.createElement("div");
     divisore.className = nomeClasseSeparatore;
     sezioni.append(divisore);
 
@@ -238,15 +256,24 @@ async function parsaAnni(anni) {
     for (i = 0; i < anni.length; i++) {
         await getRiassunti(anni[i], sessionStorage.materia, i)
     }
-
-
-
-
-
-
 }
 
+jQuery(document).ready(function ($) {
 
+    if (window.history && window.history.pushState) {
+
+        window.history.pushState('forward', null, './#forward');
+
+        $(window).on('popstate', function () {
+            if (sessionStorage.materia) {
+                sessionStorage.clear();
+                window.location.reload();
+            }
+            return;
+        });
+
+    }
+});
 
 $(window).on("load", async () => {
 
@@ -268,9 +295,6 @@ function scorlla(to) {
     window.location = window.location.href + to.id;
 }
 
-$(window).on('popstate', function (event) {
-    alert("pop");
-});
 
 function isInViewport(elemento) {
     var elementTop = $(elemento).offset().top;
