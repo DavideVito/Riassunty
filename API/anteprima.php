@@ -18,6 +18,15 @@
         $anno = $_GET['anno'];
     }
 
+    if(isset($_POST['idMateria']))
+    {
+        $idMateria = $_POST['idMateria'];
+    }
+    if(isset($_POST['anno']))
+    {
+        $anno = $_POST['anno'];
+    }
+
     $anteprima = $connessione->getRiassunto($idMateria, $anno);
 
     $ris = array();
@@ -26,6 +35,7 @@
     {
         $t2['Titolo'] = $t['Titolo'];
         $t2['URLImmagine'] = $t['UrlIMG'];
+        $ts['Valutazione'] = $t['Val'];
         array_push($ris, $t2);
     }
 

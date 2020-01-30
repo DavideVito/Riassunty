@@ -98,14 +98,6 @@ class Connessione {
         
         var_dump($stm->errorInfo());
         
-        /*
-        $sql = "SELECT * FROM Riassunti WHERE Riassunti.IDRiassunto = :id";
-        $stm = $this->connessione->prepare($sql);
-        $stm->bindParam(":id", $id, PDO::PARAM_INT);
-
-        $stm->execute();
-
-        $ris = $stm->fetchAll(PDO::FETCH_ASSOC)[0];*/
         
         die();
         
@@ -116,7 +108,7 @@ class Connessione {
     public function getRiassunto($idMateria, $anno)
     {
 	//SELECT *, AVG(Valutazione) FROM Riassunti LEFT JOIN Valutazioni using(IDRiassunto) GROUP BY Riassunti.IDRiassunto
-        $sql = "SELECT * FROM Riassunti WHERE 1 ";
+        $sql = "select `riassunti`.`IDRiassunto` AS `IDRiassunto`,`riassunti`.`Titolo` AS `Titolo`,`riassunti`.`UrlPDF` AS `UrlPDF`,`riassunti`.`UrlIMG` AS `UrlIMG`,`riassunti`.`IDMateria` AS `IDMateria`,`riassunti`.`Anno` AS `Anno`,`riassunti`.`DataPubblicazione` AS `DataPubblicazione`,avg(`valutazioni`.`Valutazione`) AS `Val` from (`riassunti` left join `valutazioni` on((`riassunti`.`IDRiassunto` = `valutazioni`.`IDRiassunto`))) where 1"; 
         if($idMateria !== NULL)
         {
             $sql .= " and IDMateria = :id ";
@@ -127,7 +119,8 @@ class Connessione {
             $sql .= "and Anno = :anno ";
         }
 
-        $sql .= " ORDER BY DataPubblicazione DESC";
+        $sql .= " group by `riassunti`.`IDRiassunto`,`riassunti`.`Titolo`,`riassunti`.`UrlPDF`,`riassunti`.`UrlIMG`,`riassunti`.`Anno`,`riassunti`.`IDMateria`,`riassunti`.`DataPubblicazione` order by `Val`,`riassunti`.`DataPubblicazione` desc";
+
         $stm = $this->connessione->prepare($sql);
         if($idMateria !== NULL)
         {
@@ -140,7 +133,7 @@ class Connessione {
         }
 
         $esito = $stm->execute();
-
+        $a = $stm->errorInfo();
         return $stm->fetchAll(PDO::FETCH_ASSOC);   
     }
 
