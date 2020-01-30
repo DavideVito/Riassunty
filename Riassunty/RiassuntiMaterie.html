@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <style>
+    * {
+      font-family: "Roboto"
+    }
+
+    .riassunto {
+      cursor: pointer;
+      margin-left: 20px
+    }
+
+    img {
+      width: 400px;
+      height: 400px;
+
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <script>
+    let materia = sessionStorage.materiaCliccata;
+    let anno = sessionStorage.annoCliccato;
+    sessionStorage.removeItem('riassunto');
+    sessionStorage.riassunto
+    if (!materia) {
+      window.location = "index.html";
+    }
+    if (!anno) {
+      window.location = "index.html";
+    }
+
+    $.ajax({
+      url: "API/anteprima.php",
+      method: "GET",
+      data: {
+        idMateria: Number(materia),
+        anno: Number(anno)
+      },
+      success: data => {
+        let div = document.createElement("div");
+        div.className = "riassunto";
+
+        for (let i = 0; i < data.length; i++) {
+          let h1 = document.createElement("h1");
+          h1.innerText = data[i].Titolo;
+          let img = document.createElement("img");
+          img.src = data[i].URLImmagine;
+
+          $(img).hover(() => {
+            $(img).animate({
+              width: "500px",
+              height: "500px"
+            }, 100);
+          }, () => {
+            $(img).animate({
+              width: "400px",
+              height: "400px"
+            }, 100);
+          })
+
+          div.appendChild(h1);
+          div.appendChild(img);
+
+
+          $(div).on("click", () => {
+            $.ajax({
+              url: "API/riassunto.php",
+              method: "GET",
+              data: {
+                nome: data[i].Titolo
+              },
+              success: data2 => {
+                let tmp = {
+                  titolo: data2[0].Titolo,
+                  base64: data2[0].base64
+                }
+                sessionStorage.riassunto = JSON.stringify(tmp);
+
+                window.location.href = "mostraRiassunto.html"
+              }
+            })
+
+          });
+        }
+
+
+
+        document.body.appendChild(div);
+      }
+    });
+  </script>
+</head>
+
+<body></body>
+
+</html>
