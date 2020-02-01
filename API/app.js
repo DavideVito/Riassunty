@@ -8,7 +8,7 @@ let baseURL = "https://riassunty.altervista.org/";
 function fetchIndirizzi() {
     sessionStorage.clear();
     $.ajax({
-        url: "API/indirizzi.php",
+        url: baseURL + "API/indirizzi.php",
         method: "POST",
         beforeSend: () => {
             document.getElementById("loadingImage").className = "visibile";
@@ -21,10 +21,25 @@ function fetchIndirizzi() {
                 let a = document.createElement("a");
 
                 a.innerText = dati.Indirizzo;
+                idMat = "materian"+i;
                 a.href = "#section" + i;
+                a.id = idMat;
 
                 li.appendChild(a);
-                li.style = "cursor: pointer; list-style-type: none; padding-left: 10px"
+                li.className = "menu-item";
+            $(li).hover(() => {
+                for(let k=0;k<i;k++){
+
+                }
+                
+                for(let j=0;j<i;j++){
+
+                }
+            
+            }, 
+            () => {/*Quando esci*/
+            
+            });
 
                 olHTML.append(li);
                 let risultati = await fetchMaterie(dati.Indirizzo);
@@ -114,20 +129,20 @@ function fetchIndirizzi() {
     })
 }
 async function fetchMaterie(indirizzoHovered) {
-    let resFetch = await fetch("API/materie.php?indirizzo=" +
+    let resFetch = await fetch(baseURL+"API/materie.php?indirizzo=" +
         indirizzoHovered);
     let risposta = await resFetch.json();
     return risposta;
 }
 
 async function fetchAnni() {
-    let resFetch = await fetch("API/ottieniAnni.php");
+    let resFetch = await fetch(baseURL+"API/ottieniAnni.php");
     let risposta = await resFetch.json();
     return risposta;
 }
 
 async function fetchRiassunto(nome) {
-    let risposta = await fetch("API/riassunto.php?nome=" +
+    let risposta = await fetch(baseURL+"API/riassunto.php?nome=" +
         nome);
     let json = await risposta.json();
     return json;
@@ -183,7 +198,7 @@ async function getRiassunti(anno, materia, i) {
     formData.append('idMateria', materia);
     formData.append('anno', anno);
 
-    let risposta = await fetch("http://localhost/~davidevitiello/Riassunty/API/anteprima.php", {
+    let risposta = await fetch(baseURL +"API/anteprima.php", {
         method: "POST",
         body: formData,
     });;
@@ -338,7 +353,7 @@ function isInViewport(elemento) {
 
 async function fetchRiassunti(anno, materia) {
 
-    let risposta = await fetch("API/anteprima.php?idMateria=" + Number(materia) + "&anno=" + Number(anno));
+    let risposta = await fetch(baseURL+"API/anteprima.php?idMateria=" + Number(materia) + "&anno=" + Number(anno));
     let json = await risposta.json();
     return json;
 
