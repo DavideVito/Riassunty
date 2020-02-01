@@ -1,0 +1,172 @@
+<body>
+    <br><br>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script>
+        let baseURL = "https://riassunty.altervista.org/API/";
+        $(window).on("load", () => {
+            for (let i = 0; i < 5; i++) {
+                let option = document.createElement("option");
+                option.value = i + 1;
+                option.innerText = i + 1;
+                document.getElementById("anno").appendChild(option);
+            }
+        })
+
+
+
+        function fetchIndirizzi() {
+            sessionStorage.clear();
+            $.ajax({
+                url: baseURL + "indirizzi.php",
+                method: "POST",
+                success: async function (data) {
+                    let olHTML = $("#outJS");
+                    for (let i = 0; i < data.length; i++) {
+
+
+
+                        let option = document.createElement("option");
+                        option.value = data[i].Indirizzo;
+                        option.innerText = data[i].Indirizzo;
+                        document.getElementById("indirizzi").appendChild(option);
+
+                        $("#indirizzi").on("change", async data => {
+                            let e = document.getElementById("indirizzi");
+                            let risultato = await fetchMaterie(e.options[e.selectedIndex]
+                                .value);
+                            disegnaSecondaParte(risultato);
+                        });
+                    }
+                    disegnaSecondaParte(await fetchMaterie(data[0].Indirizzo));
+                }
+            })
+        }
+
+        function disegnaSecondaParte(data) {
+            document.getElementById("materie").innerHTML = "";
+            for (let i = 0; i < data.length; i++) {
+                let option = document.createElement("option");
+                option.value = data[i].IDMateria;
+                option.innerText = data[i].Materia;
+                document.getElementById("materie").appendChild(option);
+            }
+        }
+
+        async function fetchMaterie(indirizzoHovered) {
+            let resFetch = await fetch(baseURL + "materie.php?indirizzo=" +
+                indirizzoHovered);
+            let risposta = await resFetch.json();
+            return risposta;
+        }
+
+        $(window).on("load", fetchIndirizzi);
+
+        function scorlla(to) {
+            window.location = window.location.href + to.id;
+        }
+    </script>
+
+    <style>
+        img {
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+        }
+
+        body {
+
+            background-color: #ffc0cb;
+            color: #7FFFD4;
+            font-size: 2em;
+        }
+    </style>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+        * {
+            font-family: "Roboto"
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap-grid.css"
+        integrity="sha256-ioAA5G7gdssuN24SL2ByxTMiyg5m5PnP3I4TS5hNIYA=" crossorigin="anonymous" />
+    <title>Carica Riassunto</title>
+    <form style="margin-left: 5%" action="caricaRiassunto.php" method="post" enctype="multipart/form-data">
+
+
+
+
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="pdfDaCaricare">Seleziona un riassunto BROOO</label>
+                    <input type="file" class="form-control-file" name="pdfDaCaricare" id="pdfDaCaricare">
+                </div>
+
+                <div class="form-group">
+                    <label for="indirizzi">Scegli l'indirizzo</label>
+                    <select class="form-control" name="indirizzi" id="indirizzi"> </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="materie">Metti La materia</label>
+                    <select class="form-control" name="materie" id="materie"></select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="materie">Seleziona l'anno</label>
+                    <select class="form-control" name="anno" id="anno"></select>
+
+                </div>
+
+                <button type="submit" value="Carica" class="btn btn-primary mb-2">Carica</button>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+
+    </form>
+
+    <div id="out"></div>
+
+    <script>
+        $(window).on("load", () => {
+            $.ajax({
+                url: baseURL + "getRiassunti.php",
+                method: "GET",
+                success: data => {
+                    document.getElementById("out").innerHTML = data;
+                }
+            })
+
+        })
+
+        function eliminaRiassunto(riassunto) {
+            let id = riassunto.IDRiassunto;
+            let ris = confirm("Sei sicuro di voler cancellare: " + riassunto.Titolo + "\nCaricato il: " + riassunto
+                .DataPubblicazione + "?");
+            if (ris) {
+                ris = confirm("Sicuro sicuro fra?");
+                if (ris) {
+                    alert("Comandi te");
+
+                    $.ajax({
+                        url: baseURL + "eliminaRiassunto.php",
+                        data: {
+                            id: id
+                        },
+                        method: "POST",
+                        success: function (data) {
+                            location.reload();
+                        }
+                    })
+                }
+            }
+
+            /*
+             */
+        }
+    </script>

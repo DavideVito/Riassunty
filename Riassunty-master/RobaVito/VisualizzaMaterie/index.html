@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../API/JS/App.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+    <h1>Seleziona la materia</h1>
+    <div id="out"></div>
+    <script>
+        if (!sessionStorage.materie) {
+            window.location.href = "../VisualizzaAnni"
+        }
+        let materieJSON = JSON.parse(sessionStorage.materie);
+
+
+        let materie = [];
+        for (let i = 0; i < materieJSON.length; i++) {
+            materie.push(Materia.parsa(materieJSON[i]))
+        }
+
+
+        let ds = "";
+        for (materia of materie) {
+            ds += materia.stampa()
+        }
+        document.getElementById("out").innerHTML = ds;
+    </script>
+
+</body>
+
+</html>
