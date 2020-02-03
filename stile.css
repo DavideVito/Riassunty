@@ -14,7 +14,7 @@ html {
 }
 
 body {
-  text-decoration:none;
+  text-decoration: none;
   background-color: black;
   font-family: 'Roboto';
   overflow-x: hidden;
@@ -34,16 +34,16 @@ header {
 /*** Navigation Styles ***/
 
 nav a {
-  color:#000;
+  color: #000;
 }
 
 .navShadow a {
-  color:#fff;
-} 
+  color: #fff;
+}
 
 nav {
-  text-decoration:none;
-  text-align:center;
+  text-decoration: none;
+  text-align: center;
   width: 100vw;
   height: 160px;
   display: grid;
@@ -56,30 +56,28 @@ nav {
 }
 
 nav.navShadow {
-  color:#fff;
+  color: #fff;
   background-color: #000;
   box-shadow: 0 4px 30px -5px rgba(0, 0, 0, 0.2);
   height: 100px;
 }
 
-.navShadow li:hover{
-  
-}
+.navShadow li:hover {}
 
 #brand,
 #menu,
 ul {
-  letter-spacing:normal;
+  letter-spacing: normal;
   text-decoration: none;
   display: flex;
   align-items: center;
 }
 
 #brand {
-  padding-left:30px;
-  width:100px;
-  font-family:'Roboto';
-  text-decoration:none;
+  padding-left: 30px;
+  width: 100px;
+  font-family: 'Roboto';
+  text-decoration: none;
 }
 
 
@@ -93,12 +91,12 @@ ul {
 
 
 #word-mark {
-  text-decoration:none;
-  font-weight:90;
-  letter-spacing:1px;
-  padding-bottom:25px;
-  font-family:'Roboto';
-  font-size:13pt;
+  text-decoration: none;
+  font-weight: 90;
+  letter-spacing: 1px;
+  padding-bottom: 25px;
+  font-family: 'Roboto';
+  font-size: 13pt;
   width: 120px;
   height: 20px;
   border-radius: 90px;
@@ -109,23 +107,23 @@ ul {
 
 /*** Menu Styles ***/
 #menu {
-  font-family:'Roboto';
-  padding-top:11px;
+  font-family: 'Roboto';
+  padding-top: 11px;
   justify-content: flex-end;
   padding-right: 40px;
-  text-decoration:none;
+  text-decoration: none;
 }
 
 li {
   margin-left: 20px;
   border-radius: 20px;
-  box-sizing:border-box;
-  display:table;
-  max-width:100%;
+  box-sizing: border-box;
+  display: table;
+  max-width: 100%;
 }
 
 li a {
-  text-decoration:none;
+  text-decoration: none;
   width: 80px;
   height: 30px;
   vertical-align: middle;
@@ -134,31 +132,31 @@ li a {
   margin-right: 15px;
 }
 
-a:hover{
-  font-weight:bold;
-  text-decoration:none;
+a:hover {
+  font-weight: bold;
+  text-decoration: none;
 }
 
-.menu-item{
-  text-decoration:none;
-  transition-duration:0.3s;
-  cursor: pointer; 
-  list-style-type: none; 
+.menu-item {
+  text-decoration: none;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  list-style-type: none;
 }
 
-.menu-item + .menu-item{
-  text-decoration:none;
-  transition-duration:0.3s;
-  cursor: pointer; 
-  list-style-type: none; 
+.menu-item+.menu-item {
+  text-decoration: none;
+  transition-duration: 0.3s;
+  cursor: pointer;
+  list-style-type: none;
   padding-left: 30px;
 }
 
 .menu-item:hover {
-  text-decoration:none;
-  transform:scale(1.2);
-  transition-duration:0.3s;
-  font-weight:bold;
+  text-decoration: none;
+  transform: scale(1.2);
+  transition-duration: 0.3s;
+  font-weight: bold;
 }
 
 #menu-toggle {
@@ -273,7 +271,7 @@ section {
 
 
 /*** Responsive Menu For Smaller Device ***/
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 800px) {
   #menu-toggle {
     display: flex;
   }
@@ -294,6 +292,7 @@ section {
   }
 
   ul.showMenu {
+    background: white;
     left: 1px;
     height: 100vh;
     width: 100vw;
@@ -423,44 +422,44 @@ section {
   display: none;
 }
 
-#materian0:hover{
-  color:#5F1111;
-  transition-duration:0.3s;
+#materian0:hover {
+  color: #5F1111;
+  transition-duration: 0.3s;
 }
 
-#materian1:hover{
-  color:#5F114B;
-  transition-duration:0.3s;
+#materian1:hover {
+  color: #5F114B;
+  transition-duration: 0.3s;
 }
 
-#materian2:hover{
-  color:#3E115F;
-  transition-duration:0.3s;
+#materian2:hover {
+  color: #3E115F;
+  transition-duration: 0.3s;
 }
 
-#materian3:hover{
-  color:#11165F;
-  transition-duration:0.3s;
+#materian3:hover {
+  color: #11165F;
+  transition-duration: 0.3s;
 }
 
-#materian4:hover{
-  color:#115F50;
-  transition-duration:0.3s;
+#materian4:hover {
+  color: #115F50;
+  transition-duration: 0.3s;
 }
 
-#materian5:hover{
-  color:#949121;
-  transition-duration:0.3s;
+#materian5:hover {
+  color: #949121;
+  transition-duration: 0.3s;
 }
 
-#materian6:hover{
-  color:#943521;
-  transition-duration:0.3s;
+#materian6:hover {
+  color: #943521;
+  transition-duration: 0.3s;
 }
 
-#materian7:hover{
-  color:#5F1111;
-  transition-duration:0.3s;
+#materian7:hover {
+  color: #5F1111;
+  transition-duration: 0.3s;
 }
 
 /* Button Styles */
@@ -483,7 +482,7 @@ section {
 
 a {
   text-decoration: none;
-  transition-duration:0.3s;
+  transition-duration: 0.3s;
   letter-spacing: 1px;
 }
 

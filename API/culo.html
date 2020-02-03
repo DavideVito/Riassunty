@@ -138,6 +138,7 @@
                 url: baseURL + "getRiassunti.php",
                 method: "GET",
                 success: data => {
+                    console.log(data);
                     document.getElementById("out").innerHTML = data;
                 }
             })
