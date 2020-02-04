@@ -3,440 +3,408 @@ let cliccato = false;
 let riassunti = [];
 let massimo = 3;
 
-let baseURL = "http://localhost/~davidevitiello/Riassunty/";
+let baseURL = "/";
 
 function fetchIndirizzi() {
-    sessionStorage.clear();
-    $.ajax({
-        url: baseURL + "API/indirizzi.php",
-        method: "POST",
-        beforeSend: () => {
-            document.getElementById("loadingImage").className = "visibile";
+  sessionStorage.clear();
+  $.ajax({
+    url: baseURL + "API/indirizzi.php",
+    method: "POST",
+    beforeSend: () => {
+      document.getElementById("loadingImage").className = "visibile";
+    },
+    success: async function(data) {
+      document.getElementById("loadingImage").className = "nascosta";
+      async function stampa(dati, i) {
+        let li = document.createElement("li");
+        let a = document.createElement("a");
 
-        },
-        success: async function (data) {
-            document.getElementById("loadingImage").className = "nascosta";
-            async function stampa(dati, i) {
-                let li = document.createElement("li");
-                let a = document.createElement("a");
+        a.innerText = dati.Indirizzo;
+        idMat = "materian" + i;
+        a.href = "#section" + i;
+        a.id = idMat;
 
-                a.innerText = dati.Indirizzo;
-                idMat = "materian" + i;
-                a.href = "#section" + i;
-                a.id = idMat;
+        li.appendChild(a);
+        li.className = "menu-item";
+        $(li).hover(
+          () => {
+            for (let k = 0; k < i; k++) {}
 
-                li.appendChild(a);
-                li.className = "menu-item";
-                $(li).hover(() => {
-                        for (let k = 0; k < i; k++) {
+            for (let j = 0; j < i; j++) {}
+          },
+          () => {
+            /*Quando esci*/
+          }
+        );
 
-                        }
+        olHTML.append(li);
+        let risultati = await fetchMaterie(dati.Indirizzo);
 
-                        for (let j = 0; j < i; j++) {
+        let sezioni = $("#out2");
 
-                        }
+        let sezione = document.createElement("section");
+        sezione.id = "section" + i;
+        let nomeClasseSezione = "sezione" + i;
+        sezione.className = nomeClasseSezione;
 
-                    },
-                    () => {
-                        /*Quando esci*/
+        let container = document.createElement("div");
+        container.className = "container-fluid";
+        container.style = "text-align:center;";
 
-                    });
+        let heading = document.createElement("div");
+        heading.id = "heading";
+        heading.className = "row";
+        heading.style = "margin-top: 125px";
 
-                olHTML.append(li);
-                let risultati = await fetchMaterie(dati.Indirizzo);
+        let divIndirizzo = document.createElement("div");
+        divIndirizzo.className = "col-md";
+        divIndirizzo.style = "margin-bottom: 80px";
+        divIndirizzo.innerText = dati.Indirizzo;
 
-                let sezioni = $("#out2");
+        heading.appendChild(divIndirizzo);
 
-                let sezione = document.createElement("section");
-                sezione.id = "section" + i;
-                let nomeClasseSezione = "sezione" + i;
-                sezione.className = nomeClasseSezione;
+        container.appendChild(heading);
 
-                let container = document.createElement("div");
-                container.className = "container-fluid";
-                container.style = "text-align:center;";
+        let riga = document.createElement("div");
+        riga.className = "row justify-content-center";
 
-                let heading = document.createElement("div");
-                heading.id = "heading";
-                heading.className = "row";
-                heading.style = "margin-top: 125px";
+        let nomeClasseSeparatore = "separator" + i;
+        for (let j = 0; j < risultati.length; j++) {
+          let button = document.createElement("div");
+          button.className = "button";
+          button.id = "button-3";
 
-                let divIndirizzo = document.createElement("div");
-                divIndirizzo.className = "col-md";
-                divIndirizzo.style = "margin-bottom: 80px";
-                divIndirizzo.innerText = dati.Indirizzo;
+          let cerchio = document.createElement("div");
+          cerchio.id = "circle";
 
-                heading.appendChild(divIndirizzo);
+          let a = document.createElement("a");
+          button.addEventListener("click", () => {
+            sessionStorage.materia = risultati[j].IDMateria;
+            window.location.reload();
+            //alert(sessionStorage.materia);
+          });
 
-                container.appendChild(heading);
+          a.innerText = risultati[j].Materia;
 
-                let riga = document.createElement("div");
-                riga.className = "row justify-content-center";
+          button.appendChild(cerchio);
+          button.appendChild(a);
 
-
-                let nomeClasseSeparatore = "separator" + i;
-                for (let j = 0; j < risultati.length; j++) {
-
-                    let button = document.createElement("div");
-                    button.className = "button";
-                    button.id = "button-3";
-
-                    let cerchio = document.createElement("div");
-                    cerchio.id = "circle"
-
-                    let a = document.createElement("a");
-                    button.addEventListener("click", () => {
-
-                        sessionStorage.materia = risultati[j].IDMateria;
-                        window.location.reload();
-                        //alert(sessionStorage.materia);
-                    });
-
-
-                    a.innerText = risultati[j].Materia;
-
-                    button.appendChild(cerchio);
-                    button.appendChild(a);
-
-                    riga.appendChild(button);
-                }
-
-                container.appendChild(riga);
-                sezione.append(container);
-
-                sezioni.append(sezione);
-                let divisore = document.createElement("div"); //separator
-                divisore.className = nomeClasseSeparatore;
-                sezioni.append(divisore);
-
-
-            }
-
-            let olHTML = $("#outJS");
-            for (let i = 0; i < data.length; i++) {
-                await stampa(data[i], i);
-            }
-
-            $('a[href*="#"]').on('click', function (e) {
-                $('html,body').animate({
-                        scrollTop: $($(this).attr('href')).offset().top - 100
-                    },
-                    500);
-                e.preventDefault();
-            });
-
-
+          riga.appendChild(button);
         }
-    })
+
+        container.appendChild(riga);
+        sezione.append(container);
+
+        sezioni.append(sezione);
+        let divisore = document.createElement("div"); //separator
+        divisore.className = nomeClasseSeparatore;
+        sezioni.append(divisore);
+      }
+
+      let olHTML = $("#outJS");
+      for (let i = 0; i < data.length; i++) {
+        await stampa(data[i], i);
+      }
+
+      $('a[href*="#"]').on("click", function(e) {
+        $("html,body").animate(
+          {
+            scrollTop: $($(this).attr("href")).offset().top - 100
+          },
+          500
+        );
+        e.preventDefault();
+      });
+    }
+  });
 }
 async function fetchMaterie(indirizzoHovered) {
-    let resFetch = await fetch(baseURL + "API/materie.php?indirizzo=" +
-        indirizzoHovered);
-    let risposta = await resFetch.json();
-    return risposta;
+  let resFetch = await fetch(
+    baseURL + "API/materie.php?indirizzo=" + indirizzoHovered
+  );
+  let risposta = await resFetch.json();
+  return risposta;
 }
 
 async function fetchAnni() {
-    let resFetch = await fetch(baseURL + "API/ottieniAnni.php");
-    let risposta = await resFetch.json();
-    return risposta;
+  let resFetch = await fetch(baseURL + "API/ottieniAnni.php");
+  let risposta = await resFetch.json();
+  return risposta;
 }
 
 async function fetchRiassunto(nome) {
-    let risposta = await fetch(baseURL + "API/riassunto.php?nome=" +
-        nome);
-    let json = await risposta.json();
-    return json;
+  let risposta = await fetch(baseURL + "API/riassunto.php?nome=" + nome);
+  let json = await risposta.json();
+  return json;
 }
 
-
 function stampaBottoni(dove, risultati, quanto) {
+  for (let j = 0; j < quanto; j++) {
+    let colSM = document.createElement("div");
+    colSM.className = "col-sm";
 
+    let divContenitore = document.createElement("div");
+    divContenitore.className = "azienda";
 
+    let divTesto = document.createElement("div");
+    divTesto.className = "testo";
+    divTesto.style = "text-align: center;";
+    divTesto.setAttribute("align", "center");
 
-    for (let j = 0; j < quanto; j++) {
+    let divImmagine = document.createElement("div");
+    divImmagine.className = "bgimg";
 
-        let colSM = document.createElement("div");
-        colSM.className = "col-sm";
+    divContenitore.addEventListener("click", async () => {
+      if (sessionStorage.riassunto) {
+        sessionStorage.removeItem(riassunto);
+      }
+      let riassunto = await fetchRiassunto(risultati[j].Titolo);
+      sessionStorage.riassunto = JSON.stringify(riassunto[0]);
+      window.location.href = "mostraRiassunto.html";
+    });
 
-        let divContenitore = document.createElement("div");
-        divContenitore.className = "azienda";
+    let filtroIn = "blur(5px)";
+    let filtroOut = "blur(0px)";
 
+    $(divContenitore).hover(
+      () => {
+        divTesto.textContent = risultati[j].Titolo;
 
-        let divTesto = document.createElement("div");
-        divTesto.className = "testo";
-        divTesto.style = "text-align: center;";
-        divTesto.setAttribute("align", "center");
-
-        let divImmagine = document.createElement("div");
-        divImmagine.className = "bgimg";
-
-
-        divContenitore.addEventListener("click", async () => {
-            if (sessionStorage.riassunto) {
-                sessionStorage.removeItem(riassunto);
-            }
-            let riassunto = await fetchRiassunto(risultati[j].Titolo);
-            sessionStorage.riassunto = JSON.stringify(riassunto[0]);
-            window.location.href = "mostraRiassunto.html";
+        $(divImmagine).css({
+          filter: filtroIn,
+          webkitFilter: filtroIn,
+          mozFilter: filtroIn,
+          oFilter: filtroIn,
+          msFilter: filtroIn,
+          transition: "all 0.5 ease-out",
+          "-webkit-transition": "all 0.5s ease-out",
+          "-moz-transition": "all 0.5s ease-out",
+          "-o-transition": "all 0.5s ease-out"
         });
 
-
-
-        let filtroIn = "blur(5px)";
-        let filtroOut = "blur(0px)";
-
-        $(divContenitore).hover(() => {
-            divTesto.textContent = risultati[j].Titolo;
-
-            $(divImmagine).css({
-                'filter': filtroIn,
-                'webkitFilter': filtroIn,
-                'mozFilter': filtroIn,
-                'oFilter': filtroIn,
-                'msFilter': filtroIn,
-                'transition': 'all 0.5 ease-out',
-                '-webkit-transition': 'all 0.5s ease-out',
-                '-moz-transition': 'all 0.5s ease-out',
-                '-o-transition': 'all 0.5s ease-out'
-            })
-
-            $('.azienda').css({
-                'border': '10px solid black',
-                'transition': 'all 0.5 ease-out',
-                '-webkit-transition': 'all 0.5s ease-out',
-                '-moz-transition': 'all 0.5s ease-out',
-                '-o-transition': 'all 0.5s ease-out'
-            });
-
-        }, () => {
-            divTesto.innerHTML = "";
-            $(divImmagine).css({
-                'filter': filtroOut,
-                'webkitFilter': filtroOut,
-                'mozFilter': filtroOut,
-                'oFilter': filtroOut,
-                'msFilter': filtroOut,
-                'transition': 'all 0.5 ease-out',
-                '-webkit-transition': 'all 0.5s ease-out',
-                '-moz-transition': 'all 0.5s ease-out',
-                '-o-transition': 'all 0.5s ease-out'
-            })
-
-            $('.azienda').css({
-                'border': '0px solid black',
-                'transition': 'all 0.5 ease-out',
-                '-webkit-transition': 'all 0.5s ease-out',
-                '-moz-transition': 'all 0.5s ease-out',
-                '-o-transition': 'all 0.5s ease-out'
-            });
+        $(".azienda").css({
+          border: "10px solid black",
+          transition: "all 0.5 ease-out",
+          "-webkit-transition": "all 0.5s ease-out",
+          "-moz-transition": "all 0.5s ease-out",
+          "-o-transition": "all 0.5s ease-out"
+        });
+      },
+      () => {
+        divTesto.innerHTML = "";
+        $(divImmagine).css({
+          filter: filtroOut,
+          webkitFilter: filtroOut,
+          mozFilter: filtroOut,
+          oFilter: filtroOut,
+          msFilter: filtroOut,
+          transition: "all 0.5 ease-out",
+          "-webkit-transition": "all 0.5s ease-out",
+          "-moz-transition": "all 0.5s ease-out",
+          "-o-transition": "all 0.5s ease-out"
         });
 
+        $(".azienda").css({
+          border: "0px solid black",
+          transition: "all 0.5 ease-out",
+          "-webkit-transition": "all 0.5s ease-out",
+          "-moz-transition": "all 0.5s ease-out",
+          "-o-transition": "all 0.5s ease-out"
+        });
+      }
+    );
 
-        divImmagine.style = "background-image: url('" + baseURL + risultati[j].URLImmagine + "');";
+    divImmagine.style =
+      "background-image: url('" + baseURL + risultati[j].URLImmagine + "');";
 
-
-
-        divContenitore.appendChild(divTesto);
-        divContenitore.appendChild(divImmagine);
-        colSM.appendChild(divContenitore);
-        dove.appendChild(colSM);
-
-    }
+    divContenitore.appendChild(divTesto);
+    divContenitore.appendChild(divImmagine);
+    colSM.appendChild(divContenitore);
+    dove.appendChild(colSM);
+  }
 }
 
 async function getRiassunti(anno, materia, i) {
+  //debugger
 
-    //debugger
+  let olHTML = $("#outJS");
 
-    let olHTML = $("#outJS");
+  var data = {
+    idMateria: materia,
+    anno: anno
+  };
 
-    var data = {
-        idMateria: materia,
-        anno: anno
-    };
+  let formData = new FormData();
+  formData.append("idMateria", materia);
+  formData.append("anno", anno);
 
-    let formData = new FormData();
-    formData.append('idMateria', materia);
-    formData.append('anno', anno);
+  let risposta = await fetch(baseURL + "API/anteprima.php", {
+    method: "POST",
+    body: formData
+  });
 
-    let risposta = await fetch(baseURL + "API/anteprima.php", {
-        method: "POST",
-        body: formData,
-    });;
+  data = await risposta.json();
 
-    data = await risposta.json();
+  let li = document.createElement("li");
+  let a = document.createElement("a");
 
-    let li = document.createElement("li");
-    let a = document.createElement("a");
+  a.innerText = anno;
+  a.href = "#section" + i;
 
-    a.innerText = anno;
-    a.href = "#section" + i;
+  li.appendChild(a);
+  li.style = "cursor: pointer; list-style-type: none; padding-left: 10px";
 
-    li.appendChild(a);
-    li.style = "cursor: pointer; list-style-type: none; padding-left: 10px"
+  olHTML.append(li);
 
-    olHTML.append(li);
+  let risultati = data;
 
-    let risultati = data;
+  let sezioni = $("#out2");
 
-    let sezioni = $("#out2");
+  let sezione = document.createElement("section");
+  sezione.id = "section" + i;
+  let nomeClasseSezione = "sezione" + i;
+  sezione.className = nomeClasseSezione;
 
-    let sezione = document.createElement("section");
-    sezione.id = "section" + i;
-    let nomeClasseSezione = "sezione" + i;
-    sezione.className = nomeClasseSezione;
+  let container = document.createElement("div");
+  container.className = "container-fluid";
+  container.style = "text-align:center;";
 
-    let container = document.createElement("div");
-    container.className = "container-fluid";
-    container.style = "text-align:center;";
+  let heading = document.createElement("div");
+  heading.id = "heading";
+  heading.className = "row";
+  heading.style = "margin-top: 125px";
 
-    let heading = document.createElement("div");
-    heading.id = "heading";
-    heading.className = "row";
-    heading.style = "margin-top: 125px";
+  let divIndirizzo = document.createElement("div");
+  divIndirizzo.className = "col-md";
 
-    let divIndirizzo = document.createElement("div");
-    divIndirizzo.className = "col-md";
+  divIndirizzo.setAttribute("data-sort", anno);
+  divIndirizzo.style = "margin-bottom: 80px";
+  divIndirizzo.innerText = anno;
 
-    divIndirizzo.setAttribute("data-sort", anno);
-    divIndirizzo.style = "margin-bottom: 80px";
-    divIndirizzo.innerText = anno;
+  heading.appendChild(divIndirizzo);
 
-    heading.appendChild(divIndirizzo);
+  container.appendChild(heading);
 
-    container.appendChild(heading);
+  let riga = document.createElement("div");
+  riga.className = "row justify-content-center";
 
-    let riga = document.createElement("div");
-    riga.className = "row justify-content-center";
+  let nomeClasseSeparatore = "separator" + i;
 
+  stampaBottoni(riga, risultati, risultati.length % 3);
 
-    let nomeClasseSeparatore = "separator" + i;
+  let oldRiga = riga;
+  container.appendChild(riga);
 
-    stampaBottoni(riga, risultati, risultati.length % 3);
+  riga = document.createElement("div");
+  riga.className = "row justify-content-center";
 
-    let oldRiga = riga;
-    container.appendChild(riga);
+  let buttonAltro = document.createElement("div");
+  buttonAltro.className = "button";
+  buttonAltro.id = "button-3";
 
-    riga = document.createElement("div");
-    riga.className = "row justify-content-center";
+  let cerchioAltro = document.createElement("div");
+  cerchioAltro.id = "circle";
 
-    let buttonAltro = document.createElement("div");
-    buttonAltro.className = "button";
-    buttonAltro.id = "button-3";
+  let aAltro = document.createElement("a");
+  buttonAltro.addEventListener("click", () => {
+    //  debugger;
 
-    let cerchioAltro = document.createElement("div");
-    cerchioAltro.id = "circle"
+    if (risultati.length == 0) {
+      return;
+    }
+    oldRiga.innerHTML = "";
+    riga.innerHTML = "";
 
-    let aAltro = document.createElement("a");
-    buttonAltro.addEventListener("click", () => {
-        //  debugger;
+    stampaBottoni(oldRiga, risultati, risultati.length);
+  });
 
-        if (risultati.length == 0) {
-            return;
-        }
-        oldRiga.innerHTML = "";
-        riga.innerHTML = "";
+  aAltro.innerText = "Mostra Altro";
 
-        stampaBottoni(oldRiga, risultati, risultati.length);
-    });
+  buttonAltro.appendChild(cerchioAltro);
+  buttonAltro.appendChild(aAltro);
 
-    aAltro.innerText = "Mostra Altro"
+  riga.appendChild(buttonAltro);
 
-    buttonAltro.appendChild(cerchioAltro);
-    buttonAltro.appendChild(aAltro);
+  container.appendChild(riga);
+  sezione.append(container);
 
-    riga.appendChild(buttonAltro);
+  sezioni.append(sezione);
+  let divisore = document.createElement("div");
+  divisore.className = nomeClasseSeparatore;
+  sezioni.append(divisore);
 
-
-    container.appendChild(riga);
-    sezione.append(container);
-
-    sezioni.append(sezione);
-    let divisore = document.createElement("div");
-    divisore.className = nomeClasseSeparatore;
-    sezioni.append(divisore);
-
-    $('a[href*="#"]').on('click', function (e) {
-        $('html,body').animate({
-            scrollTop: $($(this).attr('href')).offset().top - 100
-        }, 500);
-        e.preventDefault();
-    });
-
+  $('a[href*="#"]').on("click", function(e) {
+    $("html,body").animate(
+      {
+        scrollTop: $($(this).attr("href")).offset().top - 100
+      },
+      500
+    );
+    e.preventDefault();
+  });
 }
 
 async function parsaAnni(anni) {
-
-    let i = 0;
-    document.getElementById("loadingImage").className = "visibile";
-    for (i = 0; i < anni.length; i++) {
-        await getRiassunti(anni[i], sessionStorage.materia, i)
-    }
-    document.getElementById("loadingImage").className = "nascosta";
+  let i = 0;
+  document.getElementById("loadingImage").className = "visibile";
+  for (i = 0; i < anni.length; i++) {
+    await getRiassunti(anni[i], sessionStorage.materia, i);
+  }
+  document.getElementById("loadingImage").className = "nascosta";
 }
 
-jQuery(document).ready(function ($) {
+jQuery(document).ready(function($) {
+  $("#brand").on("click", () => {
+    sessionStorage.clear();
+    window.location.reload();
+  });
 
-    $("#brand").on("click", () => {
+  if (window.history && window.history.pushState) {
+    window.history.replaceState("#p", null, "");
+
+    $(window).on("popstate", function() {
+      if (sessionStorage.materia) {
         sessionStorage.clear();
         window.location.reload();
+      }
+      return;
     });
-
-    if (window.history && window.history.pushState) {
-
-
-        window.history.replaceState('#p', null, '');
-
-        $(window).on('popstate', function () {
-            if (sessionStorage.materia) {
-                sessionStorage.clear();
-                window.location.reload();
-            }
-            return;
-        });
-
-    }
+  }
 });
 
 let anni = null;
 
 $(window).on("load", async () => {
+  if (sessionStorage.materia) {
+    anni = await fetchAnni();
+    await parsaAnni(anni);
+  } else {
+    fetchIndirizzi();
+  }
 
-
-    if (sessionStorage.materia) {
-        anni = await fetchAnni();
-        await parsaAnni(anni);
-    } else {
-        fetchIndirizzi();
-    }
-
-
-    document.getElementById("brand").style = "cursor: pointer"
-
+  document.getElementById("brand").style = "cursor: pointer";
 });
 
 function scorlla(to) {
-
-    window.location = window.location.href + to.id;
+  window.location = window.location.href + to.id;
 }
 
-
 function isInViewport(elemento) {
-    var elementTop = $(elemento).offset().top;
-    var elementBottom = elementTop + $(elemento).outerHeight();
-    var viewportTop = $(window).scrollTop();
-    var viewportBottom = viewportTop + $(window).height();
-    return elementBottom > viewportTop && elementTop < viewportBottom;
-};
-
+  var elementTop = $(elemento).offset().top;
+  var elementBottom = elementTop + $(elemento).outerHeight();
+  var viewportTop = $(window).scrollTop();
+  var viewportBottom = viewportTop + $(window).height();
+  return elementBottom > viewportTop && elementTop < viewportBottom;
+}
 
 async function fetchRiassunti(anno, materia) {
-
-    let risposta = await fetch(baseURL + "API/anteprima.php?idMateria=" + Number(materia) + "&anno=" + Number(anno));
-    let json = await risposta.json();
-    return json;
-
-
-
+  let risposta = await fetch(
+    baseURL +
+      "API/anteprima.php?idMateria=" +
+      Number(materia) +
+      "&anno=" +
+      Number(anno)
+  );
+  let json = await risposta.json();
+  return json;
 }
