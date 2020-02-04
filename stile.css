@@ -546,6 +546,7 @@ a {
 
 .bgimg {
   overflow: hidden;
+  border-radius: 20px;
   height: 100%;
   width: 100%;
   filter: none;
@@ -557,6 +558,8 @@ a {
 }
 
 .azienda {
+  border-radius: 20px;
+  margin-bottom: 20px;
   cursor: pointer;
   margin-right: auto;
   margin-left: auto;

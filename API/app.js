@@ -3,7 +3,7 @@ let cliccato = false;
 let riassunti = [];
 let massimo = 3;
 
-let baseURL = "/";
+let baseURL = "https://" + window.location.hostname + "/Riassunty/";
 
 function fetchIndirizzi() {
   sessionStorage.clear();
@@ -139,6 +139,10 @@ async function fetchRiassunto(nome) {
 }
 
 function stampaBottoni(dove, risultati, quanto) {
+  debugger;
+  if (quanto > risultati.length) {
+    quanto = risultati.length;
+  }
   for (let j = 0; j < quanto; j++) {
     let colSM = document.createElement("div");
     colSM.className = "col-sm";
@@ -163,7 +167,7 @@ function stampaBottoni(dove, risultati, quanto) {
       window.location.href = "mostraRiassunto.html";
     });
 
-    let filtroIn = "blur(5px)";
+    let filtroIn = "blur(7px)";
     let filtroOut = "blur(0px)";
 
     $(divContenitore).hover(
@@ -182,7 +186,7 @@ function stampaBottoni(dove, risultati, quanto) {
           "-o-transition": "all 0.5s ease-out"
         });
 
-        $(".azienda").css({
+        $(divContenitore).css({
           border: "10px solid black",
           transition: "all 0.5 ease-out",
           "-webkit-transition": "all 0.5s ease-out",
@@ -204,7 +208,7 @@ function stampaBottoni(dove, risultati, quanto) {
           "-o-transition": "all 0.5s ease-out"
         });
 
-        $(".azienda").css({
+        $(divContenitore).css({
           border: "0px solid black",
           transition: "all 0.5 ease-out",
           "-webkit-transition": "all 0.5s ease-out",
@@ -290,7 +294,7 @@ async function getRiassunti(anno, materia, i) {
 
   let nomeClasseSeparatore = "separator" + i;
 
-  stampaBottoni(riga, risultati, risultati.length % 3);
+  stampaBottoni(riga, risultati, 3);
 
   let oldRiga = riga;
   container.appendChild(riga);

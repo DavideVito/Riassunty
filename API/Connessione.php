@@ -110,7 +110,7 @@ class Connessione {
 
         
 	//SELECT *, AVG(Valutazione) FROM Riassunti LEFT JOIN Valutazioni using(IDRiassunto) GROUP BY Riassunti.IDRiassunto
-        $sql = "select `riassunti`.`IDRiassunto` AS `IDRiassunto`,`riassunti`.`Titolo` AS `Titolo`,`riassunti`.`UrlPDF` AS `UrlPDF`,`riassunti`.`UrlIMG` AS `UrlIMG`,`riassunti`.`IDMateria` AS `IDMateria`,`riassunti`.`Anno` AS `Anno`,`riassunti`.`DataPubblicazione` AS `DataPubblicazione`,avg(`valutazioni`.`Valutazione`) AS `Val` from (`riassunti` left join `valutazioni` on((`riassunti`.`IDRiassunto` = `valutazioni`.`IDRiassunto`))) where 1"; 
+        $sql = "select `Riassunti`.`IDRiassunto` AS `IDRiassunto`,`Riassunti`.`Titolo` AS `Titolo`,`Riassunti`.`UrlPDF` AS `UrlPDF`,`Riassunti`.`UrlIMG` AS `UrlIMG`,`Riassunti`.`IDMateria` AS `IDMateria`,`Riassunti`.`Anno` AS `Anno`,`Riassunti`.`DataPubblicazione` AS `DataPubblicazione`,avg(`Valutazioni`.`Valutazione`) AS `Val` from (`Riassunti` left join `Valutazioni` on((`Riassunti`.`IDRiassunto` = `Valutazioni`.`IDRiassunto`))) where 1"; 
         //$sql = "SELECT * FROM `v_riassunti` where 1";
         if($idMateria !== NULL)
         {
@@ -123,7 +123,7 @@ class Connessione {
         }
 
         
-        $sql .= " group by `riassunti`.`IDRiassunto`,`riassunti`.`Titolo`,`riassunti`.`UrlPDF`,`riassunti`.`UrlIMG`,`riassunti`.`Anno`,`riassunti`.`IDMateria`,`riassunti`.`DataPubblicazione` order by `Val`,`riassunti`.`DataPubblicazione` desc";
+        $sql .= " group by `Riassunti`.`IDRiassunto`,`Riassunti`.`Titolo`,`Riassunti`.`UrlPDF`,`Riassunti`.`UrlIMG`,`Riassunti`.`Anno`,`Riassunti`.`IDMateria`,`Riassunti`.`DataPubblicazione` order by `Val`,`Riassunti`.`DataPubblicazione` desc";
 
         $sql .= "";
         $stm = $this->connessione->prepare($sql);
@@ -138,7 +138,13 @@ class Connessione {
         }
 
         $esito = $stm->execute();
-        $a = $stm->errorInfo();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+        }
+       
         return $stm->fetchAll(PDO::FETCH_ASSOC);   
     }
 
@@ -153,6 +159,13 @@ class Connessione {
         $urlImage = $baseUrlImage . $immagine;
         $urlPdf = $baseUrlRiass . $pdf;
         $stm = $this->connessione->prepare($sql);
+
+        var_dump($pdf);
+        var_dump($immagine);
+        var_dump($indirizzo);
+        var_dump($matiera);
+        var_dump($anno);
+        
 
         $stm->bindParam(":titolo", $pdf, PDO::PARAM_STR);
         $stm->bindParam(":urlP", $urlPdf, PDO::PARAM_STR);
