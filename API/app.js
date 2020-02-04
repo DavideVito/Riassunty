@@ -139,7 +139,6 @@ async function fetchRiassunto(nome) {
 }
 
 function stampaBottoni(dove, risultati, quanto) {
-  debugger;
   if (quanto > risultati.length) {
     quanto = risultati.length;
   }
@@ -149,6 +148,7 @@ function stampaBottoni(dove, risultati, quanto) {
 
     let divContenitore = document.createElement("div");
     divContenitore.className = "azienda";
+    divContenitore.style = "cursor: pointer";
 
     let divTesto = document.createElement("div");
     divTesto.className = "testo";
@@ -229,7 +229,7 @@ function stampaBottoni(dove, risultati, quanto) {
 }
 
 async function getRiassunti(anno, materia, i) {
-  //debugger
+  //
 
   let olHTML = $("#outJS");
 
@@ -311,7 +311,7 @@ async function getRiassunti(anno, materia, i) {
 
   let aAltro = document.createElement("a");
   buttonAltro.addEventListener("click", () => {
-    //  debugger;
+    //  ;
 
     if (risultati.length == 0) {
       return;
