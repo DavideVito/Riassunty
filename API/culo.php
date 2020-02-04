@@ -1,7 +1,7 @@
 <?php 
 
 require "Connessione.php";
-
+ 
 
 $connessione = new Connessione();
 
