@@ -557,6 +557,7 @@ a {
 }
 
 .azienda {
+  cursor: pointer;
   margin-right: auto;
   margin-left: auto;
   color: black;

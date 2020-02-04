@@ -162,6 +162,7 @@ function stampaBottoni(dove, risultati, quanto) {
         let divContenitore = document.createElement("div");
         divContenitore.className = "azienda";
 
+
         let divTesto = document.createElement("div");
         divTesto.className = "testo";
         divTesto.style = "text-align: center;";
@@ -171,18 +172,15 @@ function stampaBottoni(dove, risultati, quanto) {
         divImmagine.className = "bgimg";
 
 
-        /* 
-                let a = document.createElement("a");
-                button.addEventListener("click", async () => {
-                    if (sessionStorage.riassunto) {
+        divContenitore.addEventListener("click", async () => {
+            if (sessionStorage.riassunto) {
+                sessionStorage.removeItem(riassunto);
+            }
+            let riassunto = await fetchRiassunto(risultati[j].Titolo);
+            sessionStorage.riassunto = JSON.stringify(riassunto[0]);
+            window.location.href = "mostraRiassunto.html";
+        });
 
-                        sessionStorage.removeItem(riassunto);
-                    }
-                    let riassunto = await fetchRiassunto(risultati[j].Titolo);
-                    sessionStorage.riassunto = JSON.stringify(riassunto[0]);
-                    window.location.href = "mostraRiassunto.html";
-                });
-        */
 
 
         let filtroIn = "blur(5px)";
