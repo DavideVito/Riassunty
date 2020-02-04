@@ -3,7 +3,7 @@ let cliccato = false;
 let riassunti = [];
 let massimo = 3;
 
-let baseURL = "https://riassunty.altervista.org/";
+let baseURL = "http://localhost/~davidevitiello/Riassunty/";
 
 function fetchIndirizzi() {
     sessionStorage.clear();
@@ -151,42 +151,105 @@ async function fetchRiassunto(nome) {
 
 
 function stampaBottoni(dove, risultati, quanto) {
+
+
+
     for (let j = 0; j < quanto; j++) {
-        let button = document.createElement("div");
-        button.className = "button";
-        button.id = "button-3";
 
-        let cerchio = document.createElement("div");
-        cerchio.id = "circle"
+        let colSM = document.createElement("div");
+        colSM.className = "col-sm";
 
-        let a = document.createElement("a");
-        button.addEventListener("click", async () => {
-            if (sessionStorage.riassunto) {
+        let divContenitore = document.createElement("div");
+        divContenitore.className = "azienda";
 
-                sessionStorage.removeItem(riassunto);
-            }
-            let riassunto = await fetchRiassunto(risultati[j].Titolo);
-            sessionStorage.riassunto = JSON.stringify(riassunto[0]);
-            window.location.href = "mostraRiassunto.html";
+        let divTesto = document.createElement("div");
+        divTesto.className = "testo";
+        divTesto.style = "text-align: center;";
+        divTesto.setAttribute("align", "center");
+
+        let divImmagine = document.createElement("div");
+        divImmagine.className = "bgimg";
+
+
+        /* 
+                let a = document.createElement("a");
+                button.addEventListener("click", async () => {
+                    if (sessionStorage.riassunto) {
+
+                        sessionStorage.removeItem(riassunto);
+                    }
+                    let riassunto = await fetchRiassunto(risultati[j].Titolo);
+                    sessionStorage.riassunto = JSON.stringify(riassunto[0]);
+                    window.location.href = "mostraRiassunto.html";
+                });
+        */
+
+
+        let filtroIn = "blur(5px)";
+        let filtroOut = "blur(0px)";
+
+        $(divContenitore).hover(() => {
+            divTesto.textContent = risultati[j].Titolo;
+
+            $(divImmagine).css({
+                'filter': filtroIn,
+                'webkitFilter': filtroIn,
+                'mozFilter': filtroIn,
+                'oFilter': filtroIn,
+                'msFilter': filtroIn,
+                'transition': 'all 0.5 ease-out',
+                '-webkit-transition': 'all 0.5s ease-out',
+                '-moz-transition': 'all 0.5s ease-out',
+                '-o-transition': 'all 0.5s ease-out'
+            })
+
+            $('.azienda').css({
+                'border': '10px solid black',
+                'transition': 'all 0.5 ease-out',
+                '-webkit-transition': 'all 0.5s ease-out',
+                '-moz-transition': 'all 0.5s ease-out',
+                '-o-transition': 'all 0.5s ease-out'
+            });
+
+        }, () => {
+            divTesto.innerHTML = "";
+            $(divImmagine).css({
+                'filter': filtroOut,
+                'webkitFilter': filtroOut,
+                'mozFilter': filtroOut,
+                'oFilter': filtroOut,
+                'msFilter': filtroOut,
+                'transition': 'all 0.5 ease-out',
+                '-webkit-transition': 'all 0.5s ease-out',
+                '-moz-transition': 'all 0.5s ease-out',
+                '-o-transition': 'all 0.5s ease-out'
+            })
+
+            $('.azienda').css({
+                'border': '0px solid black',
+                'transition': 'all 0.5 ease-out',
+                '-webkit-transition': 'all 0.5s ease-out',
+                '-moz-transition': 'all 0.5s ease-out',
+                '-o-transition': 'all 0.5s ease-out'
+            });
         });
 
-        let img = document.createElement("img");
-        img.style = "margin-right: 2%"
-        img.src = risultati[j].URLImmagine;
-        img.width = 30;
-        img.height = 30;
-        a.innerText = risultati[j].Titolo;
 
-        button.appendChild(cerchio);
-        button.appendChild(img);
-        button.appendChild(a);
+        divImmagine.style = "background-image: url('" + baseURL + risultati[j].URLImmagine + "');";
 
-        dove.appendChild(button);
+
+
+        divContenitore.appendChild(divTesto);
+        divContenitore.appendChild(divImmagine);
+        colSM.appendChild(divContenitore);
+        dove.appendChild(colSM);
+
     }
 }
 
 async function getRiassunti(anno, materia, i) {
 
+    //debugger
 
     let olHTML = $("#outJS");
 
@@ -254,6 +317,12 @@ async function getRiassunti(anno, materia, i) {
 
     stampaBottoni(riga, risultati, risultati.length % 3);
 
+    let oldRiga = riga;
+    container.appendChild(riga);
+
+    riga = document.createElement("div");
+    riga.className = "row justify-content-center";
+
     let buttonAltro = document.createElement("div");
     buttonAltro.className = "button";
     buttonAltro.id = "button-3";
@@ -262,9 +331,16 @@ async function getRiassunti(anno, materia, i) {
     cerchioAltro.id = "circle"
 
     let aAltro = document.createElement("a");
-    aAltro.addEventListener("click", () => {
+    buttonAltro.addEventListener("click", () => {
+        //  debugger;
+
+        if (risultati.length == 0) {
+            return;
+        }
+        oldRiga.innerHTML = "";
         riga.innerHTML = "";
-        stampaBottoni(riga, risultati, risultati.length);
+
+        stampaBottoni(oldRiga, risultati, risultati.length);
     });
 
     aAltro.innerText = "Mostra Altro"
@@ -285,9 +361,8 @@ async function getRiassunti(anno, materia, i) {
 
     $('a[href*="#"]').on('click', function (e) {
         $('html,body').animate({
-                scrollTop: $($(this).attr('href')).offset().top - 100
-            },
-            500);
+            scrollTop: $($(this).attr('href')).offset().top - 100
+        }, 500);
         e.preventDefault();
     });
 
@@ -312,7 +387,8 @@ jQuery(document).ready(function ($) {
 
     if (window.history && window.history.pushState) {
 
-        window.history.pushState('', null, '');
+
+        window.history.replaceState('#p', null, '');
 
         $(window).on('popstate', function () {
             if (sessionStorage.materia) {

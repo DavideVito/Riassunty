@@ -277,8 +277,6 @@ section {
   }
 
   ul {
-
-
     display: inline-block;
     width: 100vw;
     height: 0;
@@ -304,6 +302,20 @@ section {
 
     opacity: 1;
     visibility: visible;
+  }
+
+  .azienda {
+    margin-right: auto;
+    margin-left: auto;
+    color: black;
+    font-family: 'Quicksand';
+    align-content: center;
+    /*width: 400px;*/
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   }
 
   li {
@@ -530,4 +542,46 @@ a {
   #container {
     width: 50%;
   }
+}
+
+.bgimg {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  filter: none;
+  -webkit-filter: none;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 1;
+  transition-duration: 0.3s;
+}
+
+.azienda {
+  margin-right: auto;
+  margin-left: auto;
+  color: black;
+  font-family: 'Quicksand';
+  align-content: center;
+  width: 400px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.testo {
+  font-weight: 900;
+  position: absolute;
+  font-family: 'Roboto';
+  z-index: 9999;
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.hidden {
+  margin-top: 50px;
+  height: 0;
+  transition-duration: 0.5s;
 }

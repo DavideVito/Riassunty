@@ -107,8 +107,11 @@ class Connessione {
 
     public function getRiassunto($idMateria, $anno)
     {
+
+        
 	//SELECT *, AVG(Valutazione) FROM Riassunti LEFT JOIN Valutazioni using(IDRiassunto) GROUP BY Riassunti.IDRiassunto
         $sql = "select `riassunti`.`IDRiassunto` AS `IDRiassunto`,`riassunti`.`Titolo` AS `Titolo`,`riassunti`.`UrlPDF` AS `UrlPDF`,`riassunti`.`UrlIMG` AS `UrlIMG`,`riassunti`.`IDMateria` AS `IDMateria`,`riassunti`.`Anno` AS `Anno`,`riassunti`.`DataPubblicazione` AS `DataPubblicazione`,avg(`valutazioni`.`Valutazione`) AS `Val` from (`riassunti` left join `valutazioni` on((`riassunti`.`IDRiassunto` = `valutazioni`.`IDRiassunto`))) where 1"; 
+        //$sql = "SELECT * FROM `v_riassunti` where 1";
         if($idMateria !== NULL)
         {
             $sql .= " and IDMateria = :id ";
@@ -119,8 +122,10 @@ class Connessione {
             $sql .= "and Anno = :anno ";
         }
 
+        
         $sql .= " group by `riassunti`.`IDRiassunto`,`riassunti`.`Titolo`,`riassunti`.`UrlPDF`,`riassunti`.`UrlIMG`,`riassunti`.`Anno`,`riassunti`.`IDMateria`,`riassunti`.`DataPubblicazione` order by `Val`,`riassunti`.`DataPubblicazione` desc";
 
+        $sql .= "";
         $stm = $this->connessione->prepare($sql);
         if($idMateria !== NULL)
         {
