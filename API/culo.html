@@ -140,7 +140,7 @@
                 method: "GET",
                 success: data => {
                     console.log(data);
-                    debugger;
+
                     document.getElementById("out").innerHTML = data;
                 }
             })
@@ -148,6 +148,7 @@
         })
 
         function eliminaRiassunto(riassunto) {
+            debugger;
             let id = riassunto.IDRiassunto;
             let ris = confirm("Sei sicuro di voler cancellare: " + riassunto.Titolo + "\nCaricato il: " + riassunto
                 .DataPubblicazione + "?");
