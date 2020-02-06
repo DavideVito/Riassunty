@@ -3,7 +3,9 @@ let cliccato = false;
 let riassunti = [];
 let massimo = 3;
 
-let baseURL = "https://" + window.location.hostname + "/Riassunty/";
+let baseURL = window.location.href;
+baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
+alert(baseURL);
 
 function fetchIndirizzi() {
   sessionStorage.clear();
@@ -13,7 +15,7 @@ function fetchIndirizzi() {
     beforeSend: () => {
       document.getElementById("loadingImage").className = "visibile";
     },
-    success: async function(data) {
+    success: async function (data) {
       document.getElementById("loadingImage").className = "nascosta";
       async function stampa(dati, i) {
         let li = document.createElement("li");
@@ -106,9 +108,8 @@ function fetchIndirizzi() {
         await stampa(data[i], i);
       }
 
-      $('a[href*="#"]').on("click", function(e) {
-        $("html,body").animate(
-          {
+      $('a[href*="#"]').on("click", function (e) {
+        $("html,body").animate({
             scrollTop: $($(this).attr("href")).offset().top - 100
           },
           500
@@ -218,8 +219,11 @@ function stampaBottoni(dove, risultati, quanto) {
       }
     );
 
-    divImmagine.style =
-      "background-image: url('" + baseURL + risultati[j].URLImmagine + "');";
+    let obj =
+      $(divImmagine).css({
+        'background-image': 'url("' + baseURL + risultati[j].URLImmagine + '")'
+      });
+
 
     divContenitore.appendChild(divTesto);
     divContenitore.appendChild(divImmagine);
@@ -337,9 +341,8 @@ async function getRiassunti(anno, materia, i) {
   divisore.className = nomeClasseSeparatore;
   sezioni.append(divisore);
 
-  $('a[href*="#"]').on("click", function(e) {
-    $("html,body").animate(
-      {
+  $('a[href*="#"]').on("click", function (e) {
+    $("html,body").animate({
         scrollTop: $($(this).attr("href")).offset().top - 100
       },
       500
@@ -357,7 +360,7 @@ async function parsaAnni(anni) {
   document.getElementById("loadingImage").className = "nascosta";
 }
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
   $("#brand").on("click", () => {
     sessionStorage.clear();
     window.location.reload();
@@ -366,7 +369,7 @@ jQuery(document).ready(function($) {
   if (window.history && window.history.pushState) {
     window.history.replaceState("#p", null, "");
 
-    $(window).on("popstate", function() {
+    $(window).on("popstate", function () {
       if (sessionStorage.materia) {
         sessionStorage.clear();
         window.location.reload();
@@ -404,10 +407,10 @@ function isInViewport(elemento) {
 async function fetchRiassunti(anno, materia) {
   let risposta = await fetch(
     baseURL +
-      "API/anteprima.php?idMateria=" +
-      Number(materia) +
-      "&anno=" +
-      Number(anno)
+    "API/anteprima.php?idMateria=" +
+    Number(materia) +
+    "&anno=" +
+    Number(anno)
   );
   let json = await risposta.json();
   return json;

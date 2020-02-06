@@ -2,7 +2,9 @@
     <br><br>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script>
-        let baseURL = "https://riassunty.altervista.org/API/";
+        let baseURL = window.location.href;
+        baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
+        alert(baseURL);
         $(window).on("load", () => {
             for (let i = 0; i < 5; i++) {
                 let option = document.createElement("option");
@@ -139,6 +141,7 @@
                 method: "GET",
                 success: data => {
                     console.log(data);
+                    debugger;
                     document.getElementById("out").innerHTML = data;
                 }
             })
