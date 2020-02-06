@@ -5,7 +5,6 @@ let massimo = 3;
 
 let baseURL = window.location.href;
 baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
-alert(baseURL);
 
 function fetchIndirizzi() {
   sessionStorage.clear();

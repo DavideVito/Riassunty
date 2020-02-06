@@ -4,7 +4,6 @@
     <script>
         let baseURL = window.location.href;
         baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
-        alert(baseURL);
         $(window).on("load", () => {
             for (let i = 0; i < 5; i++) {
                 let option = document.createElement("option");
