@@ -46,7 +46,7 @@
     document.getElementsByTagName("title")[0].innerText = "Riassunto di " + riassunto.Titolo;
 
     let pdfViewer = document.createElement("iframe");
-    pdfViewer.src = riassunto.base64;
+    pdfViewer.src = riassunto.URLPdf;
     pdfViewer.frameborder = "0"
     pdfViewer.id = "pdfViewer"
     pdfViewer.controlsList = "nodownload";

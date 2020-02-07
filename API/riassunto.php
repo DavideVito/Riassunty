@@ -1,7 +1,7 @@
 <?php 
 header("Access-Control-Allow-Origin: *");
     require "Connessione.php";    
-    header("content-type: application/json");
+    header("content-type: application/json; charset=utf-8");
 
     $connessione = new Connessione();
 
@@ -19,11 +19,11 @@ header("Access-Control-Allow-Origin: *");
     foreach($anteprima as $t)
     {
         $t2['Titolo'] = $t['Titolo'];
-        $t2['URLPdf'] = $_SERVER['SERVER_NAME']."/".$t['UrlPDF'];
+        $t2['URLPdf'] = "".$t['UrlPDF'];
         
         $file = file_get_contents("../".$t['UrlPDF']);
         
-        $t2['base64'] = "data:application/pdf;base64,". base64_encode($file);
+        $t2['txt'] = $file;
         array_push($ris, $t2);
     }
 

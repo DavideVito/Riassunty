@@ -163,6 +163,7 @@ function stampaBottoni(dove, risultati, quanto) {
         sessionStorage.removeItem(riassunto);
       }
       let riassunto = await fetchRiassunto(risultati[j].Titolo);
+
       sessionStorage.riassunto = JSON.stringify(riassunto[0]);
       window.location.href = "mostraRiassunto.html";
     });
@@ -382,6 +383,7 @@ let anni = null;
 
 $(window).on("load", async () => {
   if (sessionStorage.materia) {
+
     anni = await fetchAnni();
     await parsaAnni(anni);
   } else {
