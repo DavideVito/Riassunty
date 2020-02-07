@@ -1,10 +1,10 @@
-Convertire il file PDF in file HTML
+//Convertire il file PDF in file HTML (done i think)
 
 Aggiungere la barra di ricerca
 
 Aggiungere footer
 
-Sistemare visualizzazione riassunto (deriva dal motivo 1)
+//Sistemare visualizzazione riassunto (deriva dal motivo 1) (done i think)
 
 Implementare logica visualizzazione stelline per la valutazione (solo CSS i think)
 
