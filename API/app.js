@@ -8,8 +8,10 @@ baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/)
 
 function fetchIndirizzi() {
   sessionStorage.clear();
+  let url = baseURL.replace(/#section(\d)/, "") + "API/indirizzi.php";
+
   $.ajax({
-    url: baseURL + "API/indirizzi.php",
+    url: url,
     method: "POST",
     beforeSend: () => {
       document.getElementById("loadingImage").className = "visibile";
@@ -120,20 +122,20 @@ function fetchIndirizzi() {
 }
 async function fetchMaterie(indirizzoHovered) {
   let resFetch = await fetch(
-    baseURL + "API/materie.php?indirizzo=" + indirizzoHovered
+    baseURL.replace(/#section(\d)/, "") + "API/materie.php?indirizzo=" + indirizzoHovered
   );
   let risposta = await resFetch.json();
   return risposta;
 }
 
 async function fetchAnni() {
-  let resFetch = await fetch(baseURL + "API/ottieniAnni.php");
+  let resFetch = await fetch(baseURL.replace(/#section(\d)/, "") + "API/ottieniAnni.php");
   let risposta = await resFetch.json();
   return risposta;
 }
 
 async function fetchRiassunto(nome) {
-  let risposta = await fetch(baseURL + "API/riassunto.php?nome=" + nome);
+  let risposta = await fetch(baseURL.replace(/#section(\d)/, "") + "API/riassunto.php?nome=" + nome);
   let json = await risposta.json();
   return json;
 }
@@ -221,7 +223,7 @@ function stampaBottoni(dove, risultati, quanto) {
 
     let obj =
       $(divImmagine).css({
-        'background-image': 'url("' + baseURL + risultati[j].URLImmagine + '")'
+        'background-image': 'url("' + baseURL.replace(/#section(\d)/, "") + risultati[j].URLImmagine + '")'
       });
 
 
@@ -246,7 +248,7 @@ async function getRiassunti(anno, materia, i) {
   formData.append("idMateria", materia);
   formData.append("anno", anno);
 
-  let risposta = await fetch(baseURL + "API/anteprima.php", {
+  let risposta = await fetch(baseURL.replace(/#section(\d)/, "") + "API/anteprima.php", {
     method: "POST",
     body: formData
   });
@@ -407,7 +409,7 @@ function isInViewport(elemento) {
 
 async function fetchRiassunti(anno, materia) {
   let risposta = await fetch(
-    baseURL +
+    baseURL.replace(/#section(\d)/, "") +
     "API/anteprima.php?idMateria=" +
     Number(materia) +
     "&anno=" +

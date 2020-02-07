@@ -14,25 +14,26 @@ if($filePDF === NULL)
 {
     die();
 }
-$cloudConvert = new CloudConvert();
 
 $fileConEstensione = utf8_encode($_FILES['pdfDaCaricare']['name']);
 $nomeFile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $fileConEstensione);
 
+echo "<br><br><h1>$fileConEstensione</h1><br><br>";
 move_uploaded_file($filePDF, "../Riassunti/".$fileConEstensione);
 
-$linkFile = "https://" . $_SERVER["HTTP_HOST"] . "/Riassunty/Riassunti/" . $fileConEstensione;
+$comando = "pdf2htmlEX --dest-dir ../Riassunti/ ../Riassunti/".escapeshellarg($fileConEstensione);
 
-echo $linkFile . "<br>";
+echo "<br>$comando<br>";
+
+$a = null;
+$a = exec($comando . " 2>&1", $a);
+
+var_dump($a);
+
+/*echo $linkFile . "<br>";*/
 echo $fileConEstensione . "<br>";
 echo $nomeFile . "<br>";
 echo "../Riassunti/". $fileConEstensione . "<br>";
-
-$urlConversione = $cloudConvert->preparaConversione();
-
-$urlFile = $cloudConvert->iniziaConversione($urlConversione, $linkFile);
-
-$cloudConvert->salvaFile($urlFile, "../Riassunti/".$nomeFile.".html" );
 
 $fileImmagine = $nomeFile.".png";
 

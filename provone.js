@@ -14,6 +14,7 @@ $(() => {
 		$('html,body').animate({
 			scrollTop: 0
 		}, 500);
+
 	});
 	console.log($('a[href*="#"]'))
 

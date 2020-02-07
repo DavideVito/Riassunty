@@ -18,7 +18,7 @@
         $id = $riassunto['IDRiassunto'];
         
         
-        $immagineElimina = '<img src="https://img.icons8.com/cotton/2x/delete-sign--v2.png" onclick="eliminaRiassunto(' .json_encode($riassunto, JSON_HEX_TAG). '")>';
+        $immagineElimina = '<img src="https://img.icons8.com/cotton/2x/delete-sign--v2.png" onclick="eliminaRiassunto(' .addslashes(json_encode($riassunto, JSON_HEX_TAG)). '")>';
         $immagineRiassunto = '<img src="../' . $riassunto['UrlIMG'] . '">';
         $tabella .= "<tr><td>$immagineRiassunto</td><td>$titolo</td><td>$id</td><td>$data</td><td>$immagineElimina</td></tr>";
     }
