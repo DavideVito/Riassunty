@@ -37,21 +37,17 @@
 
   <script>
     if (!sessionStorage.riassunto) {
+        
       window.location.href = "index.html";
     }
     let riassunto = JSON.parse(sessionStorage.riassunto);
-    let titolo = document.createElement("h1");
-    titolo.innerText = riassunto.Titolo;
-
-    document.getElementsByTagName("title")[0].innerText = "Riassunto di " + riassunto.Titolo;
 
     let pdfViewer = document.createElement("iframe");
     pdfViewer.src = riassunto.URLPdf;
     pdfViewer.frameborder = "0"
     pdfViewer.id = "pdfViewer"
     pdfViewer.controlsList = "nodownload";
-    $("#out").append(titolo, pdfViewer);
-  </script>
+    document.getElementById("out").innerHTML =   riassunto.txt</script>
 
 
 

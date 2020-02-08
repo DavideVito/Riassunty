@@ -9,3 +9,13 @@ Aggiungere footer
 Implementare logica visualizzazione stelline per la valutazione (solo CSS i think)
 
 Registazione e Login sulla pagina per caricare i riassunti
+
+Verifica dai prof
+
+Le donazioni fanno salire di livello la gente
+
+sistemare lo scroll
+
+cavare l'ultimo separatore
+
+Indagine sul voto preso da chi ha usato un certo riassunto 

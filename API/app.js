@@ -6,6 +6,8 @@ let massimo = 3;
 let baseURL = window.location.href;
 baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
 baseURL = "https://vps.lellovitiello.tk/Riassunty/";
+
+
 function fetchIndirizzi() {
   sessionStorage.clear();
   let url = baseURL.replace(/#section(\d)/, "") + "API/indirizzi.php";
@@ -29,16 +31,6 @@ function fetchIndirizzi() {
 
         li.appendChild(a);
         li.className = "menu-item";
-        $(li).hover(
-          () => {
-            for (let k = 0; k < i; k++) {}
-
-            for (let j = 0; j < i; j++) {}
-          },
-          () => {
-            /*Quando esci*/
-          }
-        );
 
         olHTML.append(li);
         let risultati = await fetchMaterie(dati.Indirizzo);
@@ -258,7 +250,7 @@ async function getRiassunti(anno, materia, i) {
   let li = document.createElement("li");
   let a = document.createElement("a");
 
-  a.innerText = anno + "°";
+  a.innerText = anno;
   a.href = "#section" + i;
 
   li.appendChild(a);
@@ -289,7 +281,7 @@ async function getRiassunti(anno, materia, i) {
 
   divIndirizzo.setAttribute("data-sort", anno);
   divIndirizzo.style = "margin-bottom: 80px";
-  divIndirizzo.innerText = anno + "°";
+  divIndirizzo.innerText = anno;
 
   heading.appendChild(divIndirizzo);
 
@@ -359,6 +351,8 @@ async function parsaAnni(anni) {
   for (i = 0; i < anni.length; i++) {
     await getRiassunti(anni[i], sessionStorage.materia, i);
   }
+  document.getE
+
   document.getElementById("loadingImage").className = "nascosta";
 }
 
@@ -388,6 +382,7 @@ $(window).on("load", async () => {
 
     anni = await fetchAnni();
     await parsaAnni(anni);
+
   } else {
     fetchIndirizzi();
   }
@@ -406,6 +401,18 @@ function isInViewport(elemento) {
   var viewportBottom = viewportTop + $(window).height();
   return elementBottom > viewportTop && elementTop < viewportBottom;
 }
+
+$(document, window).on("scroll", () => {
+  
+  let elemento = document.getElementsByClassName("navShadow")[0];
+  if(elemento === null || typeof elemento === "undefined")
+  {
+    document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoBIANCO.jpg";
+    return;
+  }
+  document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoNERO.jpg";
+
+})
 
 async function fetchRiassunti(anno, materia) {
   let risposta = await fetch(
