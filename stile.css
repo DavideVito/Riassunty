@@ -566,7 +566,7 @@ a {
   color: black;
   font-family: 'Quicksand';
   align-content: center;
-  width: 400px;
+  max-width: 70%;
   height: 300px;
   display: flex;
   justify-content: center;
