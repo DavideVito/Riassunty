@@ -5,7 +5,7 @@ let massimo = 3;
 
 let baseURL = window.location.href;
 baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
-
+baseURL = "https://vps.lellovitiello.tk/Riassunty/";
 function fetchIndirizzi() {
   sessionStorage.clear();
   let url = baseURL.replace(/#section(\d)/, "") + "API/indirizzi.php";

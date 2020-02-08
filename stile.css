@@ -256,7 +256,7 @@ a:hover {
 /*** Section Styles ***/
 section {
   width: 100vw;
-  height: calc(100vh - 100px);
+  min-height: calc(100vh - 100px);
   display: flex;
   justify-content: center;
 }
