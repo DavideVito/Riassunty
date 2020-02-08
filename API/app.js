@@ -258,7 +258,7 @@ async function getRiassunti(anno, materia, i) {
   let li = document.createElement("li");
   let a = document.createElement("a");
 
-  a.innerText = anno;
+  a.innerText = anno + "°";
   a.href = "#section" + i;
 
   li.appendChild(a);
@@ -289,7 +289,7 @@ async function getRiassunti(anno, materia, i) {
 
   divIndirizzo.setAttribute("data-sort", anno);
   divIndirizzo.style = "margin-bottom: 80px";
-  divIndirizzo.innerText = anno;
+  divIndirizzo.innerText = anno + "°";
 
   heading.appendChild(divIndirizzo);
 
