@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+        content="757171675502-tn1k2bjmh123u729uqufjhg0nr8d1br1.apps.googleusercontent.com" />
+    Oh fra clicca qua<br><br>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+    <div id="doveAndrannoIDati" hidden>
+        <img id="immagine">
+        <p id="nome"></p>
+        <select id="selectTipo" hidden>
+            <option value="Studente">Studente</option>
+            <option value="Docente">Docente</option>
+
+        </select>
+
+
+    </div>
+    <script>
+        function onSignIn(googleUser) {
+
+            document.getElementById("doveAndrannoIDati").removeAttribute("hidden");
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+
+            document.getElementById("nome").innerText = "Bentornato " + profile.getName();
+
+            $.ajax({
+                url: "API/Utenti.php",
+                method: "POST",
+                data: {
+                    id: profile.getId()
+                },
+                success: data => {
+                    let risposta = JSON.parse(data);
+
+                    if (risposta.esisteGia) {
+                        document.getElementById("nome").innerText = "Bentornato " + profile.getName();
+
+                    } else {
+                        document.getElementById("selectTipo").removeAttribute("hidden");
+                        document.getElementById("nome").innerText = "Benvenuto " + profile.getName();
+                        creaAccount(profile, "Studente");
+                    }
+
+                    document.getElementById("immagine").src = profile.getImageUrl()
+                    let bottoneHref = document.createElement("button");
+
+                    bottoneHref.innerText = "Vai alla pagina per caricare un riassunto";
+
+                    $(bottoneHref).on("click", () => {
+                        sessionStorage.id = profile.getId();
+                        window.location.href = "API/culo.html"
+                    });
+                    document.getElementById("doveAndrannoIDati").appendChild(bottoneHref);
+                }
+
+            })
+        }
+
+        function creaAccount(profilo, ruolo) {
+            $.ajax({
+                url: "API/CreaUtente.php",
+                method: "POST",
+                data: {
+                    mail: profilo.getEmail(),
+                    idGoogle: profilo.getId(),
+                    Ruolo: ruolo,
+                    Username: profilo.getName()
+                },
+                success: data => {
+                    console.log(data);
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
