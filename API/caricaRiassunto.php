@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Access-Control-Allow-Origin: *");
 
 require "Connessione.php";
@@ -20,6 +21,7 @@ $nomeFile = preg_replace('/\\.[^.\\s]{3,4}$/', '', $fileConEstensione);
 
 echo "<br><br><h1>$fileConEstensione</h1><br><br>";
 move_uploaded_file($filePDF, "../Riassunti/".$fileConEstensione);
+
 
 $comando = "pdf2htmlEX --dest-dir ../Riassunti/ ../Riassunti/".escapeshellarg($fileConEstensione);
 

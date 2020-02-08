@@ -150,7 +150,7 @@ class Connessione {
 
     public function inserisci($pdf, $immagine, $indirizzo, $matiera, $anno)
     {
-        $sql = "INSERT INTO `Riassunti`(`Titolo`, `UrlPDF`, `UrlIMG`, `IDMateria`, `Anno`) VALUES (:titolo, :urlP, :urlI, :idMateria, :anno); ";
+        $sql = "INSERT INTO `Riassunti`(`Titolo`, `IDUtente`, `UrlPDF`, `UrlIMG`, `IDMateria`, `Anno`) VALUES (:titolo, :IDUtente ,:urlP, :urlI, :idMateria, :anno); ";
        
         //:titolo, :urlP, :urlI, :idMateria, :anno, null
         $baseUrlRiass = "Riassunti/";
@@ -165,9 +165,10 @@ class Connessione {
         var_dump($indirizzo);
         var_dump($matiera);
         var_dump($anno);
-        
+        var_dump($_SESSION);
 
         $stm->bindParam(":titolo", $pdf, PDO::PARAM_STR);
+        $stm->bindParam(":IDUtente", $_SESSION['ID'], PDO::PARAM_INT);
         $stm->bindParam(":urlP", $urlPdf, PDO::PARAM_STR);
         $stm->bindParam(":urlI", $urlImage, PDO::PARAM_STR);
         $stm->bindParam(":idMateria", $matiera, PDO::PARAM_INT);
@@ -194,6 +195,39 @@ class Connessione {
         $enum = explode("','", $esito);
         return $enum;
     }
+
+    public function getUtente($id)
+    {
+        $sql = "SELECT * from Utenti where Utenti.IDGoogle = :id";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":id", $id, PDO::PARAM_STR);
+        $stm->execute();
+        $esito = $stm->fetchAll(PDO::FETCH_ASSOC);
+        return $esito;
+    }
+
+    public function creaUtente($username, $idGoogle, $ruolo, $mail)
+    {
+        $sql = "INSERT INTO `Utenti`(`IDGoogle`, `Mail`, `Username`, `Ruolo`) VALUES (:googleID, :mail, :un, :ruolo)";
+
+
+        
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":googleID", $idGoogle, PDO::PARAM_STR);
+        $stm->bindParam(":mail", $mail, PDO::PARAM_STR);
+        $stm->bindParam(":un", $username, PDO::PARAM_STR);
+        $stm->bindParam(":ruolo", $ruolo, PDO::PARAM_STR);     
+
+        $b = $stm->execute();
+        $a = $stm->errorInfo();
+
+        var_dump($a);
+
+        return $b;
+        
+    }
+
+
 }
 
 
