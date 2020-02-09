@@ -20,14 +20,20 @@
         $anno = $_GET['anno'];
     }
 
-    if(isset($_SESSION['ID']))
+    if(isset($_GET['prendiProp']))
     {
-        $proprietario = $_SESSION['ID'];
+        if(isset($_SESSION['ID']))
+        {
+            echo "Prendo da sessione<br><br>";
+            $proprietario = $_SESSION['ID'];
+        }
     }
     else
     {
+        $proprietario = NULL;
         session_destroy();
     }
+    
 
     $anteprima = $connessione->getRiassunto($idMateria, $anno, $proprietario);
 
@@ -37,7 +43,7 @@
     {
         $t2['ID'] = $t['IDRiassunto'];
 
-        $t2['Titolo'] = preg_replace("/\.SHA512=\w{128}/m", "", $t['Titolo']);
+        $t2['Titolo'] = $t['Titolo'];
         $t2['URLImmagine'] = $t['UrlIMG'];
         $t2['Valutazione'] = $t['Val'];
         $t2['DataPubblicazione'] = $t['DataPubblicazione'];

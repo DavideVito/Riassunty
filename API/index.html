@@ -160,6 +160,9 @@
         $(window).on("load", () => {
             $.ajax({
                 url: baseURL + "anteprima.php",
+                data: {
+                    prendiProp: 1
+                },
                 method: "GET",
 
                 success: data => {

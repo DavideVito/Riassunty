@@ -57,11 +57,13 @@ class Connessione {
 
 	public function mostraRiassunto($id = NULL)
     {
+        
     	$sql = "SELECT * FROM Riassunti WHERE 1 ";
         if($id !== NULL)
         {
-            $sql .= " and ID = :id ";
+            $sql .= " and IDRiassunto = :id ";
         }
+        
         $stm = $this->connessione->prepare($sql);
         if($id !== NULL)
         {
@@ -69,6 +71,12 @@ class Connessione {
         }
 
         $esito = $stm->execute();
+        
+        if($esito === false)
+        {
+            var_dump($stm->errorInfo());
+        }
+        
 
         return $stm->fetchAll(PDO::FETCH_ASSOC);   
     }
@@ -123,16 +131,14 @@ class Connessione {
         {
             $sql .= "and Anno = :anno ";
         }
-
+        
         if($proprietario !== NULL)
         {
             $sql .= " and IDUtente = :utente ";
         }
-
-        
+       
         $sql .= " group by `Riassunti`.`IDRiassunto`,`Riassunti`.`Titolo`,`Riassunti`.`UrlPDF`,`Riassunti`.`UrlIMG`,`Riassunti`.`Anno`,`Riassunti`.`IDMateria`,`Riassunti`.`DataPubblicazione`, `Riassunti`.`IDUtente` order by `Val`,`Riassunti`.`DataPubblicazione` desc";
-
-        $sql .= "";
+        
         $stm = $this->connessione->prepare($sql);
         if($idMateria !== NULL)
         {
@@ -160,7 +166,7 @@ class Connessione {
         return $stm->fetchAll(PDO::FETCH_ASSOC);   
     }
 
-    public function inserisci($pdf, $immagine, $indirizzo, $matiera, $anno)
+    public function inserisci($pdf, $sha, $immagine, $indirizzo, $matiera, $anno)
     {
         $sql = "INSERT INTO `Riassunti`(`Titolo`, `IDUtente`, `UrlPDF`, `UrlIMG`, `IDMateria`, `Anno`) VALUES (:titolo, :IDUtente ,:urlP, :urlI, :idMateria, :anno); ";
        
@@ -168,8 +174,8 @@ class Connessione {
         $baseUrlRiass = "Riassunti/";
         $baseUrlImage = 'Immagini/';
 
-        $urlImage = $baseUrlImage . $immagine;
-        $urlPdf = $baseUrlRiass . $pdf;
+        $urlImage = $baseUrlImage . $immagine . $sha;
+        $urlPdf = $baseUrlRiass . $pdf . $sha . ".html";
         $stm = $this->connessione->prepare($sql);
 
         var_dump($pdf);

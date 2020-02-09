@@ -16,10 +16,11 @@ function fetchIndirizzi() {
     url: url,
     method: "POST",
     beforeSend: () => {
-      document.getElementById("loadingImage").className = "visibile";
+      document.getElementById("caricamentoDiv").className = "loading visibile";
+      console.log
     },
     success: async function (data) {
-      document.getElementById("loadingImage").className = "nascosta";
+
       async function stampa(dati, i) {
         let li = document.createElement("li");
         let a = document.createElement("a");
@@ -94,13 +95,14 @@ function fetchIndirizzi() {
         let divisore = document.createElement("div"); //separator
         divisore.className = nomeClasseSeparatore;
         sezioni.append(divisore);
+
       }
 
       let olHTML = $("#outJS");
       for (let i = 0; i < data.length; i++) {
         await stampa(data[i], i);
       }
-
+      document.getElementById("caricamentoDiv").className = "nascosta";
       $('a[href*="#"]').on("click", function (e) {
         $("html,body").animate({
             scrollTop: $($(this).attr("href")).offset().top - 100
@@ -231,21 +233,7 @@ async function getRiassunti(anno, materia, i) {
 
   let olHTML = $("#outJS");
 
-  var data = {
-    idMateria: materia,
-    anno: anno
-  };
-
-  let formData = new FormData();
-  formData.append("idMateria", materia);
-  formData.append("anno", anno);
-
-  let risposta = await fetch(baseURL.replace(/#section(\d)/, "") + "API/anteprima.php", {
-    method: "POST",
-    body: formData
-  });
-
-  data = await risposta.json();
+  let data = await fetchRiassunti(anno, materia);
 
   let li = document.createElement("li");
   let a = document.createElement("a");
@@ -346,12 +334,12 @@ async function getRiassunti(anno, materia, i) {
 
 async function parsaAnni(anni) {
   let i = 0;
-  document.getElementById("loadingImage").className = "visibile";
+
   for (i = 0; i < anni.length; i++) {
     await getRiassunti(anni[i], sessionStorage.materia, i);
   }
 
-  document.getElementById("loadingImage").className = "nascosta";
+
 }
 
 jQuery(document).ready(function ($) {
@@ -364,8 +352,9 @@ jQuery(document).ready(function ($) {
     window.history.replaceState("#p", null, "");
 
     $(window).on("popstate", function () {
+
       if (sessionStorage.materia) {
-        sessionStorage.clear();
+        sessionStorage.removeItem("materia");
         window.location.reload();
       }
       return;
@@ -377,9 +366,11 @@ let anni = null;
 
 $(window).on("load", async () => {
   if (sessionStorage.materia) {
-
+    document.getElementById("caricamentoDiv").className = "loading visibile";
+    sessionStorage.removeItem("riassunto");
     anni = await fetchAnni();
     await parsaAnni(anni);
+    document.getElementById("caricamentoDiv").className = "nascosta";
 
   } else {
     fetchIndirizzi();
@@ -421,13 +412,16 @@ $(document, window).on("scroll", () => {
 })
 
 async function fetchRiassunti(anno, materia) {
-  let risposta = await fetch(
-    baseURL.replace(/#section(\d)/, "") +
+  let url = baseURL.replace(/#section(\d)/, "") +
     "API/anteprima.php?idMateria=" +
     Number(materia) +
     "&anno=" +
     Number(anno)
-  );
+
+  let risposta = await fetch(url);
+
+  console.log(url);
+
   let json = await risposta.json();
   return json;
 }
