@@ -25,14 +25,15 @@ move_uploaded_file($filePDF, "../Riassunti/".$fileConEstensione);
 
 $comando = "pdf2htmlEX --dest-dir ../Riassunti/ ../Riassunti/".escapeshellarg($fileConEstensione);
 
-echo "<br>$comando<br>";
-
 $a = null;
 $a = exec($comando . " 2>&1", $a);
 
 var_dump($a);
 
-/*echo $linkFile . "<br>";*/
+$fileConHash = hash_file("sha512", "../Riassunti/".$nomeFile . ".html");
+
+
+echo $fileConHash . "<br>";
 echo $fileConEstensione . "<br>";
 echo $nomeFile . "<br>";
 echo "../Riassunti/". $fileConEstensione . "<br>";
@@ -47,7 +48,7 @@ $im->setImageFormat('png');
 $im->writeImage("../Immagini/" . $fileImmagine); 
 unlink("../Riassunti/". $fileConEstensione);
 
-$connessione->inserisci($nomeFile . ".html", $fileImmagine, $_POST['indirizzi'], $_POST['materie'], $_POST['anno']);
+$connessione->inserisci($nomeFile . ".html.SHA512=$fileConHash", $fileImmagine, $_POST['indirizzi'], $_POST['materie'], $_POST['anno']);
 
 
 

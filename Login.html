@@ -105,7 +105,6 @@
                     success: data => {
                         let risposta = JSON.parse(data);
 
-                        debugger
                         if (risposta.esisteGia) {
                             document.getElementById("nome").innerText = "Bentornato " + profile
                                 .getName();
@@ -136,7 +135,7 @@
 
 
                             );
-                            sessionStorage.id = profile.getId();
+                            sessionStorage.setItem("id", profile.getId());
                             window.location.href = "API/index.html";
                         });
 

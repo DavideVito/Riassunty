@@ -126,8 +126,8 @@ async function fetchAnni() {
   return risposta;
 }
 
-async function fetchRiassunto(nome) {
-  let risposta = await fetch(baseURL.replace(/#section(\d)/, "") + "API/riassunto.php?nome=" + nome);
+async function fetchRiassunto(id) {
+  let risposta = await fetch(baseURL.replace(/#section(\d)/, "") + "API/riassunto.php?id=" + id);
   let json = await risposta.json();
   return json;
 }
@@ -156,7 +156,8 @@ function stampaBottoni(dove, risultati, quanto) {
       if (sessionStorage.riassunto) {
         sessionStorage.removeItem(riassunto);
       }
-      let riassunto = await fetchRiassunto(risultati[j].Titolo);
+
+      let riassunto = await fetchRiassunto(risultati[j].ID);
 
       sessionStorage.riassunto = JSON.stringify(riassunto[0]);
       window.location.href = "mostraRiassunto.html";
@@ -227,7 +228,6 @@ function stampaBottoni(dove, risultati, quanto) {
 }
 
 async function getRiassunti(anno, materia, i) {
-  //
 
   let olHTML = $("#outJS");
 
@@ -259,7 +259,6 @@ async function getRiassunti(anno, materia, i) {
   olHTML.append(li);
 
   let risultati = data;
-
   let sezioni = $("#out2");
 
   let sezione = document.createElement("section");
@@ -351,7 +350,6 @@ async function parsaAnni(anni) {
   for (i = 0; i < anni.length; i++) {
     await getRiassunti(anni[i], sessionStorage.materia, i);
   }
-  document.getE
 
   document.getElementById("loadingImage").className = "nascosta";
 }

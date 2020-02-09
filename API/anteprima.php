@@ -1,5 +1,6 @@
 <?php 
-
+    session_start();
+    
     require "Connessione.php";    
     header("Access-Control-Allow-Origin: *");
     header("content-type: application/json");
@@ -8,6 +9,7 @@
 
     $idMateria = NULL;
     $anno = NULL;
+    $proprietario = NULL;
 
     if(isset($_GET['idMateria']))
     {
@@ -18,24 +20,27 @@
         $anno = $_GET['anno'];
     }
 
-    if(isset($_POST['idMateria']))
+    if(isset($_SESSION['ID']))
     {
-        $idMateria = $_POST['idMateria'];
+        $proprietario = $_SESSION['ID'];
     }
-    if(isset($_POST['anno']))
+    else
     {
-        $anno = $_POST['anno'];
+        session_destroy();
     }
 
-    $anteprima = $connessione->getRiassunto($idMateria, $anno);
+    $anteprima = $connessione->getRiassunto($idMateria, $anno, $proprietario);
 
     $ris = array();
 
     foreach($anteprima as $t)
     {
-        $t2['Titolo'] = $t['Titolo'];
+        $t2['ID'] = $t['IDRiassunto'];
+
+        $t2['Titolo'] = preg_replace("/\.SHA512=\w{128}/m", "", $t['Titolo']);
         $t2['URLImmagine'] = $t['UrlIMG'];
-        $ts['Valutazione'] = $t['Val'];
+        $t2['Valutazione'] = $t['Val'];
+        $t2['DataPubblicazione'] = $t['DataPubblicazione'];
         array_push($ris, $t2);
     }
 

@@ -7,18 +7,18 @@ header("Access-Control-Allow-Origin: *");
 
     $nome = NULL;
 
-    if(isset($_GET['nome']))
+    if(isset($_GET['id']))
     {
-        $nome = $_GET['nome'];
+        $nome = $_GET['id'];
     }
     
-    $anteprima = $connessione->mostraRiassunto($nome);
+    $anteprima = $connessione->mostraRiassunto($id);
     
     $ris = array();    
 
     foreach($anteprima as $t)
     {
-        $t2['Titolo'] = $t['Titolo'];
+        $t2['Titolo'] = preg_replace("/\.SHA512=\w{128}/m", "", $t['Titolo']);
         $t2['URLPdf'] = "".$t['UrlPDF'];
         
         $file = file_get_contents("../".$t['UrlPDF']);

@@ -10,6 +10,10 @@
         $(window).on("load", () => {
             if (!sessionStorage.id) {
                 window.location = "../Login.html";
+            } else {
+                let id = sessionStorage.id;
+                sessionStorage.clear();
+                sessionStorage.id = id;
             }
             for (let i = 0; i < 5; i++) {
                 let option = document.createElement("option");
@@ -22,7 +26,7 @@
 
 
         function fetchIndirizzi() {
-            sessionStorage.clear();
+
             $.ajax({
                 url: baseURL + "indirizzi.php",
                 method: "POST",
@@ -148,25 +152,77 @@
 
 
     </form>
-
-    <div id="out"></div>
+    <div class="row justify-content-center">
+        <div id="out"></div>
+    </div>
 
     <script>
         $(window).on("load", () => {
             $.ajax({
-                url: baseURL + "getRiassunti.php",
+                url: baseURL + "anteprima.php",
                 method: "GET",
-                success: data => {
-                    console.log(data);
 
-                    document.getElementById("out").innerHTML = data;
+                success: data => {
+
+
+                    let tabella = document.createElement("table");
+
+                    let rigaTabella = document.createElement("tr");
+
+                    let immagine = document.createElement("td");
+                    immagine.innerText = "Immagine";
+
+                    let titolo = document.createElement("td");
+                    titolo.innerText = "Titolo";
+
+                    let rimuoviImmagine = document.createElement("td");
+                    rimuoviImmagine.innerText = "Rimuovi";
+
+
+
+
+                    rigaTabella.append(immagine, titolo, rimuoviImmagine);
+
+                    tabella.appendChild(rigaTabella);
+
+                    for (let i = 0; i < data.length; i++) {
+                        let riassunto = data[i];
+
+                        let rigaTabella = document.createElement("tr");
+
+                        let immagine = document.createElement("td");
+                        img = document.createElement("img");
+                        img.src = baseURL.replace("/API", "") + riassunto.URLImmagine;
+
+                        immagine.append(img);
+
+                        let titolo = document.createElement("td");
+                        titolo.innerText = riassunto.Titolo;
+
+                        let rimuoviImmagine = document.createElement("td");
+                        img = document.createElement("img");
+                        img.src = "https://img.icons8.com/flat_round/64/000000/delete-sign.png";
+                        $(img).on("click", () => {
+                            eliminaRiassunto(riassunto)
+                        })
+                        rimuoviImmagine.append(img)
+
+
+                        rigaTabella.append(immagine, titolo, rimuoviImmagine);
+
+                        tabella.append(rigaTabella);
+                    }
+
+                    document.getElementById("out").append(tabella);
+
+
                 }
             })
 
         })
 
         function eliminaRiassunto(riassunto) {
-            debugger;
+
             let id = riassunto.IDRiassunto;
             let ris = confirm("Sei sicuro di voler cancellare: " + riassunto.Titolo + "\nCaricato il: " + riassunto
                 .DataPubblicazione + "?");
@@ -182,6 +238,8 @@
                         },
                         method: "POST",
                         success: function (data) {
+                            console.log(data);
+                            return;
                             location.reload();
                         }
                     })

@@ -55,17 +55,17 @@ class Connessione {
         return $stm->fetchAll(PDO::FETCH_ASSOC);
     }
 
-	public function mostraRiassunto($nome = NULL)
+	public function mostraRiassunto($id = NULL)
     {
     	$sql = "SELECT * FROM Riassunti WHERE 1 ";
-        if($nome !== NULL)
+        if($id !== NULL)
         {
-            $sql .= " and Titolo = :nome ";
+            $sql .= " and ID = :id ";
         }
         $stm = $this->connessione->prepare($sql);
-        if($nome !== NULL)
+        if($id !== NULL)
         {
-            $stm->bindParam(":nome", $nome, PDO::PARAM_STR);
+            $stm->bindParam(":id", $id, PDO::PARAM_INT);
         }
 
         $esito = $stm->execute();
@@ -79,8 +79,11 @@ class Connessione {
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":id", $id, PDO::PARAM_INT);
 
+        echo "PrimaSQL: $sql<br><br>";
         $stm->execute();
 
+        var_dump($stm->errorInfo());
+        
         $ris = $stm->fetchAll(PDO::FETCH_ASSOC)[0];
         
         $posizionePDF = "../".$ris['UrlPDF'];
@@ -90,8 +93,8 @@ class Connessione {
         unlink($posizionePDF);
         unlink($posizioneIMG);
 
-        $sql = "DELETE FROM `my_riassunty`.`Riassunti` WHERE `Riassunti`.`IDRiassunto` = :id";
-
+        $sql = "DELETE FROM `Riassunti` WHERE `IDRiassunto` = :id";
+        echo "SecondaSQL: $sql<br><br>";
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":id", $id, PDO::PARAM_INT);
         $stm->execute();
@@ -99,13 +102,12 @@ class Connessione {
         var_dump($stm->errorInfo());
         
         
-        die();
         
         
     }
     
 
-    public function getRiassunto($idMateria, $anno)
+    public function getRiassunto($idMateria, $anno, $proprietario)
     {
 
         
@@ -122,8 +124,13 @@ class Connessione {
             $sql .= "and Anno = :anno ";
         }
 
+        if($proprietario !== NULL)
+        {
+            $sql .= " and IDUtente = :utente ";
+        }
+
         
-        $sql .= " group by `Riassunti`.`IDRiassunto`,`Riassunti`.`Titolo`,`Riassunti`.`UrlPDF`,`Riassunti`.`UrlIMG`,`Riassunti`.`Anno`,`Riassunti`.`IDMateria`,`Riassunti`.`DataPubblicazione` order by `Val`,`Riassunti`.`DataPubblicazione` desc";
+        $sql .= " group by `Riassunti`.`IDRiassunto`,`Riassunti`.`Titolo`,`Riassunti`.`UrlPDF`,`Riassunti`.`UrlIMG`,`Riassunti`.`Anno`,`Riassunti`.`IDMateria`,`Riassunti`.`DataPubblicazione`, `Riassunti`.`IDUtente` order by `Val`,`Riassunti`.`DataPubblicazione` desc";
 
         $sql .= "";
         $stm = $this->connessione->prepare($sql);
@@ -135,6 +142,11 @@ class Connessione {
         if($anno !== NULL)
         {
             $stm->bindParam(":anno", $anno, PDO::PARAM_STR);
+        }
+
+        if($proprietario !== NULL)
+        {
+            $stm->bindParam(":utente", $proprietario, PDO::PARAM_INT);
         }
 
         $esito = $stm->execute();
