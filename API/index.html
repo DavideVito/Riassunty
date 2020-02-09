@@ -118,7 +118,7 @@
         <div class="row justify-content-center">
             <div class="form-group">
                 <label for="pdfDaCaricare">Seleziona un riassunto BROOO</label>
-                <input type="file" class="form-control-file" name="pdfDaCaricare" id="pdfDaCaricare">
+                <input accept=".pdf" type="file" class="form-control-file" name="pdfDaCaricare" id="pdfDaCaricare">
             </div>
         </div>
         <div style="height: 30px;"></div>
@@ -157,7 +157,7 @@
     </div>
 
     <script>
-        $(window).on("load", () => {
+        function caricaRiassunti() {
             $.ajax({
                 url: baseURL + "anteprima.php",
                 data: {
@@ -167,6 +167,7 @@
 
                 success: data => {
 
+                    document.getElementById("out").innerHTML = "";
 
                     let tabella = document.createElement("table");
 
@@ -207,6 +208,7 @@
                         img.src = "https://img.icons8.com/flat_round/64/000000/delete-sign.png";
                         $(img).on("click", () => {
                             eliminaRiassunto(riassunto)
+
                         })
                         rimuoviImmagine.append(img)
 
@@ -221,19 +223,21 @@
 
                 }
             })
+        }
+        $(window).on("load", () => {
 
+            caricaRiassunti();
         })
 
         function eliminaRiassunto(riassunto) {
 
-            let id = riassunto.IDRiassunto;
+            let id = riassunto.ID;
             let ris = confirm("Sei sicuro di voler cancellare: " + riassunto.Titolo + "\nCaricato il: " + riassunto
                 .DataPubblicazione + "?");
             if (ris) {
-                ris = confirm("Sicuro sicuro fra?");
+                ris = confirm("Sicuro sicuro?");
                 if (ris) {
                     alert("Comandi te");
-
                     $.ajax({
                         url: baseURL + "eliminaRiassunto.php",
                         data: {
@@ -242,8 +246,8 @@
                         method: "POST",
                         success: function (data) {
                             console.log(data);
-                            return;
-                            location.reload();
+                            caricaRiassunti();
+
                         }
                     })
                 }

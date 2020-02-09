@@ -24,7 +24,6 @@
     {
         if(isset($_SESSION['ID']))
         {
-            echo "Prendo da sessione<br><br>";
             $proprietario = $_SESSION['ID'];
         }
     }

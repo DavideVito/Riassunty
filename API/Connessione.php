@@ -83,31 +83,32 @@ class Connessione {
 
     public function rimuoviRiassunto($id)
     {
+        echo $id;
         $sql = "SELECT * FROM Riassunti WHERE Riassunti.IDRiassunto = :id";
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":id", $id, PDO::PARAM_INT);
 
-        echo "PrimaSQL: $sql<br><br>";
         $stm->execute();
 
-        var_dump($stm->errorInfo());
+        //var_dump($stm->errorInfo());
         
         $ris = $stm->fetchAll(PDO::FETCH_ASSOC)[0];
         
         $posizionePDF = "../".$ris['UrlPDF'];
         $posizioneIMG = "../".$ris['UrlIMG'];
         
-
+        echo json_encode($ris);
         unlink($posizionePDF);
         unlink($posizioneIMG);
 
         $sql = "DELETE FROM `Riassunti` WHERE `IDRiassunto` = :id";
-        echo "SecondaSQL: $sql<br><br>";
+       
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":id", $id, PDO::PARAM_INT);
         $stm->execute();
         
         var_dump($stm->errorInfo());
+       
         
         
         
@@ -178,12 +179,7 @@ class Connessione {
         $urlPdf = $baseUrlRiass . $pdf . $sha . ".html";
         $stm = $this->connessione->prepare($sql);
 
-        var_dump($pdf);
-        var_dump($immagine);
-        var_dump($indirizzo);
-        var_dump($matiera);
-        var_dump($anno);
-        var_dump($_SESSION);
+        
 
         $stm->bindParam(":titolo", $pdf, PDO::PARAM_STR);
         $stm->bindParam(":IDUtente", $_SESSION['ID'], PDO::PARAM_INT);
@@ -193,8 +189,12 @@ class Connessione {
         $stm->bindParam(":anno", $anno, PDO::PARAM_STR);
 
         $esito = $stm->execute();
+        if($esito)
+        {
+            return $esito;
+        }
+        return $stm->errorCode();
         
-        var_dump($stm->errorInfo());
 
 
     }
