@@ -406,7 +406,16 @@ $(document, window).on("scroll", () => {
 
   let elemento = document.getElementsByClassName("navShadow")[0];
   if (elemento === null || typeof elemento === "undefined") {
+    if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoBIANCO.jpg") {
+      return;
+    }
+
+
     document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoBIANCO.jpg";
+    return;
+  }
+
+  if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoNERO.jpg") {
     return;
   }
   document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoNERO.jpg";

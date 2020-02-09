@@ -20,5 +20,6 @@ if($risposta['esisteGia'])
     $_SESSION['ID'] = $ris[0]['IDUtente'];
 }
 
+
 echo json_encode($risposta);
 ?>

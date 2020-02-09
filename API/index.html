@@ -1,5 +1,8 @@
 <body>
     <br><br>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script>
         let baseURL = window.location.href;
@@ -96,42 +99,51 @@
         integrity="sha256-ioAA5G7gdssuN24SL2ByxTMiyg5m5PnP3I4TS5hNIYA=" crossorigin="anonymous" />
     <title>Carica Riassunto</title>
     <form style="margin-left: 5%" action="caricaRiassunto.php" method="post" enctype="multipart/form-data">
-
-
-
-
-        <div class="row">
-            <div class="col-md-2"></div>
-            <div class="col-md-8">
-
-
-
-                <div class="form-group">
-                    <label for="pdfDaCaricare">Seleziona un riassunto BROOO</label>
-                    <input type="file" class="form-control-file" name="pdfDaCaricare" id="pdfDaCaricare">
-                </div>
-
-                <div class="form-group">
-                    <label for="indirizzi">Scegli l'indirizzo</label>
-                    <select class="form-control" name="indirizzi" id="indirizzi"> </select>
-
-                </div>
-
-                <div class="form-group">
-                    <label for="materie">Metti La materia</label>
-                    <select class="form-control" name="materie" id="materie"></select>
-
-                </div>
-
-                <div class="form-group">
-                    <label for="materie">Seleziona l'anno</label>
-                    <select class="form-control" name="anno" id="anno"></select>
-
-                </div>
-
-                <button type="submit" value="Carica" class="btn btn-primary mb-2">Carica</button>
+        <div class="row justify-content-center" style="background-color: black; color: white; ">
+            <p style="font-size: 15pt;">Ti ricordiamo che i riassunti non devono contenere inesattezze o infomazioni
+                false.<br><br>Non
+                devono
+                contenere qualsiasi
+                materiale
+                che il buon gusto italiano reputa non accettabile.<br>
+                <br>No Porn, No Gore, No Drugs, No Alchool<br><br>
+                Il non rispetto di queste regole porterà alla sospensione del tuo account su questa applicazione e
+                segnalazione dal dirigente scolastico<br><br>
+                Non ti conviene ecco &lt;3 </p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="form-group">
+                <label for="pdfDaCaricare">Seleziona un riassunto BROOO</label>
+                <input type="file" class="form-control-file" name="pdfDaCaricare" id="pdfDaCaricare">
             </div>
-            <div class="col-md-2"></div>
+        </div>
+        <div style="height: 30px;"></div>
+        <div class="row justify-content-center">
+            <div class="form-group">
+                <label for="indirizzi">Scegli l'indirizzo</label>
+                <select class="form-control form-control-sm" name="indirizzi" id="indirizzi"> </select>
+
+            </div>
+        </div>
+        <div style="height: 30px;"></div>
+        <div class="row justify-content-center">
+            <div class="form-group">
+                <label for="materie">Metti La materia</label>
+                <select class="form-control form-control-sm" name="materie" id="materie"></select>
+
+            </div>
+        </div>
+        <div style="height: 30px;"></div>
+        <div class="row justify-content-center">
+            <div class="form-group">
+                <label for="materie">Seleziona l'anno</label>
+                <select class="form-control form-control-sm" name="anno" id="anno"></select>
+
+            </div>
+        </div>
+        <div style="height: 30px;"></div>
+        <div class="row justify-content-center">
+            <button type="submit" value="Carica" class="btn btn-primary mb-2">Carica</button>
         </div>
 
 

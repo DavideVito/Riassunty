@@ -1,92 +1,204 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <link rel="icon" href="https://riassunty.altervista.org/logoITIS.jpg" type="image/jpg" />
+    <meta charset="utf-8">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <script src="provone.js"></script>
+    <title>Accedi</title>
+
+    <link rel="stylesheet" type="text/css" href="stile.css" />
 </head>
 
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id"
-        content="757171675502-tn1k2bjmh123u729uqufjhg0nr8d1br1.apps.googleusercontent.com" />
-    Oh fra clicca qua<br><br>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
 
-    <div id="doveAndrannoIDati" hidden>
-        <img id="immagine">
-        <p id="nome"></p>
-        <select id="selectTipo" hidden>
-            <option value="Studente">Studente</option>
-            <option value="Docente">Docente</option>
-
-        </select>
+    <header>
+        <nav>
 
 
-    </div>
-    <script>
-        function onSignIn(googleUser) {
+            <div id="brand">
+                <div id="logo" onclick="window.location.href = 'index.html'"> <img id="fotoLogo"
+                        src="https://riassunty.altervista.org/logoBIANCO.jpg"
+                        style="height: 100%; width: 100%; border-radius: 45%;">
+                </div>
+            </div>
 
-            document.getElementById("doveAndrannoIDati").removeAttribute("hidden");
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            <div id="menu">
+                <div id="menu-toggle">
+                    <div id="menu-icon">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <ul id="outJS">
+                    <li>Accedi alla pagina che servirà a caricare un riassunto utilizzando uno dei servizi sotto
+                        elencati</li>
+                </ul>
+            </div>
+        </nav>
+        <div id="hero-section">
+            <div id="head-line" style="margin-top: 20%">
 
-            document.getElementById("nome").innerText = "Bentornato " + profile.getName();
+                <meta name="google-signin-client_id"
+                    content="757171675502-tn1k2bjmh123u729uqufjhg0nr8d1br1.apps.googleusercontent.com" />
 
-            $.ajax({
-                url: "API/Utenti.php",
-                method: "POST",
-                data: {
-                    id: profile.getId()
-                },
-                success: data => {
-                    let risposta = JSON.parse(data);
+                <div class="row justify-content-center" style="margin-top: -60%;">
+                    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                </div>
 
-                    if (risposta.esisteGia) {
-                        document.getElementById("nome").innerText = "Bentornato " + profile.getName();
 
-                    } else {
-                        document.getElementById("selectTipo").removeAttribute("hidden");
-                        document.getElementById("nome").innerText = "Benvenuto " + profile.getName();
-                        creaAccount(profile, "Studente");
+                <div id="out1"></div>
+                <script>
+                    let tagBottoneLogout =
+                        '<div class="row justify-content-center"><div class="row justify-content-center"><div class="button" id="button-3" onclick="logout()"><div id="circle"></div><a>Logout</a></div></div></div>';
+                    if (sessionStorage.id) {
+                        document.getElementById("out1").innerHTML = tagBottoneLogout;
+                    }
+                </script>
+
+
+
+                <div style="height: 90px;"></div>
+
+                <div id="doveAndrannoIDati" hidden>
+                    <div class="row justify-content-center">
+                        <img id="immagine" style="border-radius: 50%;"></div>
+
+                    <div style="height: 20px;"></div>
+                    <div class="row justify-content-center">
+                        <p id="nome" style="color: white"></p>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+        <script>
+            let bottone = null;
+
+            function onSignIn(googleUser) {
+
+                document.getElementById("doveAndrannoIDati").removeAttribute("hidden");
+                var profile = googleUser.getBasicProfile();
+
+                document.getElementById("nome").innerText = "Bentornato " + profile.getName();
+
+
+
+                $.ajax({
+                    url: "API/Utenti.php",
+                    method: "POST",
+                    data: {
+                        id: profile.getId()
+                    },
+                    success: data => {
+                        let risposta = JSON.parse(data);
+
+                        debugger
+                        if (risposta.esisteGia) {
+                            document.getElementById("nome").innerText = "Bentornato " + profile
+                                .getName();
+
+                        } else {
+                            document.getElementById("nome").innerText = "Benvenuto " + profile
+                                .getName();
+                            creaAccount(profile);
+                        }
+
+                        document.getElementById("out1").innerHTML = tagBottoneLogout;
+                        document.getElementById("immagine").src = profile.getImageUrl()
+
+                        riga = document.createElement("div");
+                        riga.className = "row justify-content-center";
+
+                        bottone = document.createElement("div");
+                        bottone.className = "button";
+                        bottone.id = "button-3";
+
+                        let cerchio = document.createElement("div");
+                        cerchio.id = "circle";
+
+                        let a = document.createElement("a");
+                        bottone.addEventListener("click", () => {
+                            alert(
+                                "Ti ricordiamo che i riassunti non devono contenere inesattezze o infomazioni false.\n\n>Non devono contenere qualsiasi materiale che il buon gusto italiano reputa non accettabile.\n\n No Porn, No Gore, No Drugs, No Alchool\n\nIl non rispetto di queste regole porterà alla sospensione del tuo account su questa applicazione e segnalazione dal dirigente scolastico\n\nNon ti conviene ecco <3"
+
+
+                            );
+                            sessionStorage.id = profile.getId();
+                            window.location.href = "API/index.html";
+                        });
+
+
+
+                        a.innerText = "Voglio caricare";
+
+                        bottone.appendChild(cerchio);
+                        bottone.appendChild(a);
+
+                        riga.appendChild(bottone);
+                        document.getElementById("doveAndrannoIDati").appendChild(riga);
                     }
 
-                    document.getElementById("immagine").src = profile.getImageUrl()
-                    let bottoneHref = document.createElement("button");
+                })
+            }
 
-                    bottoneHref.innerText = "Vai alla pagina per caricare un riassunto";
+            function creaAccount(profilo, ruolo = "Studente") {
+                $.ajax({
+                    url: "API/CreaUtente.php",
+                    method: "POST",
+                    data: {
+                        mail: profilo.getEmail(),
+                        idGoogle: profilo.getId(),
+                        Ruolo: ruolo,
+                        Username: profilo.getName()
+                    },
+                    success: data => {
+                        console.log(data);
+                    }
+                })
+            }
 
-                    $(bottoneHref).on("click", () => {
-                        sessionStorage.id = profile.getId();
-                        window.location.href = "API/culo.html"
-                    });
-                    document.getElementById("doveAndrannoIDati").appendChild(bottoneHref);
+            function logout() {
+
+                let auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    debugger;
+                    rimuoviFigli(bottone)
+                    document.getElementById("nome").innerHTML = "";
+                    document.getElementById("out1").innerHTML = "";
+                    document.getElementById("immagine").src = "";
+
+                    document.getElementById("doveAndrannoIDati").setAttribute("hidden", "")
+                });
+
+            }
+
+            function rimuoviFigli(elemento) {
+                let mydiv = elemento.parentNode;
+                while (mydiv.firstChild) {
+                    mydiv.removeChild(mydiv.firstChild);
                 }
-
-            })
-        }
-
-        function creaAccount(profilo, ruolo) {
-            $.ajax({
-                url: "API/CreaUtente.php",
-                method: "POST",
-                data: {
-                    mail: profilo.getEmail(),
-                    idGoogle: profilo.getId(),
-                    Ruolo: ruolo,
-                    Username: profilo.getName()
-                },
-                success: data => {
-                    console.log(data);
-                }
-            })
-        }
-    </script>
+            }
+        </script>
+        </div>
+        </div>
+    </header>
+    <div id="out2">
+        <div class="separator"></div>
+    </div>
+    <div id="footer"></div>
 </body>
 
 </html>

@@ -383,49 +383,49 @@ section {
 
 .separator0 {
   height: 50px;
-  width: 100%;
+  width: 100vw;
   background: #5F1111;
   background: linear-gradient(180deg, #5F1111 10%, #5F114B 89%);
 }
 
 .separator1 {
   height: 50px;
-  width: 100%;
+  width: 100vw;
   background: #5F114B;
   background: linear-gradient(180deg, #5F114B 10%, #3E115F 89%);
 }
 
 .separator2 {
   height: 50px;
-  width: 100%;
+  width: 100vw;
   background: #3E115F;
   background: linear-gradient(180deg, #3E115F 10%, #11165F 89%);
 }
 
 .separator3 {
   height: 50px;
-  width: 100%;
+  width: 100vw;
   background: #11165F;
   background: linear-gradient(180deg, #11165F 10%, #115F50 89%);
 }
 
 .separator4 {
   height: 50px;
-  width: 100%;
+  width: 100vw;
   background: #115F50;
   background: linear-gradient(180deg, #115F50 10%, #949121 89%);
 }
 
 .separator5 {
   height: 50px;
-  width: 100%;
+  width: 100vw;
   background: #949121;
   background: linear-gradient(180deg, #949121 10%, #943521 89%);
 }
 
 .separator6 {
   height: 50px;
-  width: 100%;
+  width: 100vw;
   background: #943521;
   background: linear-gradient(180deg, #943521 10%, #5F1111 89%);
 }
