@@ -13,12 +13,15 @@ html {
   padding: 0;
 }
 
+html,
 body {
   text-decoration: none;
   background-color: black;
   font-family: 'Roboto';
   overflow-x: hidden;
   overflow-y: scroll;
+  width:100%;
+overflow-x:hidden;
 }
 
 /*** Color Variables ***/
@@ -72,6 +75,13 @@ ul {
   display: flex;
   align-items: center;
 }
+
+
+#footer{
+height:175px;
+background-color: #000;
+}
+
 
 #brand {
   padding-left: 30px;
@@ -281,19 +291,30 @@ section {
     width: 100vw;
     height: 0;
     background: #000;
-    position: absolute;
+    position: fixed;
     top: 160px;
     -webkit-transform: translate(, );
     transform: translate(, );
     box-shadow: 0 5px 30px -4px rgba(0, 0, 0, 0.2);
     transition: all 0.3s;
+    overflow:auto;
   }
 
   ul.showMenu {
-    background: white;
+    text-align:center;
     left: 1px;
     height: 100vh;
     width: 100vw;
+  }
+
+  .bianco{
+  background-color:white;
+  color:black;
+  }
+
+  .nero{
+    background-color: black;
+    color:white;
   }
 
   ul.showMenu li {

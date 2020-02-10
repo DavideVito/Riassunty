@@ -76,11 +76,7 @@ function fetchIndirizzi() {
           let a = document.createElement("a");
           button.addEventListener("click", () => {
             sessionStorage.materia = risultati[j].IDMateria;
-            window.history.pushState("", "", "materie.html");
-            document.getElementById("outJS").innerHTML = "";
-            document.getElementById("out2").innerHTML = "";
-
-            prendiAnnieParsali();
+            window.location.reload();
             //alert(sessionStorage.materia);
           });
 
@@ -242,7 +238,7 @@ async function getRiassunti(anno, materia, i) {
   let li = document.createElement("li");
   let a = document.createElement("a");
 
-  a.innerText = anno;
+  a.innerText = anno + "°";
   a.href = "#section" + i;
 
   li.appendChild(a);
@@ -272,7 +268,7 @@ async function getRiassunti(anno, materia, i) {
 
   divIndirizzo.setAttribute("data-sort", anno);
   divIndirizzo.style = "margin-bottom: 80px";
-  divIndirizzo.innerText = anno;
+  divIndirizzo.innerText = anno + "°";
 
   heading.appendChild(divIndirizzo);
 
@@ -353,26 +349,29 @@ jQuery(document).ready(function ($) {
   });
 
   
+  
 });
+
+$('body').backDetect(function()
+  {
+    alert("a");
+    sessionStorage.clear();
+    window.location.href = "index.html";
+ });
 
 let anni = null;
 
-async function prendiAnnieParsali()
-{
+$(window).on("load", async () => {
+  if (sessionStorage.materia) {
     document.getElementById("caricamentoDiv").className = "loading visibile";
     sessionStorage.removeItem("riassunto");
     anni = await fetchAnni();
     await parsaAnni(anni);
     document.getElementById("caricamentoDiv").className = "nascosta";
-}
 
-$(window).on("load", async () => {
-   
-    sessionStorage.clear();
-    document.getElementById("outJS").innerHTML = "";
-    document.getElementById("out2").innerHTML = "";
-  fetchIndirizzi();
-  
+  } else {
+    fetchIndirizzi();
+  }
 
   document.getElementById("brand").style = "cursor: pointer";
 });
@@ -394,19 +393,22 @@ $(document, window).on("scroll", () => {
   let elemento = document.getElementsByClassName("navShadow")[0];
   if (elemento === null || typeof elemento === "undefined") {
     if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoBIANCO.jpg") {
+      document.getElementsByClassName("showMenu")[0].className="showMenu bianco";
       return;
     }
 
 
     document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoBIANCO.jpg";
+    document.getElementsByClassName("showMenu")[0].className="showMenu bianco";
     return;
   }
 
   if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoNERO.jpg") {
+    document.getElementsByClassName("showMenu")[0].className="showMenu nero";
     return;
   }
   document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoNERO.jpg";
-
+  document.getElementsByClassName("showMenu")[0].className="showMenu nero";
 })
 
 async function fetchRiassunti(anno, materia) {
