@@ -76,7 +76,11 @@ function fetchIndirizzi() {
           let a = document.createElement("a");
           button.addEventListener("click", () => {
             sessionStorage.materia = risultati[j].IDMateria;
-            window.location.reload();
+            window.history.pushState("", "", "materie.html");
+            document.getElementById("outJS").innerHTML = "";
+            document.getElementById("out2").innerHTML = "";
+
+            prendiAnnieParsali();
             //alert(sessionStorage.materia);
           });
 
@@ -348,33 +352,27 @@ jQuery(document).ready(function ($) {
     window.location.reload();
   });
 
-  if (window.history && window.history.pushState) {
-    window.history.replaceState("#p", null, "");
-
-    $(window).on("popstate", function () {
-
-      if (sessionStorage.materia) {
-        sessionStorage.removeItem("materia");
-        window.location.reload();
-      }
-      return;
-    });
-  }
+  
 });
 
 let anni = null;
 
-$(window).on("load", async () => {
-  if (sessionStorage.materia) {
+async function prendiAnnieParsali()
+{
     document.getElementById("caricamentoDiv").className = "loading visibile";
     sessionStorage.removeItem("riassunto");
     anni = await fetchAnni();
     await parsaAnni(anni);
     document.getElementById("caricamentoDiv").className = "nascosta";
+}
 
-  } else {
-    fetchIndirizzi();
-  }
+$(window).on("load", async () => {
+   
+    sessionStorage.clear();
+    document.getElementById("outJS").innerHTML = "";
+    document.getElementById("out2").innerHTML = "";
+  fetchIndirizzi();
+  
 
   document.getElementById("brand").style = "cursor: pointer";
 });
