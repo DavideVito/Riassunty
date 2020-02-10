@@ -16,8 +16,6 @@ $(() => {
 		}, 500);
 
 	});
-	console.log($('a[href*="#"]'))
-
 	//Smooth Scrolling Using Navigation Menu
 
 

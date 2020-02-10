@@ -42,9 +42,9 @@
     {
         $t2['ID'] = $t['IDRiassunto'];
 
-        $t2['Titolo'] = $t['Titolo'];
-        $t2['URLImmagine'] = $t['UrlIMG'];
-        $t2['Valutazione'] = $t['Val'];
+        $t2['Titolo'] = htmlspecialchars($t['Titolo']);
+        $t2['URLImmagine'] = rawurlencode($t['UrlIMG']);
+        $t2['Valutazione'] = htmlspecialchars($t['Val']);
         $t2['DataPubblicazione'] = $t['DataPubblicazione'];
         array_push($ris, $t2);
     }

@@ -18,8 +18,8 @@ header("Access-Control-Allow-Origin: *");
 
     foreach($anteprima as $t)
     {
-        $t2['Titolo'] =  $t['Titolo'];
-        $t2['URLPdf'] = "".$t['UrlPDF'];
+        $t2['Titolo'] =  htmlspecialchars($t['Titolo']);
+        //$t2['URLPdf'] = "".$t['UrlPDF'];
        
         $file = file_get_contents("../".$t['UrlPDF']);
         

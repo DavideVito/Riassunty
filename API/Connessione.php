@@ -167,7 +167,7 @@ class Connessione {
         return $stm->fetchAll(PDO::FETCH_ASSOC);   
     }
 
-    public function inserisci($pdf, $sha, $immagine, $indirizzo, $matiera, $anno)
+    public function inserisci($nomePdf, $fsPDF, $sha, $immagine, $indirizzo, $matiera, $anno)
     {
         $sql = "INSERT INTO `Riassunti`(`Titolo`, `IDUtente`, `UrlPDF`, `UrlIMG`, `IDMateria`, `Anno`) VALUES (:titolo, :IDUtente ,:urlP, :urlI, :idMateria, :anno); ";
        
@@ -175,13 +175,13 @@ class Connessione {
         $baseUrlRiass = "Riassunti/";
         $baseUrlImage = 'Immagini/';
 
-        $urlImage = $baseUrlImage . $immagine . $sha;
-        $urlPdf = $baseUrlRiass . $pdf . $sha . ".html";
+        $urlImage = $baseUrlImage . $immagine . $sha .".png";
+        $urlPdf = $baseUrlRiass . $fsPDF . $sha . ".html";
         $stm = $this->connessione->prepare($sql);
 
         
 
-        $stm->bindParam(":titolo", $pdf, PDO::PARAM_STR);
+        $stm->bindParam(":titolo", $nomePdf, PDO::PARAM_STR);
         $stm->bindParam(":IDUtente", $_SESSION['ID'], PDO::PARAM_INT);
         $stm->bindParam(":urlP", $urlPdf, PDO::PARAM_STR);
         $stm->bindParam(":urlI", $urlImage, PDO::PARAM_STR);

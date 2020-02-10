@@ -5,11 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script>
+        setTimeout(controllaSessione, 600);
         let baseURL = window.location.href;
         baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
         $(window).on("load", () => {
             if (!sessionStorage.id) {
                 window.location = "../Login.html";
+
+
             } else {
                 let id = sessionStorage.id;
                 sessionStorage.clear();
@@ -23,7 +26,17 @@
             }
         })
 
-
+        function controllaSessione() {
+            $.ajax({
+                url: "sessione.php",
+                success: data => {
+                    if (!data.sessione) {
+                        alert("Sessione Scaduta");
+                        window.location = "../Login.html";
+                    }
+                }
+            })
+        }
 
         function fetchIndirizzi() {
 
@@ -99,26 +112,29 @@
             font-family: "Roboto"
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"
+        integrity="sha256-LddDRH6iUPqbp3x9ClMVGkVEvZTrIemrY613shJ/Jgw=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap-grid.css"
         integrity="sha256-ioAA5G7gdssuN24SL2ByxTMiyg5m5PnP3I4TS5hNIYA=" crossorigin="anonymous" />
     <title>Carica Riassunto</title>
+    <div class="row justify-content-center" style="background-color: black; color: white; ">
+        <p style="font-size: 15pt;">Ti ricordiamo che i riassunti non devono contenere inesattezze o infomazioni
+            false.<br><br>Non
+            devono
+            contenere qualsiasi
+            materiale
+            che il buon gusto italiano reputa non accettabile.<br>
+            <br>No Porn, No Gore, No Drugs, No Alchool<br><br>
+            Il non rispetto di queste regole porterà alla sospensione del tuo account su questa applicazione e
+            segnalazione dal dirigente scolastico<br><br>
+            Non ti conviene ecco &lt;3 </p>
+    </div>
     <form style="margin-left: 5%" action="caricaRiassunto.php" method="post" enctype="multipart/form-data">
-        <div class="row justify-content-center" style="background-color: black; color: white; ">
-            <p style="font-size: 15pt;">Ti ricordiamo che i riassunti non devono contenere inesattezze o infomazioni
-                false.<br><br>Non
-                devono
-                contenere qualsiasi
-                materiale
-                che il buon gusto italiano reputa non accettabile.<br>
-                <br>No Porn, No Gore, No Drugs, No Alchool<br><br>
-                Il non rispetto di queste regole porterà alla sospensione del tuo account su questa applicazione e
-                segnalazione dal dirigente scolastico<br><br>
-                Non ti conviene ecco &lt;3 </p>
-        </div>
+
         <div class="row justify-content-center">
             <div class="form-group">
                 <label for="pdfDaCaricare">Seleziona un riassunto BROOO</label>
-                <input accept=".pdf" type="file" class="form-control-file" name="pdfDaCaricare" id="pdfDaCaricare">
+                <input accept="" type="file" class="form-control-file" name="pdfDaCaricare" id="pdfDaCaricare">
             </div>
         </div>
         <div style="height: 30px;"></div>
@@ -150,6 +166,11 @@
             <button type="submit" value="Carica" class="btn btn-primary mb-2">Carica</button>
         </div>
 
+        <div class="progress">
+            <div class="bar"></div>
+            <div class="percent">0%</div>
+        </div>
+
 
     </form>
     <div class="row justify-content-center">
@@ -157,7 +178,41 @@
     </div>
 
     <script>
-        function caricaRiassunti() {
+        $(function () {
+
+            let bar = $('.bar');
+            let percent = $('.percent');
+            let status = $('#status');
+
+            $('form').ajaxForm({
+                beforeSend: function () {
+                    status.empty();
+                    let percentVal = '0%';
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                },
+                uploadProgress: function (event, position, total, percentComplete) {
+                    let percentVal = percentComplete + '%';
+                    $('.bar').css(
+                        'width',
+                        percentVal + '%'
+                    );
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                },
+                complete: function (xhr) {
+                    let percentVal = "100%";
+                    bar.width(percentVal);
+                    percent.html(percentVal);
+                    console.log(xhr.responseText);
+
+                    mostraRiassunti();
+                }
+            });
+        });
+
+
+        function mostraRiassunti() {
             $.ajax({
                 url: baseURL + "anteprima.php",
                 data: {
@@ -195,13 +250,15 @@
                         let rigaTabella = document.createElement("tr");
 
                         let immagine = document.createElement("td");
-                        img = document.createElement("img");
-                        img.src = baseURL.replace("/API", "") + riassunto.URLImmagine;
 
+                        img = document.createElement("img");
+                        let posto = baseURL.replace("/API", "") + riassunto.URLImmagine;
+
+                        img.src = posto
                         immagine.append(img);
 
                         let titolo = document.createElement("td");
-                        titolo.innerText = riassunto.Titolo;
+                        titolo.innerHTML = riassunto.Titolo;
 
                         let rimuoviImmagine = document.createElement("td");
                         img = document.createElement("img");
@@ -226,7 +283,7 @@
         }
         $(window).on("load", () => {
 
-            caricaRiassunti();
+            mostraRiassunti();
         })
 
         function eliminaRiassunto(riassunto) {
@@ -246,7 +303,7 @@
                         method: "POST",
                         success: function (data) {
                             console.log(data);
-                            caricaRiassunti();
+                            mostraRiassunti();
 
                         }
                     })
