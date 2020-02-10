@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script>
-        setTimeout(controllaSessione, 600);
         let baseURL = window.location.href;
         baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
         $(window).on("load", () => {
@@ -176,6 +175,10 @@
     <div class="row justify-content-center">
         <div id="out"></div>
     </div>
+    <div class="row justify-content-center">
+        <div id="out2"></div>
+    </div>
+
 
     <script>
         $(function () {
@@ -207,12 +210,93 @@
                     console.log(xhr.responseText);
 
                     mostraRiassunti();
+                    mostraRiassuntiNonApprovati();
                 }
             });
         });
 
+        function mostraRiassuntiNonApprovati() {
+            $.ajax({
+                url: baseURL + "riassuntiNonApprovati.php",
+
+                method: "GET",
+
+                success: data => {
+
+                    document.getElementById("out2").innerHTML = "";
+
+                    let tabella = document.createElement("table");
+
+                    let rigaTabella = document.createElement("tr");
+
+                    let immagine = document.createElement("td");
+                    immagine.innerText = "Immagine";
+
+                    let titolo = document.createElement("td");
+                    titolo.innerText = "Titolo";
+
+                    let cellaApprovazione = document.createElement("td");
+                    cellaApprovazione.innerText = "Approva";
+
+                    let scartaRiassunto = document.createElement("td");
+                    scartaRiassunto.innerText = "scartaRiassunto";
+
+                    rigaTabella.append(immagine, titolo, cellaApprovazione, scartaRiassunto);
+
+                    tabella.appendChild(rigaTabella);
+
+
+
+                    for (let i = 0; i < data.length; i++) {
+
+                        let riassunto = data[i];
+
+                        let rigaTabella = document.createElement("tr");
+
+                        let immagine = document.createElement("td");
+
+                        img = document.createElement("img");
+                        let posto = baseURL.replace("/API", "") + riassunto.URLImmagine;
+
+                        img.src = posto
+                        immagine.append(img);
+
+                        let titolo = document.createElement("td");
+                        titolo.innerHTML = riassunto.Titolo;
+
+                        let cellaApprova = document.createElement("td");
+                        img = document.createElement("img");
+                        img.src =
+                            "https://cdn2.iconfinder.com/data/icons/medicare/512/ok_select_yes_apply_accept_approve_confirm-512.png";
+                        $(img).on("click", () => {
+                            approvaRiassunto(riassunto);
+                        })
+
+                        cellaApprova.appendChild(img);
+
+                        let cellaScarta = document.createElement("td");
+                        img = document.createElement("img");
+                        img.src = "https://img.icons8.com/flat_round/64/000000/delete-sign.png";
+                        $(img).on("click", () => {
+                            eliminaRiassunto(riassunto);
+                        })
+                        cellaScarta.appendChild(img);
+
+                        rigaTabella.append(immagine, titolo, cellaApprova, cellaScarta);
+
+                        tabella.append(rigaTabella);
+                    }
+
+                    document.getElementById("out2").append(tabella);
+
+
+                }
+            })
+        }
+
 
         function mostraRiassunti() {
+            setTimeout(controllaSessione, 600);
             $.ajax({
                 url: baseURL + "anteprima.php",
                 data: {
@@ -235,10 +319,8 @@
                     titolo.innerText = "Titolo";
 
                     let rimuoviImmagine = document.createElement("td");
-                    rimuoviImmagine.innerText = "Rimuovi";
 
-
-
+                    rimuoviImmagine.innerText = "Rimuovi"
 
                     rigaTabella.append(immagine, titolo, rimuoviImmagine);
 
@@ -284,7 +366,10 @@
         $(window).on("load", () => {
 
             mostraRiassunti();
-        })
+            mostraRiassuntiNonApprovati();
+        });
+
+
 
         function eliminaRiassunto(riassunto) {
 
@@ -304,6 +389,7 @@
                         success: function (data) {
                             console.log(data);
                             mostraRiassunti();
+                            mostraRiassuntiNonApprovati();
 
                         }
                     })
@@ -312,5 +398,26 @@
 
             /*
              */
+        }
+
+        function approvaRiassunto(riassunto) {
+            let id = riassunto.ID;
+
+            $.ajax({
+                url: baseURL + "approvaRiassunto.php",
+                data: {
+                    id: id
+                },
+                method: "POST",
+                success: function (data) {
+                    debugger;
+                    console.log(data);
+                    mostraRiassunti();
+                    mostraRiassuntiNonApprovati();
+
+                }
+            })
+
+
         }
     </script>

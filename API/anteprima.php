@@ -10,6 +10,7 @@
     $idMateria = NULL;
     $anno = NULL;
     $proprietario = NULL;
+    $tipo = NULL;
 
     if(isset($_GET['idMateria']))
     {
@@ -20,6 +21,11 @@
         $anno = $_GET['anno'];
     }
 
+    if(isset($_SESSION['Tipo']))
+    {
+        $tipo = $_SESSION['Tipo'];
+    }
+    
     if(isset($_GET['prendiProp']))
     {
         if(isset($_SESSION['ID']))
@@ -30,11 +36,10 @@
     else
     {
         $proprietario = NULL;
-        session_destroy();
     }
     
 
-    $anteprima = $connessione->getRiassunto($idMateria, $anno, $proprietario);
+    $anteprima = $connessione->getRiassunto($idMateria, $anno, $proprietario, $tipo);
 
     $ris = array();
 

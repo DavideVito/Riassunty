@@ -18,6 +18,7 @@ if(count($ris) == 0)
 if($risposta['esisteGia'])
 {
     $_SESSION['ID'] = $ris[0]['IDUtente'];
+    $_SESSION['Tipo'] = $ris[0]['Ruolo'];
 }
 
 

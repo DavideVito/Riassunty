@@ -77,7 +77,6 @@ class Connessione {
             var_dump($stm->errorInfo());
         }
         
-
         return $stm->fetchAll(PDO::FETCH_ASSOC);   
     }
 
@@ -116,30 +115,37 @@ class Connessione {
     }
     
 
-    public function getRiassunto($idMateria, $anno, $proprietario)
+    public function getRiassunto($idMateria, $anno, $proprietario, $tipo)
     {
 
+        $sql = "SELECT * FROM `v_RiassuntiApprovati` as `Riass` WHERE 1 "; 
         
-	//SELECT *, AVG(Valutazione) FROM Riassunti LEFT JOIN Valutazioni using(IDRiassunto) GROUP BY Riassunti.IDRiassunto
-        $sql = "select `Riassunti`.`IDRiassunto` AS `IDRiassunto`,`Riassunti`.`Titolo` AS `Titolo`,`Riassunti`.`UrlPDF` AS `UrlPDF`,`Riassunti`.`UrlIMG` AS `UrlIMG`,`Riassunti`.`IDMateria` AS `IDMateria`,`Riassunti`.`Anno` AS `Anno`,`Riassunti`.`DataPubblicazione` AS `DataPubblicazione`,avg(`Valutazioni`.`Valutazione`) AS `Val` from (`Riassunti` left join `Valutazioni` on((`Riassunti`.`IDRiassunto` = `Valutazioni`.`IDRiassunto`))) where 1"; 
-        //$sql = "SELECT * FROM `v_riassunti` where 1";
+        if(($tipo === "Master" || $tipo === "Docente"))
+        {
+            $idMateria = NULL;
+            $anno = NULL;
+            $proprietario = NULL;
+        }
+        
         if($idMateria !== NULL)
         {
-            $sql .= " and IDMateria = :id ";
+            $sql .= " and `Riass`.IDMateria = :id ";
         }
        
         if($anno !== NULL)
         {
-            $sql .= "and Anno = :anno ";
+            $sql .= "and `Riass`.Anno = :anno ";
         }
-        
+        if(!($tipo === "Master" || $tipo === "Docente"))
+        {
+
+        }
+
         if($proprietario !== NULL)
         {
-            $sql .= " and IDUtente = :utente ";
+            $sql .= " and `Riass`.IDUtente = :utente ";
         }
-       
-        $sql .= " group by `Riassunti`.`IDRiassunto`,`Riassunti`.`Titolo`,`Riassunti`.`UrlPDF`,`Riassunti`.`UrlIMG`,`Riassunti`.`Anno`,`Riassunti`.`IDMateria`,`Riassunti`.`DataPubblicazione`, `Riassunti`.`IDUtente` order by `Val`,`Riassunti`.`DataPubblicazione` desc";
-        
+    
         $stm = $this->connessione->prepare($sql);
         if($idMateria !== NULL)
         {
@@ -243,6 +249,69 @@ class Connessione {
 
         return $b;
         
+    }
+
+    public function getRiassuntiNonApprovati($idMateria, $anno, $proprietario)
+    {
+        $sql = "SELECT * FROM `v_RiassuntiNonAprrovati` as `Riass` WHERE 1";
+        $stm = $this->connessione->prepare($sql);
+        if($idMateria !== NULL)
+        {
+            $sql .= " and IDMateria = :id ";
+        }
+       
+        if($anno !== NULL)
+        {
+            $sql .= "and Anno = :anno ";
+        }
+        
+        if($proprietario !== NULL)
+        {
+            $sql .= " and IDUtente = :utente ";
+        }
+       
+        $stm = $this->connessione->prepare($sql);
+        if($idMateria !== NULL)
+        {
+            $stm->bindParam(":id", $idMateria, PDO::PARAM_INT);
+        }
+
+        if($anno !== NULL)
+        {
+            $stm->bindParam(":anno", $anno, PDO::PARAM_STR);
+        }
+
+        if($proprietario !== NULL)
+        {
+            $stm->bindParam(":utente", $proprietario, PDO::PARAM_INT);
+        }
+
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+        }
+       
+        return $stm->fetchAll(PDO::FETCH_ASSOC);   
+    }
+
+    function approvaRiassunto($idRiassunto, $approvatoDa)
+    {
+        $sql = "INSERT INTO `RiassuntiApprovati`(`IDRiassunto`, `ApprovatoDa`) VALUES (:id,:da)";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":id", $idRiassunto, PDO::PARAM_INT);
+        $stm->bindParam(":da", $approvatoDa, PDO::PARAM_INT);
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+        }
+       
+        return $stm->fetchAll(PDO::FETCH_ASSOC);   
     }
 
 
