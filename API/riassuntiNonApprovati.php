@@ -31,9 +31,13 @@
     {
         $proprietario = NULL;
     }
-    
+    $tipo = "Studente";
+    if(isset($_SESSION['Tipo']))
+    {
+        $tipo = $_SESSION['Tipo'];
+    }
 
-    $anteprima = $connessione->getRiassuntiNonApprovati($idMateria, $anno, $proprietario);
+    $anteprima = $connessione->getRiassuntiNonApprovati($idMateria, $anno, $proprietario, $tipo);
 
     $ris = array();
 

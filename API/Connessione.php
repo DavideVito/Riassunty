@@ -251,10 +251,14 @@ class Connessione {
         
     }
 
-    public function getRiassuntiNonApprovati($idMateria, $anno, $proprietario)
+    public function getRiassuntiNonApprovati($idMateria, $anno, $proprietario, $tipo = "Studente")
     {
         $sql = "SELECT * FROM `v_RiassuntiNonAprrovati` as `Riass` WHERE 1";
         $stm = $this->connessione->prepare($sql);
+        if(!($tipo === "Master" || $tipo === "Docente"))
+        {
+            die();
+        }
         if($idMateria !== NULL)
         {
             $sql .= " and IDMateria = :id ";
