@@ -1,6 +1,6 @@
-let baseURL = window.location.href;
-baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
-baseURL = "https://vps.lellovitiello.tk/Riassunty/";
+/*let baseURL = window.location.href;
+baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "") + "";*/
+let baseURL = "https://vps.lellovitiello.tk/Riassunty/";
 
 
 function fetchIndirizzi() {
@@ -12,7 +12,6 @@ function fetchIndirizzi() {
     method: "POST",
     beforeSend: () => {
       document.getElementById("caricamentoDiv").className = "loading visibile";
-      console.log
     },
     success: async function (data) {
 
@@ -22,20 +21,8 @@ function fetchIndirizzi() {
 
         a.innerText = dati.Indirizzo;
         idMat = "materian" + i;
+        a.href = "#section" + i;
         a.id = idMat;
-
-        $(a).on("click", (e) => {
-
-          e.preventDefault();
-          let quanto = $("#section" + i).offset().top - 100;
-
-          $("html,body").animate({
-              scrollTop: quanto
-            },
-            500,
-            "slow"
-          );
-        })
 
         li.appendChild(a);
         li.className = "menu-item";
@@ -85,7 +72,7 @@ function fetchIndirizzi() {
 
             sessionStorage.materia = risultati[j].IDMateria
             window.history.pushState({}, "", "materie.html");
-            console.log(window.location.href)
+
             document.getElementById("outJS").innerHTML = "";
             document.getElementById("out2").innerHTML = "";
 
@@ -116,6 +103,23 @@ function fetchIndirizzi() {
       }
 
       document.getElementById("caricamentoDiv").className = "nascosta";
+      $('a[href*="#"]').on("click", function (e) {
+
+        e.preventDefault();
+
+        let target = $($(this).attr("href"));
+        console.log(target.length);
+
+
+        if (target.length) {
+          $('html, body').animate({
+            scrollTop: $(target).offset().top
+          }, 1000);
+        }
+
+
+
+      });
     }
   });
 }
@@ -334,7 +338,7 @@ async function getRiassunti(anno, materia, i) {
   divisore.className = nomeClasseSeparatore;
   sezioni.append(divisore);
 
-  $('a[href*="#"]').on("click", function () {
+  $('a[href*="#"]').on("click", function (e) {
     $("html,body").animate({
         scrollTop: $($(this).attr("href")).offset().top - 100
       },
@@ -342,17 +346,13 @@ async function getRiassunti(anno, materia, i) {
     );
     e.preventDefault();
   });
+
 }
 
 async function parsaAnni(anni) {
-  let i = 0;
-
-  for (i = 0; i < anni.length; i++) {
-
+  for (let i = 0; i < anni.length; i++) {
     await getRiassunti(anni[i], sessionStorage.materia, i);
   }
-
-
 }
 
 let anni = null;
@@ -372,7 +372,6 @@ $(window).on("load", async () => {
   document.getElementById("outJS").innerHTML = "";
   document.getElementById("out2").innerHTML = "";
   fetchIndirizzi();
-
 
   document.getElementById("brand").style = "cursor: pointer";
 });
@@ -431,3 +430,11 @@ async function fetchRiassunti(anno, materia) {
   let json = await risposta.json();
   return json;
 }
+
+$(window).scroll(function () {
+  if ($(this).scrollTop() > 100) {
+    $('.scrollup').fadeIn();
+  } else {
+    $('.scrollup').fadeOut();
+  }
+});

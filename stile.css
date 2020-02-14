@@ -20,9 +20,9 @@ body {
   font-family: 'Roboto';
   overflow-y: scroll;
   width: 100%;
-  /*overflow-x:hidden;*/
+  overflow-x: hidden;
 
-  overflow-y: auto;
+  /*overflow-y: auto;*/
 
 }
 
@@ -299,7 +299,7 @@ section {
     /*transform: translate(, );*/
     box-shadow: 0 5px 30px -4px rgba(0, 0, 0, 0.2);
     transition: all 0.3s;
-    overflow: auto;
+    /*overflow: auto;*/
   }
 
   ul.showMenu {
