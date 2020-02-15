@@ -1,6 +1,6 @@
 /*** Mixins & Default Styles ***/
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Raleway:300,400');
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Raleway:300,400");
 
 html {
   scroll-behavior: smooth;
@@ -16,7 +16,7 @@ html {
 body {
   text-decoration: none;
   background-color: black;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -62,7 +62,8 @@ nav.navShadow {
   height: 100px;
 }
 
-.navShadow li:hover {}
+.navShadow li:hover {
+}
 
 #brand,
 #menu,
@@ -76,10 +77,9 @@ ul {
 #brand {
   padding-left: 30px;
   width: 100px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   text-decoration: none;
 }
-
 
 #logo {
   width: 55px;
@@ -89,13 +89,12 @@ ul {
   cursor: pointer;
 }
 
-
 #word-mark {
   text-decoration: none;
   font-weight: 90;
   letter-spacing: 1px;
   padding-bottom: 25px;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-size: 13pt;
   width: 120px;
   height: 20px;
@@ -107,7 +106,7 @@ ul {
 
 /*** Menu Styles ***/
 #menu {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   padding-top: 11px;
   justify-content: flex-end;
   padding-right: 40px;
@@ -144,7 +143,7 @@ a:hover {
   list-style-type: none;
 }
 
-.menu-item+.menu-item {
+.menu-item + .menu-item {
   text-decoration: none;
   transition-duration: 0.3s;
   cursor: pointer;
@@ -269,7 +268,6 @@ section {
   font-weight: 900;
 }
 
-
 /*** Responsive Menu For Smaller Device ***/
 @media screen and (max-width: 800px) {
   #menu-toggle {
@@ -283,8 +281,8 @@ section {
     background: #000;
     position: absolute;
     top: 160px;
-    -webkit-transform: translate(, );
-    transform: translate(, );
+    -webkit-transform: translate();
+    transform: translate();
     box-shadow: 0 5px 30px -4px rgba(0, 0, 0, 0.2);
     transition: all 0.3s;
   }
@@ -308,9 +306,9 @@ section {
     margin-right: auto;
     margin-left: auto;
     color: black;
-    font-family: 'Quicksand';
+    font-family: "Quicksand";
     align-content: center;
-    /*width: 400px;*/
+    max-width: 70%;
     height: 300px;
     display: flex;
     justify-content: center;
@@ -341,28 +339,74 @@ section {
 }
 
 /*Custom*/
+
+#footer {
+  padding-top: 40px !important;
+  padding-bottom: 40px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 2;
+  padding-top: 10px;
+  background-color: black;
+  color: white;
+  font-weight: 400;
+  font-family: "Roboto";
+}
+
+#footer i:hover {
+  transform: scale(1.3);
+  transition-duration: 0.2s;
+}
+
+#footer i {
+  font-size: 20px;
+  margin: 0 5px;
+  cursor: pointer !important;
+  transition-duration: 0.2s;
+}
+
+#footer a {
+  color: white !important;
+  cursor: pointer !important;
+  transition-duration: 0.2s;
+}
+
+#footer p {
+  line-height: 1;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+#caricamento {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .sezione0 {
-  background-color: #5F1111;
+  background-color: #5f1111;
   color: rgb(255, 255, 255);
 }
 
 .sezione1 {
-  background-color: #5F114B;
+  background-color: #5f114b;
   color: rgb(255, 255, 255);
 }
 
 .sezione2 {
-  background-color: #3E115F;
+  background-color: #3e115f;
   color: rgb(255, 255, 255);
 }
 
 .sezione3 {
-  background-color: #11165F;
+  background-color: #11165f;
   color: rgb(255, 255, 255);
 }
 
 .sezione4 {
-  background-color: #115F50;
+  background-color: #115f50;
   color: rgb(255, 255, 255);
 }
 
@@ -377,43 +421,43 @@ section {
 }
 
 .sezione7 {
-  background-color: #5F1111;
+  background-color: #5f1111;
   color: rgb(255, 255, 255);
 }
 
 .separator0 {
   height: 50px;
   width: 100vw;
-  background: #5F1111;
-  background: linear-gradient(180deg, #5F1111 10%, #5F114B 89%);
+  background: #5f1111;
+  background: linear-gradient(180deg, #5f1111 10%, #5f114b 89%);
 }
 
 .separator1 {
   height: 50px;
   width: 100vw;
-  background: #5F114B;
-  background: linear-gradient(180deg, #5F114B 10%, #3E115F 89%);
+  background: #5f114b;
+  background: linear-gradient(180deg, #5f114b 10%, #3e115f 89%);
 }
 
 .separator2 {
   height: 50px;
   width: 100vw;
-  background: #3E115F;
-  background: linear-gradient(180deg, #3E115F 10%, #11165F 89%);
+  background: #3e115f;
+  background: linear-gradient(180deg, #3e115f 10%, #11165f 89%);
 }
 
 .separator3 {
   height: 50px;
   width: 100vw;
-  background: #11165F;
-  background: linear-gradient(180deg, #11165F 10%, #115F50 89%);
+  background: #11165f;
+  background: linear-gradient(180deg, #11165f 10%, #115f50 89%);
 }
 
 .separator4 {
   height: 50px;
   width: 100vw;
-  background: #115F50;
-  background: linear-gradient(180deg, #115F50 10%, #949121 89%);
+  background: #115f50;
+  background: linear-gradient(180deg, #115f50 10%, #949121 89%);
 }
 
 .separator5 {
@@ -427,7 +471,7 @@ section {
   height: 50px;
   width: 100vw;
   background: #943521;
-  background: linear-gradient(180deg, #943521 10%, #5F1111 89%);
+  background: linear-gradient(180deg, #943521 10%, #5f1111 89%);
 }
 
 .separator7 {
@@ -435,27 +479,27 @@ section {
 }
 
 #materian0:hover {
-  color: #5F1111;
+  color: #5f1111;
   transition-duration: 0.3s;
 }
 
 #materian1:hover {
-  color: #5F114B;
+  color: #5f114b;
   transition-duration: 0.3s;
 }
 
 #materian2:hover {
-  color: #3E115F;
+  color: #3e115f;
   transition-duration: 0.3s;
 }
 
 #materian3:hover {
-  color: #11165F;
+  color: #11165f;
   transition-duration: 0.3s;
 }
 
 #materian4:hover {
-  color: #115F50;
+  color: #115f50;
   transition-duration: 0.3s;
 }
 
@@ -470,7 +514,7 @@ section {
 }
 
 #materian7:hover {
-  color: #5F1111;
+  color: #5f1111;
   transition-duration: 0.3s;
 }
 
@@ -480,12 +524,12 @@ section {
   display: inline-flex;
   height: 60px;
   width: 250px;
-  border: 2px solid #FFF;
+  border: 2px solid #fff;
   margin: 20px 20px 20px 20px;
-  color: #FFF;
+  color: #fff;
   text-transform: uppercase;
   text-decoration: none;
-  font-size: .8em;
+  font-size: 0.8em;
   letter-spacing: 1.5px;
   align-items: center;
   justify-content: center;
@@ -506,7 +550,7 @@ a {
 
 #button-3 a {
   position: relative;
-  transition: all .45s ease-Out;
+  transition: all 0.45s ease-Out;
 }
 
 #circle {
@@ -515,9 +559,9 @@ a {
   opacity: 0;
   line-height: 40px;
   border-radius: 50%;
-  background: #FFF;
+  background: #fff;
   position: absolute;
-  transition: all .5s ease-Out;
+  transition: all 0.5s ease-Out;
   top: 20px;
   left: 70px;
 }
@@ -534,7 +578,7 @@ a {
   color: #000;
 }
 
-@media screen and (min-width:1000px) {
+@media screen and (min-width: 1000px) {
   h1 {
     font-size: 2.2em;
   }
@@ -564,9 +608,10 @@ a {
   margin-right: auto;
   margin-left: auto;
   color: black;
-  font-family: 'Quicksand';
+  font-family: "Quicksand";
   align-content: center;
-  max-width: 70%;
+  max-width: 30%;
+  min-width: 400px;
   height: 300px;
   display: flex;
   justify-content: center;
@@ -577,7 +622,7 @@ a {
 .testo {
   font-weight: 900;
   position: absolute;
-  font-family: 'Roboto';
+  font-family: "Roboto";
   z-index: 9999;
   text-align: center;
   vertical-align: middle;

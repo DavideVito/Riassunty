@@ -18,10 +18,7 @@ function fetchIndirizzi() {
   $.ajax({
     url: url,
     method: "POST",
-    beforeSend: () => {
-      document.getElementById("caricamentoDiv").className = "loading visibile";
-      console.log;
-    },
+    beforeSend: () => {},
     success: async function(data) {
       async function stampa(dati, i) {
         let li = document.createElement("li");
@@ -107,7 +104,7 @@ function fetchIndirizzi() {
       for (let i = 0; i < data.length; i++) {
         await stampa(data[i], i);
       }
-      document.getElementById("caricamentoDiv").className = "nascosta";
+
       $('a[href*="#"]').on("click", function(e) {
         $("html,body").animate(
           {
@@ -365,12 +362,12 @@ async function parsaAnni(anni) {
 }
 
 async function prendiAnnieParsali() {
-  document.getElementById("caricamentoDiv").className = "loading visibile";
+  /*document.getElementById("caricamentoDiv").className = "loading visibile";*/
   sessionStorage.removeItem("riassunto");
   anni = await fetchAnni();
 
   await parsaAnni(anni);
-  document.getElementById("caricamentoDiv").className = "nascosta";
+  //document.getElementById("caricamentoDiv").className = "nascosta";
 }
 
 jQuery(document).ready(function($) {
