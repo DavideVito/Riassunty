@@ -1,56 +1,71 @@
-<!DOCTYPE html>
 <html>
-<script>
-  window.location.href = "index.html"
-</script>
 
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="AlterVista - Editor HTML" />
-  <title></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <link rel="icon" href="https://riassunty.altervista.org/logoITIS.jpg" type="image/jpg" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+  <script src="provone.js"></script>
+  <script src="API/app.js"></script>
+  <title>Riassunti</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="stile.css" />
 </head>
 
-<body><br><br>
-  Elettrotecnica<br>
-  Tecnologie e Progettazione di Sistemi Elettrici ed Elettronici => TPSEE
-  <br>
-  Elettrotecnica ed Elettronica => Elettrotecnica
-  <br>
-  Sistemi Automatici => Sistemi
-  <br><br><br>
-  Chimica<br>
-  Chimica Analitica e Strumentale => Analitica
-  <br>
-  Tecnologie Chimiche Industriali => Chimica
-  <br>
-  Chimica Organica e Biochimica => Organica
-  <br><br><br>
-  Sanitario<br>
-  Chimica Organica e Biochimica => Organica
-  <br>
-  Biologia, Microbiologia e Tecnologie di Controllo Sanitario => Biologia
-  <br>
-  Igiene, Anatomia, Fisiologia, Patologia => Anatomia
-  <br>
-  Chimica Analitica e Strumentale => Analitica
-  <br>
-  <br><br>Automazione<br>
-  Sistemi automatici => Sistemi<br>
-  Tecnologie e Progettazione di Sistemi Elettrici ed Elettronici => TPSEE<br>
-  Elettrotecnica ed Elettronica => Elettrotecnica<br>
-  <br><br>Ambientale<br>
-  Fisica Ambientale => Fisica<br>
-  Biologia, Microbiologia e Tecnologie di Controllo Ambientale => Biologia<br>
-  Chimica Organica e Biochimica => Organica<br>
-  Chimica Analitica e Strumentale => Analitica <br>
-  <br><br>Meccanica<br>
-  Tecnologie meccaniche => Tecnologia<br>
-  Meccanica, Macchine ed Energie => Meccanica<br>
-  Sistemi e Automazione => Sistemi<br>
-  Disegno, Progettazione e Organizzazione Industriale => Disegno
+<body>
 
-  <p>&nbsp;</p>
+  <header>
+    <nav>
+      <style>
+        .nascosta {
+          display: none;
+        }
 
+        .visibile {
+          display: block;
+        }
+      </style>
+
+      <div id="brand">
+        <div id="logo"> <img id="fotoLogo" src="https://riassunty.altervista.org/logoBIANCO.jpg"
+            style="height: 100%; width: 100%; border-radius: 45%;">
+        </div>
+      </div>
+
+      <div id="menu">
+        <div id="menu-toggle">
+          <div id="menu-icon">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+        </div>
+
+        <ul id="outJS">
+        </ul>
+      </div>
+    </nav>
+
+    <div id="hero-section">
+      <div id="head-line" style="margin-top: 20%">
+        <div class="row justify-content-center">
+          <div id="caricamentoDiv" class="loading"></div>
+          <div class="button" id="button-3" onclick="window.location.href = 'Login.html'">
+            <div id="circle"></div><a>Per caricare un riassunto</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  </div>
+  <div id="out2">
+    <div class="separator"></div>
+  </div>
+  <div id="footer"></div>
 </body>
 
 </html>

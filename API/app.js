@@ -1,6 +1,11 @@
-/*let baseURL = window.location.href;
-baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "") + "";*/
-let baseURL = "https://vps.lellovitiello.tk/Riassunty/";
+let cliccato = false;
+
+let riassunti = [];
+let massimo = 3;
+
+let baseURL = window.location.href;
+baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
+baseURL = "https://vps.lellovitiello.tk/Riassunty/";
 
 
 function fetchIndirizzi() {
@@ -12,6 +17,7 @@ function fetchIndirizzi() {
     method: "POST",
     beforeSend: () => {
       document.getElementById("caricamentoDiv").className = "loading visibile";
+      console.log
     },
     success: async function (data) {
 
@@ -69,14 +75,9 @@ function fetchIndirizzi() {
 
           let a = document.createElement("a");
           button.addEventListener("click", () => {
-
-            sessionStorage.materia = risultati[j].IDMateria
-            window.history.pushState({}, "", "materie.html");
-
-            document.getElementById("outJS").innerHTML = "";
-            document.getElementById("out2").innerHTML = "";
-
-            prendiAnnieParsali();
+            sessionStorage.materia = risultati[j].IDMateria;
+            window.location.reload();
+            //alert(sessionStorage.materia);
           });
 
           a.innerText = risultati[j].Materia;
@@ -101,35 +102,18 @@ function fetchIndirizzi() {
       for (let i = 0; i < data.length; i++) {
         await stampa(data[i], i);
       }
-
       document.getElementById("caricamentoDiv").className = "nascosta";
       $('a[href*="#"]').on("click", function (e) {
-
+        $("html,body").animate({
+            scrollTop: $($(this).attr("href")).offset().top - 100
+          },
+          500
+        );
         e.preventDefault();
-
-        let target = $($(this).attr("href"));
-        console.log(target.length);
-
-
-        if (target.length) {
-          $('html, body').animate({
-            scrollTop: $(target).offset().top
-          }, 1000);
-        }
-
-
-
       });
     }
   });
 }
-
-window.addEventListener('popstate', function () {
-  document.getElementById("out2").innerHTML = "";
-  document.getElementById("outJS").innerHTML = "";
-  fetchIndirizzi();
-});
-
 async function fetchMaterie(indirizzoHovered) {
   let resFetch = await fetch(
     baseURL.replace(/#section(\d)/, "") + "API/materie.php?indirizzo=" + indirizzoHovered
@@ -186,9 +170,7 @@ function stampaBottoni(dove, risultati, quanto) {
 
     $(divContenitore).hover(
       () => {
-
-        divTesto.innerHTML = risultati[j].Titolo;
-        console.log(divTesto);
+        divTesto.textContent = risultati[j].Titolo;
 
         $(divImmagine).css({
           filter: filtroIn,
@@ -256,7 +238,7 @@ async function getRiassunti(anno, materia, i) {
   let li = document.createElement("li");
   let a = document.createElement("a");
 
-  a.innerText = anno + String.fromCharCode(176);
+  a.innerText = anno + "°";
   a.href = "#section" + i;
 
   li.appendChild(a);
@@ -286,7 +268,7 @@ async function getRiassunti(anno, materia, i) {
 
   divIndirizzo.setAttribute("data-sort", anno);
   divIndirizzo.style = "margin-bottom: 80px";
-  divIndirizzo.innerText = anno + String.fromCharCode(176);
+  divIndirizzo.innerText = anno + "°";
 
   heading.appendChild(divIndirizzo);
 
@@ -314,6 +296,8 @@ async function getRiassunti(anno, materia, i) {
 
   let aAltro = document.createElement("a");
   buttonAltro.addEventListener("click", () => {
+    //  ;
+
     if (risultati.length == 0) {
       return;
     }
@@ -342,39 +326,47 @@ async function getRiassunti(anno, materia, i) {
     $("html,body").animate({
         scrollTop: $($(this).attr("href")).offset().top - 100
       },
-      500, "linear"
+      500
     );
     e.preventDefault();
   });
-
 }
 
 async function parsaAnni(anni) {
-  for (let i = 0; i < anni.length; i++) {
+  let i = 0;
+
+  for (i = 0; i < anni.length; i++) {
     await getRiassunti(anni[i], sessionStorage.materia, i);
   }
+
+
 }
+
+jQuery(document).ready(function ($) {
+  $("#brand").on("click", () => {
+    sessionStorage.clear();
+    window.location.reload();
+  });
+
+  
+});
 
 let anni = null;
 
-async function prendiAnnieParsali() {
-  document.getElementById("caricamentoDiv").className = "loading visibile";
-  sessionStorage.removeItem("riassunto");
-  anni = await fetchAnni();
-
-  await parsaAnni(anni);
-  document.getElementById("caricamentoDiv").className = "nascosta";
-}
-
 $(window).on("load", async () => {
-
-  sessionStorage.clear();
-  document.getElementById("outJS").innerHTML = "";
-  document.getElementById("out2").innerHTML = "";
-  fetchIndirizzi();
+  if (sessionStorage.materia) {
+    document.getElementById("caricamentoDiv").className = "loading visibile";
+    sessionStorage.removeItem("riassunto");
+    anni = await fetchAnni();
+    await parsaAnni(anni);
+    document.getElementById("caricamentoDiv").className = "nascosta";
+  }
+  else{
+    fetchIndirizzi();
+  
 
   document.getElementById("brand").style = "cursor: pointer";
-});
+}});
 
 function scorlla(to) {
   window.location = window.location.href + to.id;
@@ -390,30 +382,26 @@ function isInViewport(elemento) {
 
 $(document, window).on("scroll", () => {
 
-  let showMenu = document.getElementsByClassName("showMenu")[0];
-
   let elemento = document.getElementsByClassName("navShadow")[0];
   if (elemento === null || typeof elemento === "undefined") {
-    if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoBIANCO.jpg") {
-
+    if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoBIANCO.jpg")
+     {
+      document.getElementsByClassName("showMenu")[0].className="showMenu bianco"; 
       return;
     }
 
 
     document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoBIANCO.jpg";
-    if (typeof showMenu !== "undefined" && showMenu !== null) {
-      showMenu.className = "showMenu bianco";
-    }
-
+    document.getElementsByClassName("showMenu")[0].className="showMenu bianco";
     return;
   }
 
   if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoNERO.jpg") {
+    document.getElementsByClassName("showMenu")[0].className="showMenu nero";
     return;
   }
-  if (typeof showMenu !== "undefined" && showMenu !== null) {
-    showMenu.className = "showMenu nero";
-  }
+  document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoNERO.jpg";
+  document.getElementsByClassName("showMenu")[0].className="showMenu nero";
 })
 
 async function fetchRiassunti(anno, materia) {
@@ -430,11 +418,3 @@ async function fetchRiassunti(anno, materia) {
   let json = await risposta.json();
   return json;
 }
-
-$(window).scroll(function () {
-  if ($(this).scrollTop() > 100) {
-    $('.scrollup').fadeIn();
-  } else {
-    $('.scrollup').fadeOut();
-  }
-});
