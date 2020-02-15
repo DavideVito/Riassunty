@@ -1,12 +1,15 @@
 let cliccato = false;
-
+let anni = null;
 let riassunti = [];
 let massimo = 3;
+let stato = "Meno";
 
 let baseURL = window.location.href;
-baseURL = baseURL.replace(new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/), "");
+baseURL = baseURL.replace(
+  new RegExp(/([a-zA-Z0-9\s_\\.\-\(\):])+(.html|.php)$/),
+  ""
+);
 baseURL = "https://vps.lellovitiello.tk/Riassunty/";
-
 
 function fetchIndirizzi() {
   sessionStorage.clear();
@@ -17,10 +20,9 @@ function fetchIndirizzi() {
     method: "POST",
     beforeSend: () => {
       document.getElementById("caricamentoDiv").className = "loading visibile";
-      console.log
+      console.log;
     },
-    success: async function (data) {
-
+    success: async function(data) {
       async function stampa(dati, i) {
         let li = document.createElement("li");
         let a = document.createElement("a");
@@ -76,8 +78,12 @@ function fetchIndirizzi() {
           let a = document.createElement("a");
           button.addEventListener("click", () => {
             sessionStorage.materia = risultati[j].IDMateria;
-            window.location.reload();
-            //alert(sessionStorage.materia);
+            window.history.pushState({}, "", "materie.html");
+            console.log(window.location.href);
+            document.getElementById("outJS").innerHTML = "";
+            document.getElementById("out2").innerHTML = "";
+
+            prendiAnnieParsali();
           });
 
           a.innerText = risultati[j].Materia;
@@ -95,7 +101,6 @@ function fetchIndirizzi() {
         let divisore = document.createElement("div"); //separator
         divisore.className = nomeClasseSeparatore;
         sezioni.append(divisore);
-
       }
 
       let olHTML = $("#outJS");
@@ -103,8 +108,9 @@ function fetchIndirizzi() {
         await stampa(data[i], i);
       }
       document.getElementById("caricamentoDiv").className = "nascosta";
-      $('a[href*="#"]').on("click", function (e) {
-        $("html,body").animate({
+      $('a[href*="#"]').on("click", function(e) {
+        $("html,body").animate(
+          {
             scrollTop: $($(this).attr("href")).offset().top - 100
           },
           500
@@ -116,20 +122,26 @@ function fetchIndirizzi() {
 }
 async function fetchMaterie(indirizzoHovered) {
   let resFetch = await fetch(
-    baseURL.replace(/#section(\d)/, "") + "API/materie.php?indirizzo=" + indirizzoHovered
+    baseURL.replace(/#section(\d)/, "") +
+      "API/materie.php?indirizzo=" +
+      indirizzoHovered
   );
   let risposta = await resFetch.json();
   return risposta;
 }
 
 async function fetchAnni() {
-  let resFetch = await fetch(baseURL.replace(/#section(\d)/, "") + "API/ottieniAnni.php");
+  let resFetch = await fetch(
+    baseURL.replace(/#section(\d)/, "") + "API/ottieniAnni.php"
+  );
   let risposta = await resFetch.json();
   return risposta;
 }
 
 async function fetchRiassunto(id) {
-  let risposta = await fetch(baseURL.replace(/#section(\d)/, "") + "API/riassunto.php?id=" + id);
+  let risposta = await fetch(
+    baseURL.replace(/#section(\d)/, "") + "API/riassunto.php?id=" + id
+  );
   let json = await risposta.json();
   return json;
 }
@@ -216,11 +228,13 @@ function stampaBottoni(dove, risultati, quanto) {
       }
     );
 
-    let obj =
-      $(divImmagine).css({
-        'background-image': 'url("' + baseURL.replace(/#section(\d)/, "") + risultati[j].URLImmagine + '")'
-      });
-
+    let obj = $(divImmagine).css({
+      "background-image":
+        'url("' +
+        baseURL.replace(/#section(\d)/, "") +
+        risultati[j].URLImmagine +
+        '")'
+    });
 
     divContenitore.appendChild(divTesto);
     divContenitore.appendChild(divImmagine);
@@ -230,7 +244,6 @@ function stampaBottoni(dove, risultati, quanto) {
 }
 
 async function getRiassunti(anno, materia, i) {
-
   let olHTML = $("#outJS");
 
   let data = await fetchRiassunti(anno, materia);
@@ -268,7 +281,7 @@ async function getRiassunti(anno, materia, i) {
 
   divIndirizzo.setAttribute("data-sort", anno);
   divIndirizzo.style = "margin-bottom: 80px";
-  divIndirizzo.innerText = anno + "°";
+  divIndirizzo.innerText = anno + String.fromCharCode(176);
 
   heading.appendChild(divIndirizzo);
 
@@ -296,15 +309,24 @@ async function getRiassunti(anno, materia, i) {
 
   let aAltro = document.createElement("a");
   buttonAltro.addEventListener("click", () => {
-    //  ;
-
     if (risultati.length == 0) {
       return;
     }
-    oldRiga.innerHTML = "";
-    riga.innerHTML = "";
 
-    stampaBottoni(oldRiga, risultati, risultati.length);
+    oldRiga.innerHTML = "";
+
+    if (stato === "Meno") {
+      stampaBottoni(oldRiga, risultati, risultati.length);
+      aAltro.innerText = "Mostra Meno";
+      stato = "Altro";
+      return;
+    }
+    if (stato === "Altro") {
+      stampaBottoni(oldRiga, risultati, 3);
+      aAltro.innerText = "Mostra Altro";
+      stato = "Meno";
+      return;
+    }
   });
 
   aAltro.innerText = "Mostra Altro";
@@ -315,6 +337,7 @@ async function getRiassunti(anno, materia, i) {
   riga.appendChild(buttonAltro);
 
   container.appendChild(riga);
+
   sezione.append(container);
 
   sezioni.append(sezione);
@@ -322,8 +345,9 @@ async function getRiassunti(anno, materia, i) {
   divisore.className = nomeClasseSeparatore;
   sezioni.append(divisore);
 
-  $('a[href*="#"]').on("click", function (e) {
-    $("html,body").animate({
+  $('a[href*="#"]').on("click", function(e) {
+    $("html,body").animate(
+      {
         scrollTop: $($(this).attr("href")).offset().top - 100
       },
       500
@@ -338,35 +362,30 @@ async function parsaAnni(anni) {
   for (i = 0; i < anni.length; i++) {
     await getRiassunti(anni[i], sessionStorage.materia, i);
   }
-
-
 }
 
-jQuery(document).ready(function ($) {
+async function prendiAnnieParsali() {
+  document.getElementById("caricamentoDiv").className = "loading visibile";
+  sessionStorage.removeItem("riassunto");
+  anni = await fetchAnni();
+
+  await parsaAnni(anni);
+  document.getElementById("caricamentoDiv").className = "nascosta";
+}
+
+jQuery(document).ready(function($) {
   $("#brand").on("click", () => {
     sessionStorage.clear();
     window.location.reload();
   });
-
-  
 });
 
-let anni = null;
-
 $(window).on("load", async () => {
-  if (sessionStorage.materia) {
-    document.getElementById("caricamentoDiv").className = "loading visibile";
-    sessionStorage.removeItem("riassunto");
-    anni = await fetchAnni();
-    await parsaAnni(anni);
-    document.getElementById("caricamentoDiv").className = "nascosta";
-  }
-  else{
-    fetchIndirizzi();
-  
-
-  document.getElementById("brand").style = "cursor: pointer";
-}});
+  sessionStorage.clear();
+  document.getElementById("outJS").innerHTML = "";
+  document.getElementById("out2").innerHTML = "";
+  fetchIndirizzi();
+});
 
 function scorlla(to) {
   window.location = window.location.href + to.id;
@@ -381,35 +400,43 @@ function isInViewport(elemento) {
 }
 
 $(document, window).on("scroll", () => {
-
   let elemento = document.getElementsByClassName("navShadow")[0];
   if (elemento === null || typeof elemento === "undefined") {
-    if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoBIANCO.jpg")
-     {
-      document.getElementsByClassName("showMenu")[0].className="showMenu bianco"; 
+    if (
+      document.getElementById("fotoLogo").src ==
+      "https://riassunty.altervista.org/logoBIANCO.jpg"
+    ) {
+      document.getElementsByClassName("showMenu")[0].className =
+        "showMenu bianco";
       return;
     }
 
-
-    document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoBIANCO.jpg";
-    document.getElementsByClassName("showMenu")[0].className="showMenu bianco";
+    document.getElementById("fotoLogo").src =
+      "https://riassunty.altervista.org/logoBIANCO.jpg";
+    document.getElementsByClassName("showMenu")[0].className =
+      "showMenu bianco";
     return;
   }
 
-  if (document.getElementById("fotoLogo").src == "https://riassunty.altervista.org/logoNERO.jpg") {
-    document.getElementsByClassName("showMenu")[0].className="showMenu nero";
+  if (
+    document.getElementById("fotoLogo").src ==
+    "https://riassunty.altervista.org/logoNERO.jpg"
+  ) {
+    document.getElementsByClassName("showMenu")[0].className = "showMenu nero";
     return;
   }
-  document.getElementById("fotoLogo").src = "https://riassunty.altervista.org/logoNERO.jpg";
-  document.getElementsByClassName("showMenu")[0].className="showMenu nero";
-})
+  document.getElementById("fotoLogo").src =
+    "https://riassunty.altervista.org/logoNERO.jpg";
+  document.getElementsByClassName("showMenu")[0].className = "showMenu nero";
+});
 
 async function fetchRiassunti(anno, materia) {
-  let url = baseURL.replace(/#section(\d)/, "") +
+  let url =
+    baseURL.replace(/#section(\d)/, "") +
     "API/anteprima.php?idMateria=" +
     Number(materia) +
     "&anno=" +
-    Number(anno)
+    Number(anno);
 
   let risposta = await fetch(url);
 
