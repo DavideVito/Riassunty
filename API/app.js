@@ -18,8 +18,11 @@ function fetchIndirizzi() {
   $.ajax({
     url: url,
     method: "POST",
-    beforeSend: () => {},
+    beforeSend: () => {
+      //sta caricando
+    },
     success: async function(data) {
+      //ha finito
       async function stampa(dati, i) {
         let li = document.createElement("li");
         let a = document.createElement("a");
@@ -104,6 +107,7 @@ function fetchIndirizzi() {
       for (let i = 0; i < data.length; i++) {
         await stampa(data[i], i);
       }
+      document.getElementById("caricamento").className="nascosto";
 
       $('a[href*="#"]').on("click", function(e) {
         $("html,body").animate(
