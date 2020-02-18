@@ -19,6 +19,16 @@ function fetchIndirizzi() {
     url: url,
     method: "POST",
     beforeSend: () => {
+
+      let gif='[{    "url": "https://i.pinimg.com/originals/90/80/60/9080607321ab98fa3e70dd24b2513a20.gif", "colori":[25, 31, 38]},{"url": "https://mir-s3-cdn-cf.behance.net/project_modules/disp/e8e6e333001507.569c8e662ff30.gif",    "colori":[75, 82, 93]},{    "url": "https://i.pinimg.com/originals/78/e8/26/78e826ca1b9351214dfdd5e47f7e2024.gif",    "colori":[255, 255, 255]},{    "url": "https://gifimage.net/wp-content/uploads/2018/10/black-background-loading-gif-7.gif",   "colori":[14, 17, 31]},{    "url": "https://digitalsynopsis.com/wp-content/uploads/2016/06/loading-animations-preloader-gifs-ui-ux-effects-18.gif",    "colori":[255, 255, 255]},{    "url": "https://miro.medium.com/max/1600/1*r4K1PRHfbKG7NpoRx22K4A.gif",    "colori":[255, 255, 255]},{   "url": "https://www.demilked.com/magazine/wp-content/uploads/2016/06/gif-animations-replace-loading-screen-11.gif",    "colori":[255, 255, 255]},{    "url": "https://static-steelkiwi-dev.s3.amazonaws.com/media/filer_public/f5/2d/f52dbbc7-f0fe-4ef7-9192-1580de2da276/543aa75c-67ff-4b98-b1b9-12054ef3fbe9.gif",   "colori":[255, 255, 255]},{    "url": "https://lh3.googleusercontent.com/proxy/ScTXur4sxqZMBqT1JJ9LnQ59Dd_5LulIoaSvlwX5zJX8WmLS_E3ik9hW7YT5sM54ldSMRlJ8hhaBv5NusIBSfXOT0yQoGJ7Qwyi1XsCWxaYwT3V3pJz1ri1NV5wlAWs",    "colori":[255, 255, 255]}]'
+      let dati=JSON.parse(gif);
+      let num=Math.floor(Math.random() * 10);
+      let divCar=document.getElementById("caricamento")
+      divCar.src=dati[num].url;
+      $(divCar).css({
+        backgroundColor:"rgb("+dati[num].colori[0]+","+dati[num].colori[1]+","+dati[num].colori[2]+");"
+      })
+      console.log(num);
       //sta caricando
     },
     success: async function(data) {
@@ -409,6 +419,7 @@ $(document, window).on("scroll", () => {
     ) {
       document.getElementsByClassName("showMenu")[0].className =
         "showMenu bianco";
+        elemento.style="color:white";
       return;
     }
 
@@ -416,6 +427,7 @@ $(document, window).on("scroll", () => {
       "https://riassunty.altervista.org/logoBIANCO.jpg";
     document.getElementsByClassName("showMenu")[0].className =
       "showMenu bianco";
+      elemento.style="color:white";
     return;
   }
 
@@ -424,10 +436,12 @@ $(document, window).on("scroll", () => {
     "https://riassunty.altervista.org/logoNERO.jpg"
   ) {
     document.getElementsByClassName("showMenu")[0].className = "showMenu nero";
+    elemento.style="color:black;";
     return;
   }
   document.getElementById("fotoLogo").src =
     "https://riassunty.altervista.org/logoNERO.jpg";
+    elemento.style="color:black;";
   document.getElementsByClassName("showMenu")[0].className = "showMenu nero";
 });
 

@@ -297,7 +297,6 @@ section {
   ul.showMenu li {
     margin-left: 38%;
     height: 80px;
-
     opacity: 1;
     visibility: visible;
   }
@@ -339,6 +338,14 @@ section {
 }
 
 /*Custom*/
+
+.bianco{
+  color:white;
+}
+
+.nero{
+  color:black;
+}
 
 #footer {
   padding-top: 40px !important;
