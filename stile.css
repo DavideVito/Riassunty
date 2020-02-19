@@ -275,6 +275,7 @@ section {
   }
 
   ul {
+    text-align:center;
     display: inline-block;
     width: 100vw;
     height: 0;
@@ -299,6 +300,14 @@ section {
     height: 80px;
     opacity: 1;
     visibility: visible;
+  }
+
+  #body {
+    overflow:hidden;
+    box-sizing: border-box;
+    display:block;
+    position:static;
+    margin-left:60%;
   }
 
   .azienda {
@@ -339,11 +348,23 @@ section {
 
 /*Custom*/
 
-.bianco{
+.biancoTutto{
+  background-color: black;
   color:white;
 }
 
+.neroTutto{
+  background-color: white;
+  color:black;
+}
+
+.bianco{
+  /*background-color: black !important;*/
+  color:white ;
+}
+
 .nero{
+ /* background-color: white !important;*/
   color:black;
 }
 
