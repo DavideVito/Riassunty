@@ -1,6 +1,15 @@
 <?php 
 session_start();
-header("Access-Control-Allow-Origin: *");
+
+$a = headers_list();
+
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+
+$a = headers_list();
 
 require "Connessione.php";
 

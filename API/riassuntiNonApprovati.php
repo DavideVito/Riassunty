@@ -2,7 +2,12 @@
     session_start();
     
     require "Connessione.php";    
-    header("Access-Control-Allow-Origin: *");
+    if (isset($_SERVER['HTTP_ORIGIN'])) {
+        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+        header('Access-Control-Allow-Credentials: true');
+        header('Access-Control-Max-Age: 86400');    // cache for 1 day
+    }
+    
     header("content-type: application/json");
 
     $connessione = new Connessione();
@@ -36,6 +41,7 @@
     {
         $tipo = $_SESSION['Tipo'];
     }
+
 
     $anteprima = $connessione->getRiassuntiNonApprovati($idMateria, $anno, $proprietario, $tipo);
 
