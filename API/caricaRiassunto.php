@@ -1,10 +1,15 @@
 <?php
 session_start();
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');
+    header('Access-Control-Max-Age: 86400');    // cache for 1 day
+}
+
 if(!isset($_SESSION['ID']))
 {
-    echo "<script>window.location = '../Login.html'</script>";die();
+    header("Location: {$_SERVER['HTTP_ORIGIN']}/Login")
 }
-header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json; charset=utf-8');
 
 
