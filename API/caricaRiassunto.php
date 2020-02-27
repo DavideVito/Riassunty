@@ -53,7 +53,7 @@ $im->setImageFormat('png');
 $im->writeImage("../Immagini/" . $tmp . ".SHA512=$hashFile.png"); 
 unlink("../Riassunti/". $secondArg. ".SHA512=$hashFile");
 
-$esito = $connessione->inserisci($nomeFile, $tmp ,".SHA512=$hashFile", $tmp, $_POST['indirizzi'], $_POST['materie'], $_POST['anno']);
+$esito = $connessione->inserisci($nomeFile, $tmp ,".SHA512=$hashFile", $tmp, $_POST['indirizzi'], $_POST['materie'], $_POST['anno'], $idUtente);
 
 if($esito === true && strcmp($a, "") === 0)
 {
