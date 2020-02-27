@@ -173,7 +173,7 @@ class Connessione {
         return $stm->fetchAll(PDO::FETCH_ASSOC);   
     }
 
-    public function inserisci($nomePdf, $fsPDF, $sha, $immagine, $indirizzo, $matiera, $anno)
+    public function inserisci($nomePdf, $fsPDF, $sha, $immagine, $indirizzo, $matiera, $anno, $idUtente)
     {
         $sql = "INSERT INTO `Riassunti`(`Titolo`, `IDUtente`, `UrlPDF`, `UrlIMG`, `IDMateria`, `Anno`) VALUES (:titolo, :IDUtente ,:urlP, :urlI, :idMateria, :anno); ";
        
@@ -188,7 +188,7 @@ class Connessione {
         
 
         $stm->bindParam(":titolo", $nomePdf, PDO::PARAM_STR);
-        $stm->bindParam(":IDUtente", $_SESSION['ID'], PDO::PARAM_INT);
+        $stm->bindParam(":IDUtente", $idUtente, PDO::PARAM_INT);
         $stm->bindParam(":urlP", $urlPdf, PDO::PARAM_STR);
         $stm->bindParam(":urlI", $urlImage, PDO::PARAM_STR);
         $stm->bindParam(":idMateria", $matiera, PDO::PARAM_INT);
@@ -316,6 +316,52 @@ class Connessione {
         }
        
         return $stm->fetchAll(PDO::FETCH_ASSOC);   
+    }
+
+    public static function generateToken()
+    {
+        return hash("sha512" ,bin2hex(random_bytes(1000000)));
+    }
+
+    public function inserisciToken($idUtente, $token)
+    {
+        $sql = "INSERT INTO `Tokens`(`Token`, `IDUtente`, `Scadenza`) VALUES (:token, :idUtente, :scadenza);";
+        $now = new DateTime(); //current date/time
+        $now->add(new DateInterval("PT3H"));
+        $scadenza = $now->format('Y-m-d H:i:s');
+
+
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":token", $token, PDO::PARAM_STR);
+        $stm->bindParam(":idUtente", $idUtente, PDO::PARAM_INT);
+        $stm->bindParam(":scadenza", $scadenza, PDO::PARAM_STR);
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+        }
+
+        return $scadenza;
+    }
+
+    public function controllaValidita($token)
+    {
+        $sql = "SELECT Token as a, IDUtente as b FROM Tokens WHERE `Tokens`.`Scadenza` > CURRENT_TIMESTAMP and `Tokens`.`Token`= :token";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":token", $token, PDO::PARAM_STR);
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+        }
+
+        $esito = $stm->fetchAll(PDO::FETCH_ASSOC)[0];
+
+        return $esito;
     }
 
 

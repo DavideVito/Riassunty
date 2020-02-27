@@ -1,21 +1,19 @@
 <?php
-session_start();
-if (isset($_SERVER['HTTP_ORIGIN'])) {
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-    header('Access-Control-Allow-Credentials: true');
-    header('Access-Control-Max-Age: 86400');    // cache for 1 day
-}
-
-if(!isset($_SESSION['ID']))
-{
-    header("Location: {$_SERVER['HTTP_ORIGIN']}/Login")
-}
-header('Content-Type: application/json; charset=utf-8');
-
-
-require "Connessione.php";
-
+require "Connessione.php";    header("Access-Control-Allow-Origin: *");
+header("content-type: application/json");
 $connessione = new Connessione();
+if(!isset($_POST['token']))
+{
+    //Redirect
+}
+
+$token = $connessione->controllaValidita($_POST['token']);
+if($token === null)
+{
+    //Redirect
+}
+
+$idUtente = $token['b'];
 
 $filePDF = $_FILES['pdfDaCaricare']['tmp_name'];
 
