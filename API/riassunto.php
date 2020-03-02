@@ -6,6 +6,7 @@ header("Access-Control-Allow-Origin: *");
     $connessione = new Connessione();
 
     $id = NULL;
+    $nome = NULL;
 
     if(isset($_GET['id']))
     {

@@ -1,5 +1,5 @@
 <?php 
-    session_start();
+    //session_start();
     
     require "Connessione.php";    
     header("Access-Control-Allow-Origin: *");
@@ -11,6 +11,7 @@
     $anno = NULL;
     $proprietario = NULL;
     $tipo = NULL;
+    $nome = NULL;
 
     if(isset($_GET['idMateria']))
     {
@@ -19,6 +20,11 @@
     if(isset($_GET['anno']))
     {
         $anno = $_GET['anno'];
+    }
+
+    if(isset($_GET['nome']))
+    {
+        $nome = $_GET['nome'];
     }
 
     if(isset($_SESSION['Tipo']))
@@ -39,7 +45,7 @@
     }
     
 
-    $anteprima = $connessione->getRiassunto($idMateria, $anno, $proprietario, $tipo);
+    $anteprima = $connessione->getRiassunto($idMateria, $anno, $proprietario, $tipo, $nome);
 
     $ris = array();
 

@@ -115,7 +115,7 @@ class Connessione {
     }
     
 
-    public function getRiassunto($idMateria, $anno, $proprietario, $tipo)
+    public function getRiassunto($idMateria, $anno, $proprietario, $tipo, $nome)
     {
 
         $sql = "SELECT * FROM `v_RiassuntiApprovati` as `Riass` WHERE 1 "; 
@@ -136,6 +136,12 @@ class Connessione {
         {
             $sql .= "and `Riass`.Anno = :anno ";
         }
+
+        if($nome !== NULL)
+        {
+            $sql .=" and `Riass`.Titolo like :titolo";
+        }
+
         if(!($tipo === "Master" || $tipo === "Docente"))
         {
 
@@ -160,6 +166,12 @@ class Connessione {
         if($proprietario !== NULL)
         {
             $stm->bindParam(":utente", $proprietario, PDO::PARAM_INT);
+        }
+
+        if($nome !== NULL)
+        {
+            $nome = "%".$nome."%";
+            $stm->bindParam(":titolo", $nome, PDO::PARAM_STR);
         }
 
         $esito = $stm->execute();
