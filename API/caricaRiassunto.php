@@ -4,13 +4,17 @@ header("content-type: application/json");
 $connessione = new Connessione();
 if(!isset($_POST['token']))
 {
-    //Redirect
+    $arr['shouldRedirect'] = "true";
+        echo json_encode($arr);
+        die();
 }
 
 $token = $connessione->controllaValidita($_POST['token']);
 if($token === null)
 {
-    //Redirect
+    $arr['shouldRedirect'] = "true";
+        echo json_encode($arr);
+        die();
 }
 
 $idUtente = $token['b'];

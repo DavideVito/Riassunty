@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 class Connessione {
 
     private $connessione = null;
@@ -232,9 +232,17 @@ class Connessione {
         return $enum;
     }
 
-    public function getUtente($id)
+    public function getUtente($id, $tipo = "google")
     {
-        $sql = "SELECT * from Utenti where Utenti.IDGoogle = :id";
+        if($tipo === "google")
+        {
+            $sql = "SELECT * from Utenti where Utenti.IDGoogle = :id";
+        }
+        else
+        {
+            $sql = "SELECT * from Utenti where Utenti.IDUtente = :id";
+        }
+        
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":id", $id, PDO::PARAM_STR);
         $stm->execute();
@@ -372,7 +380,7 @@ class Connessione {
         }
 
         $esito = $stm->fetchAll(PDO::FETCH_ASSOC)[0];
-
+        
         return $esito;
     }
 

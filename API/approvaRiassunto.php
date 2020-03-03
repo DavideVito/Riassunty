@@ -9,7 +9,23 @@
 
     $idRiassunto = $_POST['id'];
 
-    $approvatore = $_SESSION['ID'];
+
+    if(isset($_POST['token']))
+    {
+        $approvatore = $connessione->controllaValidita($_POST['token'])['b'];
+        if($approvatore === null)
+        {
+            $arr['shouldRedirect'] = "true";
+            echo json_encode($arr);
+            die();
+        }
+    }
+    else
+    {
+        $arr['shouldRedirect'] = "true";
+        echo json_encode($arr);
+        die();
+    }
 
     
 

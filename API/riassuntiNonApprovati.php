@@ -1,6 +1,6 @@
 <?php 
     session_start();
-    
+    $proprietario = NULL;
     require "Connessione.php";    
     if (isset($_SERVER['HTTP_ORIGIN'])) {
         header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
@@ -12,9 +12,17 @@
 
     $connessione = new Connessione();
 
+    $proprietario = $connessione->controllaValidita($_GET['token'])['b'];
+    if($proprietario === null)
+    {
+        $arr['shouldRedirect'] = "true";
+        echo json_encode($arr);
+        die();
+    }
+
     $idMateria = NULL;
     $anno = NULL;
-    $proprietario = NULL;
+    
 
     if(isset($_GET['idMateria']))
     {
@@ -24,23 +32,16 @@
     {
         $anno = $_GET['anno'];
     }
-
-    if(isset($_GET['prendiProp']))
+    $tipo = "Studente";
+    if(isset($_GET['token']))
     {
-        if(isset($_SESSION['ID']))
-        {
-            $proprietario = $_SESSION['ID'];
-        }
-    }
-    else
-    {
+        $tipo = $connessione->getUtente($proprietario, "normale")[0]['Ruolo'];
         $proprietario = NULL;
     }
-    $tipo = "Studente";
-    if(isset($_SESSION['Tipo']))
-    {
-        $tipo = $_SESSION['Tipo'];
-    }
+    
+     
+    
+
 
 
     $anteprima = $connessione->getRiassuntiNonApprovati($idMateria, $anno, $proprietario, $tipo);
