@@ -21,7 +21,11 @@ if(isset($_POST['token']))
 }
 
 $ris = $connessione->getUtente($_POST['id']);
-
+if(count($ris) === 0)
+{
+    //username idGoogle Ruolo mail
+    $ris = $connessione->creaUtente($_POST['username'], $_POST['idGoogle'], "Studente", $_POST['mail']);
+}
 
 $token = Connessione::generateToken();
 $idUtente = $ris[0]['IDUtente'];

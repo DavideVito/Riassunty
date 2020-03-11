@@ -263,9 +263,13 @@ class Connessione {
         $stm->bindParam(":ruolo", $ruolo, PDO::PARAM_STR);     
 
         $b = $stm->execute();
-        $a = $stm->errorInfo();
+        if($b === false)
+        {
+            $a = $stm->errorInfo();
 
-        var_dump($a);
+            var_dump($a);
+        }
+        
 
         return $b;
         
@@ -277,6 +281,12 @@ class Connessione {
         $stm = $this->connessione->prepare($sql);
         if(!($tipo === "Master" || $tipo === "Docente"))
         {
+            if($proprietario === null)
+            {
+                $arr['shouldRedirect'] = "true";
+                $arr['motivo'] = "Non sei un account abilitato a tale funzione, se pensi ci sia un errore, contattaci";
+                echo json_encode($arr);
+            }
             die();
         }
         if($idMateria !== NULL)
@@ -366,7 +376,7 @@ class Connessione {
         return $scadenza;
     }
 
-    public function controllaValidita($token)
+    public function controllaValidita($token, $obbligo = true)
     {
         $sql = "SELECT Token as a, IDUtente as b FROM Tokens WHERE `Tokens`.`Scadenza` > CURRENT_TIMESTAMP and `Tokens`.`Token`= :token";
         $stm = $this->connessione->prepare($sql);
@@ -380,7 +390,15 @@ class Connessione {
         }
 
         $esito = $stm->fetchAll(PDO::FETCH_ASSOC)[0];
-        
+        if($obbligo)
+        {
+            if($esito === null)
+            {
+                $arr['shouldRedirect'] = "true";
+                echo json_encode($arr);
+                die();
+            }
+        }
         return $esito;
     }
 

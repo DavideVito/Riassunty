@@ -13,6 +13,11 @@
     $tipo = NULL;
     $nome = NULL;
 
+    $obbligo = isset($_GET['normale']);
+
+
+    $proprietario = $connessione->controllaValidita($_GET['token'], $obbligo)['b'];
+
     if(isset($_GET['idMateria']))
     {
         $idMateria = $_GET['idMateria'];
@@ -22,21 +27,20 @@
         $anno = $_GET['anno'];
     }
 
+    
+
     if(isset($_GET['nome']))
     {
         $nome = $_GET['nome'];
     }
 
-    if(isset($_SESSION['Tipo']))
-    {
-        $tipo = $_SESSION['Tipo'];
-    }
+    $tipo = $connessione->getUtente($proprietario, "normale")[0]['Ruolo'];
     
     if(isset($_GET['prendiProp']))
     {
-        if(isset($_SESSION['ID']))
+        if(isset($_GET['token']))
         {
-            $proprietario = $_SESSION['ID'];
+            $proprietario = $connessione->controllaValidita($_GET['token'])['b'];
         }
     }
     else
