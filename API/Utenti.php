@@ -11,14 +11,14 @@ $risposta['esisteGia'] = true;
 
 if(isset($_POST['token']))
 {
-    $token = $connessione->controllaValidita($_POST['token'])['a'];
+    $token = $connessione->controllaValidita($_POST['token'], false)['a'];
     if($token !== null)
     {
         $risposta['token'] = $token;
         echo json_encode($risposta);
         die();
     }
-}
+} 
 
 $ris = $connessione->getUtente($_POST['id']);
 if(count($ris) === 0)
@@ -28,14 +28,11 @@ if(count($ris) === 0)
 }
 
 $token = Connessione::generateToken();
-$idUtente = $ris[0]['IDUtente'];
+$idUtente = $ris;
+
 
 $connessione->inserisciToken($idUtente, $token);
 
-if(count($ris) == 0)
-{
-    $risposta['esisteGia'] = false;
-}
 $risposta['token'] = $token;
 echo json_encode($risposta);
 

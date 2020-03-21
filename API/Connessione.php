@@ -6,7 +6,7 @@ class Connessione {
 
     public function disconnetti() {
         $this->connessione = null;
-    }
+    } 
 
     public function __construct() {
         try {
@@ -271,7 +271,7 @@ class Connessione {
         }
         
 
-        return $b;
+        return $this->connessione->lastInsertId();
         
     }
 

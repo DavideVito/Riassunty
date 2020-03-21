@@ -15,7 +15,7 @@
 
     $obbligo = isset($_GET['normale']);
 
-
+    
     $proprietario = $connessione->controllaValidita($_GET['token'], $obbligo)['b'];
 
     if(isset($_GET['idMateria']))

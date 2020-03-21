@@ -1,5 +1,6 @@
 <?php
-require "Connessione.php";    header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: *");
+require "Connessione.php";    
 header("content-type: application/json");
 $connessione = new Connessione();
 if(!isset($_POST['token']))
