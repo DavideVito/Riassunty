@@ -28,7 +28,7 @@ if(count($ris) === 0)
 }
 
 $token = Connessione::generateToken();
-$idUtente = $ris;
+$idUtente = $ris[0]['IDUtente'];
 
 
 $connessione->inserisciToken($idUtente, $token);

@@ -271,7 +271,8 @@ class Connessione {
         }
         
 
-        return $this->connessione->lastInsertId();
+        $idCreato = $this->connessione->lastInsertId();
+        return $this->getUtente($idCreato, "normale");
         
     }
 
@@ -357,7 +358,7 @@ class Connessione {
     {
         $sql = "INSERT INTO `Tokens`(`Token`, `IDUtente`, `Scadenza`) VALUES (:token, :idUtente, :scadenza);";
         $now = new DateTime(); //current date/time
-        $now->add(new DateInterval("PT3H"));
+        $now->add(new DateInterval("PT2H"));
         $scadenza = $now->format('Y-m-d H:i:s');
 
 
@@ -376,8 +377,17 @@ class Connessione {
         return $scadenza;
     }
 
+    private function eliminaRecordVecchi()
+    {
+        $sql = "DELETE FROM `Tokens` WHERE Scadenza < CURRENT_TIMESTAMP";
+        $stm = $this->connessione->prepare($sql);
+        $esito = $stm->execute();
+    }
+
+
     public function controllaValidita($token, $obbligo = true)
     {
+        $this->eliminaRecordVecchi();
         $sql = "SELECT Token as a, IDUtente as b FROM Tokens WHERE `Tokens`.`Scadenza` > CURRENT_TIMESTAMP and `Tokens`.`Token`= :token";
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":token", $token, PDO::PARAM_STR);
