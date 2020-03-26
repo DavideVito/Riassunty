@@ -41,14 +41,14 @@ $secondArg = $tmp . ".SHA512=$hashFile";
 
 move_uploaded_file($filePDF, "../Riassunti/".$secondArg);
 
-
+/*
 $escapedComandoShell = escapeshellarg($secondArg);
 
 
 $comando = "pdf2htmlEX --dest-dir ../Riassunti/ ../Riassunti/".$escapedComandoShell;
 $a = null;
 $a = exec($comando . " 2>&1", $a);
-
+*/
 $fileImmagine = $nomeFile.".png";
 
 $im = new Imagick();

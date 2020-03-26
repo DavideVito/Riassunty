@@ -194,7 +194,8 @@ class Connessione {
         $baseUrlImage = 'Immagini/';
 
         $urlImage = $baseUrlImage . $immagine . $sha .".png";
-        $urlPdf = $baseUrlRiass . $fsPDF . $sha . ".html";
+        //$urlPdf = $baseUrlRiass . $fsPDF . $sha . ".html";
+        $urlPdf = $baseUrlRiass . $fsPDF . $sha;
         $stm = $this->connessione->prepare($sql);
 
         

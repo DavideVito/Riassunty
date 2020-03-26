@@ -20,11 +20,11 @@ header("Access-Control-Allow-Origin: *");
     foreach($anteprima as $t)
     {
         $t2['Titolo'] =  htmlspecialchars($t['Titolo']);
-        //$t2['URLPdf'] = "".$t['UrlPDF'];
-       
+        //$t2['URLPdf'] = $t['UrlPDF'];
         $file = file_get_contents("../".$t['UrlPDF']);
-        
-        $t2['txt'] = $file;
+        $file = base64_encode($file);
+        //$t2['url'] = "https://vps.lellovitiello.tk/Riassunt
+        $t2['txt'] =   $file; //"data:application/pdf;base64," .
         array_push($ris, $t2);
     }
 
