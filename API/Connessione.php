@@ -354,6 +354,10 @@ class Connessione {
     {
         return hash("sha512" ,bin2hex(random_bytes(1000000)));
     }
+    public static function generaCodiceRiassunto()
+    {
+        return hash("sha1" ,bin2hex(random_bytes(1000000)));
+    }
 
     public function inserisciToken($idUtente, $token)
     {
@@ -413,6 +417,94 @@ class Connessione {
         return $esito;
     }
 
+    public function inserisciRiassutoTemporaneo($idRiassunto, $idUtente, $nome)
+    {
+        $sql = "INSERT INTO `RiassuntiTemporanei`(`IDRiassunto`, `IDUtente`, `Nome`) VALUES (:id,:idUtente,:nome)";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":id", $idRiassunto, PDO::PARAM_STR);
+        $stm->bindParam(":idUtente", $idUtente, PDO::PARAM_INT);
+        $stm->bindParam(":nome", $nome, PDO::PARAM_STR);
+
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+            die();
+        }
+    }
+
+    public function creaNuovaVersione($idFile, $idRiassunto, $posizione)
+    {
+        $sql = "INSERT INTO `VersioniRiassuntiTemporanei`(`IDFile`, `IDRiassunto`, `Posizione`) VALUES (:idFile,:idRiassunto,:posizione)";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":idFile", $idFile, PDO::PARAM_STR);
+        $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_STR);
+        $stm->bindParam(":posizione", $posizione, PDO::PARAM_STR);
+        
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+            die();
+        }
+
+    }
+
+    public function getRiassuntiTemporanei($di)
+    {
+        $sql = "select * from RiassuntiTemporanei where IDUtente = :id";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":id", $di, PDO::PARAM_INT);
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+        }
+
+        $riassuntiTemporanei =  $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        $daRet = [];
+
+        foreach($riassuntiTemporanei as $riassunto)
+        {
+            $sql = "SELECT * FROM VersioniRiassuntiTemporanei where IDRiassunto = :idRiassunto";
+            $stm = $this->connessione->prepare($sql);
+            $stm->bindParam(":idRiassunto", $riassunto['IDRiassunto'], PDO::PARAM_STR);
+            $esito = $stm->execute();
+            $versioni = $stm->fetchAll(PDO::FETCH_ASSOC);  
+            
+            $t = $riassunto;
+            $t['versioni'] = $versioni;
+
+            array_push($daRet, $t);
+
+        }
+
+        return $daRet;
+    }
+
+    public function getPosizioneFileTemporanero($idRiassunto, $idFile)
+    {
+        $sql = "SELECT Posizione FROM `v_riassuntitemporanei` where IDFile = :idFile and IDRiassunto = :idRiassunto";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":idFile", $idFile, PDO::PARAM_STR);
+        $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_STR);
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+        }
+
+        return $stm->fetchAll(PDO::FETCH_ASSOC)[0];  
+    }
 
 }
 
