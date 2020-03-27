@@ -356,7 +356,7 @@ class Connessione {
     }
     public static function generaCodiceRiassunto()
     {
-        return hash("sha1" ,bin2hex(random_bytes(1000000)));
+        return hash("sha1" , Connessione::generateToken());
     }
 
     public function inserisciToken($idUtente, $token)
@@ -491,7 +491,7 @@ class Connessione {
 
     public function getPosizioneFileTemporanero($idRiassunto, $idFile)
     {
-        $sql = "SELECT Posizione FROM `v_riassuntitemporanei` where IDFile = :idFile and IDRiassunto = :idRiassunto";
+        $sql = "SELECT Posizione, Nome FROM `v_riassuntitemporanei` where IDFile = :idFile and IDRiassunto = :idRiassunto";
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":idFile", $idFile, PDO::PARAM_STR);
         $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_STR);

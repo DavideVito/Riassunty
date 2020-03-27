@@ -18,6 +18,11 @@ try {
         $idRiassunto = Connessione::generateToken();
         $connessione->inserisciRiassutoTemporaneo($idRiassunto, $idUtente, $nome);
     }
+
+    if($_POST['idFile'] !== "no")
+    {
+        die();
+    }
     
     $idFile = Connessione::generaCodiceRiassunto();
 
