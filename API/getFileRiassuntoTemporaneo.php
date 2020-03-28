@@ -10,8 +10,9 @@ $idRiassunto = $_POST['riassunto'];
 
 $posizioneFile = $connessione->getPosizioneFileTemporanero($idRiassunto, $idFile);
 
+
 $contenuto = file_get_contents($posizioneFile['Posizione']);
 
 $tmp['txt'] = $contenuto;
 
-die(json_encode($tmp));
+die(json_encode($tmp)); 

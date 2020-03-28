@@ -6,7 +6,7 @@ $idRiassunto = $_POST['idRiassunto'];
 $idFile = $_POST['idFile'];
 
 
-
+ 
 
 $connessione = new Connessione(); 
 
@@ -25,7 +25,13 @@ $documentoTemp = fopen($posizioneTemporanea, "w");
 
 fwrite($documentoTemp, $stile . file_get_contents($posizione));
 
-$urlFilehtml = $_SERVER["SERVER_NAME"]  . $_SERVER["REQUEST_URI"] . "/../" . $posizioneTemporanea;
+$sn = $_SERVER["SERVER_NAME"];
+if($sn === "_")
+{
+    $sn = $_SERVER["SERVER_ADDR"] . "/";
+}
+
+$urlFilehtml = $sn  . $_SERVER["REQUEST_URI"] . "/../" . $posizioneTemporanea;
 
 $escapedComandoShell = escapeshellarg($nome.".pdf");
 

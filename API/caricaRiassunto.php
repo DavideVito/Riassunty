@@ -26,7 +26,7 @@ if($filePDF === NULL)
 {
     echo "No file PDF";
     die();
-}
+} 
 
 $hashFile = hash_file("sha512",  $_FILES['pdfDaCaricare']['tmp_name']);
 
@@ -53,14 +53,14 @@ $fileImmagine = $nomeFile.".png";
 
 $im = new Imagick();
 $im->setResolution(300, 300);     
-$im->readImage("../Riassunti/" .$tmp. ".SHA512=$hashFile" ."[0]");    
+$im->readImage("../Riassunti/" .$tmp. ".SHA512=$hashFile" . "[0]");    
 $im->setImageFormat('png');
 $im->writeImage("../Immagini/" . $tmp . ".SHA512=$hashFile.png"); 
-unlink("../Riassunti/". $secondArg. ".SHA512=$hashFile");
+//unlink("../Riassunti/". $secondArg. ".SHA512=$hashFile");
 
 $esito = $connessione->inserisci($nomeFile, $tmp ,".SHA512=$hashFile", $tmp, $_POST['indirizzi'], $_POST['materie'], $_POST['anno'], $idUtente);
 
-if($esito === true && strcmp($a, "") === 0)
+if($esito === true)
 {
     echo "OK";
     die();

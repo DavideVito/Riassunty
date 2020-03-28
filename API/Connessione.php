@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+error_reporting(E_ALL);
 class Connessione {
 
     private $connessione = null;
@@ -491,7 +491,7 @@ class Connessione {
 
     public function getPosizioneFileTemporanero($idRiassunto, $idFile)
     {
-        $sql = "SELECT Posizione, Nome FROM `v_riassuntitemporanei` where IDFile = :idFile and IDRiassunto = :idRiassunto";
+        $sql = "SELECT Posizione, Nome FROM `v_RiassuntiTemporanei` where IDFile = :idFile and IDRiassunto = :idRiassunto";
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":idFile", $idFile, PDO::PARAM_STR);
         $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_STR);

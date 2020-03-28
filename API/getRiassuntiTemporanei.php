@@ -10,4 +10,4 @@ $idUtente = $connessione->controllaValidita($_POST['token'])['b'];
 
 $riassuntiTemporanei = $connessione->getRiassuntiTemporanei($idUtente);
 
-die(json_encode($riassuntiTemporanei));
+die(json_encode($riassuntiTemporanei)); 
