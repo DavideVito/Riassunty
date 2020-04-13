@@ -473,7 +473,7 @@ class Connessione {
 
         foreach($riassuntiTemporanei as $riassunto)
         {
-            $sql = "SELECT * FROM VersioniRiassuntiTemporanei where IDRiassunto = :idRiassunto";
+            $sql = "SELECT * FROM v_RiassuntiTemporanei where IDRiassunto = :idRiassunto";
             $stm = $this->connessione->prepare($sql);
             $stm->bindParam(":idRiassunto", $riassunto['IDRiassunto'], PDO::PARAM_STR);
             $esito = $stm->execute();
@@ -504,6 +504,60 @@ class Connessione {
         }
 
         return $stm->fetchAll(PDO::FETCH_ASSOC)[0];  
+    }
+
+    public function modificaValutazione($idUtente, $valutazione, $idRiassunto)
+    {
+        $sql = "UPDATE `Valutazioni` SET `Valutazione` = :valutazione WHERE `Valutazioni`.`IDRiassunto` = :idRiassunto AND `Valutazioni`.`IDUtente` = :idUtente;";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_INT);
+        $stm->bindParam(":valutazione", $valutazione, PDO::PARAM_STR);
+        $stm->bindParam(":idUtente", $idRiassunto, PDO::PARAM_STR);
+        $esito = $stm->execute();
+        if($esito === false)
+        { 
+            $a = $stm->errorInfo();
+            /*echo $sql;
+            echo "<br>";
+            var_dump($a);*/
+        }
+        return $esito;
+    }
+
+    public function inserisciValutazione($idUtente, $valutazione, $idRiassunto)
+    {
+        $sql = "INSERT INTO `Valutazioni`(`IDRiassunto`, `Valutazione`, `IDUtente`) VALUES (:idRiassunto,:valutazione,:idUtente)";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_INT);
+        $stm->bindParam(":valutazione", $valutazione, PDO::PARAM_INT);
+        $stm->bindParam(":idUtente", $idRiassunto, PDO::PARAM_STR);
+        $esito = $stm->execute();
+        if($esito === false)
+        { 
+            $a = $stm->errorInfo();
+            /*echo $sql;
+            echo "<br>";
+            var_dump($a);*/
+        }
+        return $esito;
+
+
+    }
+
+    public function mostraValutazione($idRiassunto)
+    {
+        $sql = "SELECT * FROM `v_valutazioni` where 1 and IDRiassunto = :idRiassunto";
+        $stm = $this->connessione->prepare($sql);
+        $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_INT);
+        $esito = $stm->execute();
+        if($esito === false)
+        { $a = $stm->errorInfo();
+            echo $sql;
+            echo "<br>";
+            var_dump($a);
+        }
+        $a = $stm->fetchAll(PDO::FETCH_ASSOC);
+        return $a[0];  
     }
 
 }
