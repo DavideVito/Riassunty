@@ -62,14 +62,14 @@ $esito = $connessione->inserisci($nomeFile, $tmp ,".SHA512=$hashFile", $tmp, $_P
 
 if($esito === true)
 {
-    echo "OK";
-    die();
+    $ris['Esito'] = "OK"; 
+    die(json_encode($ris));
     
 }
 if($esito == 23000)
 {
-    echo "NOOK";
-    die();
+    $ris['Esito'] = "NOOK"; 
+    die(json_encode($ris));
 }
 
 ?>

@@ -25,6 +25,7 @@ header("Access-Control-Allow-Origin: *");
         $file = base64_encode($file);
         //$t2['url'] = "https://vps.lellovitiello.tk/Riassunt
         $t2['txt'] =   $file; //"data:application/pdf;base64," .
+	 $t2['DataPubblicazione'] = $t['DataPubblicazione'];
         array_push($ris, $t2);
     }
 

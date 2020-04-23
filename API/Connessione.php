@@ -512,15 +512,16 @@ class Connessione {
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_INT);
         $stm->bindParam(":valutazione", $valutazione, PDO::PARAM_STR);
-        $stm->bindParam(":idUtente", $idRiassunto, PDO::PARAM_STR);
+        $stm->bindParam(":idUtente", $idUtente , PDO::PARAM_STR);
         $esito = $stm->execute();
         if($esito === false)
         { 
             $a = $stm->errorInfo();
             /*echo $sql;
             echo "<br>";
-            var_dump($a);*/
+             var_dump($a);*/
         }
+	
         return $esito;
     }
 
@@ -530,7 +531,7 @@ class Connessione {
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_INT);
         $stm->bindParam(":valutazione", $valutazione, PDO::PARAM_INT);
-        $stm->bindParam(":idUtente", $idRiassunto, PDO::PARAM_STR);
+        $stm->bindParam(":idUtente", $idUtente, PDO::PARAM_STR);
         $esito = $stm->execute();
         if($esito === false)
         { 
@@ -546,7 +547,7 @@ class Connessione {
 
     public function mostraValutazione($idRiassunto)
     {
-        $sql = "SELECT * FROM `v_valutazioni` where 1 and IDRiassunto = :idRiassunto";
+        $sql = "SELECT * FROM `v_Valutazioni` where 1 and IDRiassunto = :idRiassunto";
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":idRiassunto", $idRiassunto, PDO::PARAM_INT);
         $esito = $stm->execute();
