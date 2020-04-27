@@ -5,20 +5,20 @@ header("content-type: application/json");
 require "Connessione.php";
 $connessione = new Connessione();
 
-
+$token = json_decode($_POST['token'], true);
 
 $risposta['esisteGia'] = true;
 
 if(isset($_POST['token']))
 {
-    $token = $connessione->controllaValidita($_POST['token'], false)['a'];
-    if($token !== null)
+    $myToken = $connessione->controllaValidita($token["id_token"], false)['a'];
+    if($myToken !== null)
     {
-        $risposta['token'] = $token;
+        $risposta['token'] = $myToken;
         echo json_encode($risposta);
         die();
     }
-} 
+}
 
 $ris = $connessione->getUtente($_POST['id']);
 if(count($ris) === 0)
@@ -27,14 +27,11 @@ if(count($ris) === 0)
     $ris = $connessione->creaUtente($_POST['username'], $_POST['idGoogle'], "Studente", $_POST['mail']);
 }
 
-$token = Connessione::generateToken();
+//$token = Connessione::generateToken();
 $idUtente = $ris[0]['IDUtente'];
 
 
 $connessione->inserisciToken($idUtente, $token);
 
-$risposta['token'] = $token;
-echo json_encode($risposta);
-
-die();
+die(json_encode($ris));
 ?>

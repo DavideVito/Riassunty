@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(0);
 class Connessione {
 
     private $connessione = null;
@@ -362,13 +362,16 @@ class Connessione {
     public function inserisciToken($idUtente, $token)
     {
         $sql = "INSERT INTO `Tokens`(`Token`, `IDUtente`, `Scadenza`) VALUES (:token, :idUtente, :scadenza);";
-        $now = new DateTime(); //current date/time
-        $now->add(new DateInterval("PT2H"));
-        $scadenza = $now->format('Y-m-d H:i:s');
 
+        $scadenza =  $token["expires_at"] / 1000;
+
+        $datetimeFormat = 'Y-m-d H:i:s';
+        $date = new \DateTime();
+        $date->setTimestamp($scadenza + 7200);
+        $scadenza = $date->format($datetimeFormat);
 
         $stm = $this->connessione->prepare($sql);
-        $stm->bindParam(":token", $token, PDO::PARAM_STR);
+        $stm->bindParam(":token", $token["id_token"], PDO::PARAM_STR);
         $stm->bindParam(":idUtente", $idUtente, PDO::PARAM_INT);
         $stm->bindParam(":scadenza", $scadenza, PDO::PARAM_STR);
         $esito = $stm->execute();
@@ -392,7 +395,7 @@ class Connessione {
 
     public function controllaValidita($token, $obbligo = true)
     {
-        $this->eliminaRecordVecchi();
+        //$this->eliminaRecordVecchi();
         $sql = "SELECT Token as a, IDUtente as b FROM Tokens WHERE `Tokens`.`Scadenza` > CURRENT_TIMESTAMP and `Tokens`.`Token`= :token";
         $stm = $this->connessione->prepare($sql);
         $stm->bindParam(":token", $token, PDO::PARAM_STR);
